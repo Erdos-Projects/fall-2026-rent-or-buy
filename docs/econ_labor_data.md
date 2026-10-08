@@ -62,6 +62,44 @@ Low-risk return benchmark: `nat_treasury_3y_pct` is proposed as the default beca
 - **2025Q4 is likely incomplete.** BLS cancelled the October 2025 CPI release because of the October–November 2025 federal government shutdown ([BLS FAQ](https://www.bls.gov/cpi/additional-resources/2025-federal-government-shutdown-impact-cpi-faq.htm)). October 2025 household-survey-based labor data were also affected. Under the complete-quarter rule, 2025Q4 CPI, inflation and possibly LAUS values will be missing. The team should decide whether a 2-month quarter is acceptable for 2025Q4. The script does not decide this silently.
 - **National variables are the same for all counties.** They add only 44 distinct values to the panel.
 
+## Coverage and missingness (run of 2026-10-08)
+
+Raw data retrieved 2026-10-08: FRED fredgraph CSV, and BLS API v1 without a key in 4 batches. The combined table has 396 rows (9 counties × 44 quarters), with 0 duplicate `county × quarter` keys.
+
+| Variable group | Observed | Missing | Reason |
+|---|---|---|---|
+| Mortgage rate, 3y/10y Treasury, 3m T-bill | 2015Q1–2025Q4 (44/44) | none | — |
+| CPI, YoY inflation | 2015Q1–2025Q3 (43/44) | 2025Q4 | October 2025 CPI not published (shutdown); only 2 of 3 months available |
+| Ohio labor (state) | 2015Q1–2025Q3 (43/44) | 2025Q4 | October 2025 missing; only 2 of 3 months available |
+| County labor, 9 counties | 2015Q1–2025Q3 (387/396 cells) | 2025Q4, all 9 counties | October 2025 missing; only 2 of 3 months available |
+
+Checks passed:
+
+- employed + unemployed = labor force for every county-quarter
+- unemployment rate = unemployed / labor force
+- mortgage rate quarters have 12–14 weekly observations
+- Treasury quarters have 61–64 trading days
+
+Plausibility:
+
+- The COVID shock appears in 2020Q2: Ohio unemployment rate 13.4%, Lucas 19.0%, Cuyahoga 17.6%.
+- CPI inflation peaks at 8.6% in 2022Q2.
+- The 30-year mortgage rate peaks at 7.3% in 2023Q4.
+
+Labor force 2015Q1 → 2025Q3:
+
+- Largest growth: Franklin (+14%) and Warren (+21%)
+- Small declines: Lucas and Stark
+
+No BLS preliminary flags appear in this pull.
+
+**Open decision for the team:** keep 2025Q4 CPI, inflation and labor values missing (current rule), or accept 2-month quarters for 2025Q4 only and flag them.
+
+## Usage terms
+
+- BLS LAUS and CPI, and U.S. Treasury rates, are U.S. government data in the public domain. Cite the source.
+- `MORTGAGE30US` is Freddie Mac Primary Mortgage Market Survey data distributed through FRED. Cite Freddie Mac and FRED, and check the FRED series notes before redistributing the raw file.
+
 ## Outputs
 
 | File | Rows |
