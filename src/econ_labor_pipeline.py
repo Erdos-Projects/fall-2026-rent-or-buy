@@ -13,8 +13,8 @@ Outputs
     data/raw/FRED/<retrieved_date>/<SERIES>.csv          unchanged FRED downloads
     data/raw/BLS/<retrieved_date>/bls_response_<n>.json  unchanged BLS API responses
     data/raw/raw_manifest_econ_labor.csv                 URL, series, retrieval time, SHA-256 per raw file
-    data/processed/FRED/national_quarterly.csv           national variables, one row per quarter
-    data/processed/BLS/state_labor_quarterly.csv         Ohio (state-level) labor variables per quarter
+    data/unused_data/FRED/national_quarterly.csv         standalone national variables, one row per quarter
+    data/unused_data/BLS/state_labor_quarterly.csv       standalone Ohio (state-level) labor variables per quarter
     data/processed/BLS/county_labor_quarterly.csv        county labor variables per county x quarter
     data/processed/econ_labor_county_quarter.csv         combined table: 9 counties x 44 quarters
     data/processed/econ_labor_variable_definitions.csv   variable definition table
@@ -37,6 +37,7 @@ RAW_FRED = ROOT / "data" / "raw" / "FRED"
 RAW_BLS = ROOT / "data" / "raw" / "BLS"
 MANIFEST = ROOT / "data" / "raw" / "raw_manifest_econ_labor.csv"
 OUT = ROOT / "data" / "processed"
+UNUSED_OUT = ROOT / "data" / "unused_data"
 
 # Study window. Raw downloads start one year earlier so 2015 year-over-year inflation can be computed.
 START_YEAR, END_YEAR = 2015, 2025
@@ -54,13 +55,17 @@ COUNTIES = {
     "39165": "Warren",
 }
 
-# FRED series: id -> (output column, native frequency, minimum observations for a complete quarter)
+# Team decision (2026-10-08): monthly series accept a quarter with 2 of 3 months, flagged as partial.
+# This covers 2025Q4, when October 2025 data were not published because of the federal shutdown.
+MIN_MONTHS = 2
+
+# FRED series: id -> (output column, native frequency, minimum obs to accept, obs in a full quarter)
 FRED_SERIES = {
-    "MORTGAGE30US": ("nat_mortgage_rate_30y_pct", "weekly", 12),
-    "CPIAUCSL": ("nat_cpi_index", "monthly", 3),
-    "DGS3": ("nat_treasury_3y_pct", "daily", 55),
-    "DGS10": ("nat_treasury_10y_pct", "daily", 55),
-    "TB3MS": ("nat_tbill_3m_pct", "monthly", 3),
+    "MORTGAGE30US": ("nat_mortgage_rate_30y_pct", "weekly", 12, 12),
+    "CPIAUCSL": ("nat_cpi_index", "monthly", MIN_MONTHS, 3),
+    "DGS3": ("nat_treasury_3y_pct", "daily", 55, 55),  # team decision: low-risk return benchmark
+    "DGS10": ("nat_treasury_10y_pct", "daily", 55, 55),
+    "TB3MS": ("nat_tbill_3m_pct", "monthly", MIN_MONTHS, 3),
 }
 
 # BLS LAUS measure codes
@@ -224,18 +229,21 @@ def build_national(fred: pd.DataFrame) -> pd.DataFrame:
     agg = fred.groupby(["series", "year", "quarter"])["value"].agg(["mean", "count"]).reset_index()
     q = pd.period_range(f"{RAW_START_YEAR}Q1", f"{END_YEAR}Q4", freq="Q")
     out = pd.DataFrame({"year": q.year, "quarter": q.quarter})
-    for series, (col, _, min_obs) in FRED_SERIES.items():
+    for series, (col, _, min_obs, full_obs) in FRED_SERIES.items():
         s = agg[agg["series"] == series][["year", "quarter", "mean", "count"]]
         out = out.merge(s, on=["year", "quarter"], how="left")
         out["count"] = out["count"].fillna(0).astype(int)
-        out[col] = out["mean"].where(out["count"] >= min_obs)  # partial quarters stay missing
+        out[col] = out["mean"].where(out["count"] >= min_obs)  # too few observations -> missing
         out[f"{col}_n_obs"] = out["count"]
+        out[f"{col}_partial"] = (out["count"] >= min_obs) & (out["count"] < full_obs)
         out = out.drop(columns=["mean", "count"])
     # Year-over-year CPI inflation: same quarter one year earlier, consecutive rows only.
     out = out.sort_values(["year", "quarter"]).reset_index(drop=True)
     lag = out["nat_cpi_index"].shift(4)
     lag_ok = (out["year"].shift(4) == out["year"] - 1) & (out["quarter"].shift(4) == out["quarter"])
     out["nat_inflation_yoy_pct"] = (100 * (out["nat_cpi_index"] / lag - 1)).where(lag_ok)
+    lag_partial = out["nat_cpi_index_partial"].shift(4).eq(True)
+    out["nat_inflation_yoy_pct_partial"] = (out["nat_cpi_index_partial"] | lag_partial) & out["nat_inflation_yoy_pct"].notna()
     return out[out["year"] >= START_YEAR].reset_index(drop=True)
 
 
@@ -259,16 +267,17 @@ def build_labor(bls: pd.DataFrame, geo_level: str) -> pd.DataFrame:
         prelim.reset_index(), on=["fips", "year", "quarter"], how="left")
     out["n_months"] = out["n_months"].fillna(0).astype(int)
     out["any_preliminary"] = out["any_preliminary"].fillna(False).astype(bool)
-    full = out["n_months"] == 3
+    accepted = out["n_months"] >= MIN_MONTHS
     for m in measures:
-        out[m] = out[m].where(full)  # partial quarters stay missing
+        out[m] = out[m].where(accepted)  # fewer than MIN_MONTHS months -> missing
     # Rate from summed counts, never an average of monthly rates.
     out["unemployment_rate_pct"] = 100 * out["unemployed"] / out["labor_force"]
+    out["partial_quarter"] = accepted & (out["n_months"] < 3)
     out["missing_reason"] = ""
-    out.loc[~full & (out["n_months"] > 0), "missing_reason"] = "incomplete_period"
+    out.loc[~accepted & (out["n_months"] > 0), "missing_reason"] = "incomplete_period"
     out.loc[out["n_months"] == 0, "missing_reason"] = "not_available"
     prefix = "state_" if geo_level == "state" else "cty_"
-    rename = {m: f"{prefix}{m}" for m in measures + ["unemployment_rate_pct", "n_months",
+    rename = {m: f"{prefix}{m}" for m in measures + ["unemployment_rate_pct", "n_months", "partial_quarter",
                                                       "any_preliminary", "missing_reason"]}
     out = out.rename(columns=rename)
     if geo_level == "county":
@@ -292,32 +301,34 @@ def variable_definitions() -> pd.DataFrame:
         ("nat_mortgage_rate_30y_pct", "national", "30-year fixed mortgage average rate (Freddie Mac PMMS)", "percent",
          "FRED", "MORTGAGE30US", "Mean of weekly observations dated in the quarter; missing if fewer than 12"),
         ("nat_cpi_index", "national", "CPI for All Urban Consumers, all items, seasonally adjusted", "index 1982-84=100",
-         "FRED", "CPIAUCSL", "Mean of 3 monthly values; missing if any month missing"),
+         "FRED", "CPIAUCSL", "Mean of available monthly values; needs at least 2 of 3 months"),
         ("nat_inflation_yoy_pct", "national", "Year-over-year CPI inflation", "percent",
          "Derived", "CPIAUCSL", "100 x (CPI_q / CPI_same_quarter_prior_year - 1)"),
-        ("nat_treasury_3y_pct", "national", "3-year Treasury constant-maturity yield (low-risk return benchmark)", "percent",
+        ("nat_treasury_3y_pct", "national", "3-year Treasury constant-maturity yield; the team's low-risk return benchmark", "percent",
          "FRED", "DGS3", "Mean of daily values in the quarter; missing if fewer than 55 trading days"),
         ("nat_treasury_10y_pct", "national", "10-year Treasury constant-maturity yield", "percent",
          "FRED", "DGS10", "Mean of daily values in the quarter; missing if fewer than 55 trading days"),
         ("nat_tbill_3m_pct", "national", "3-month Treasury bill secondary market rate", "percent",
-         "FRED", "TB3MS", "Mean of 3 monthly values; missing if any month missing"),
+         "FRED", "TB3MS", "Mean of available monthly values; needs at least 2 of 3 months"),
         ("state_unemployed", "state", "Ohio unemployed persons, seasonally adjusted", "persons",
-         "BLS LAUS", "LASST390000000000004", "Mean of 3 monthly values"),
+         "BLS LAUS", "LASST390000000000004", "Mean of available monthly values; needs at least 2 of 3 months"),
         ("state_employed", "state", "Ohio employed persons, seasonally adjusted", "persons",
-         "BLS LAUS", "LASST390000000000005", "Mean of 3 monthly values"),
+         "BLS LAUS", "LASST390000000000005", "Mean of available monthly values; needs at least 2 of 3 months"),
         ("state_labor_force", "state", "Ohio civilian labor force, seasonally adjusted", "persons",
-         "BLS LAUS", "LASST390000000000006", "Mean of 3 monthly values"),
+         "BLS LAUS", "LASST390000000000006", "Mean of available monthly values; needs at least 2 of 3 months"),
         ("state_unemployment_rate_pct", "state", "Ohio unemployment rate", "percent",
          "Derived", "LASST39...04 / 06", "100 x state_unemployed / state_labor_force"),
         ("cty_unemployed", "county", "Unemployed residents, not seasonally adjusted", "persons",
-         "BLS LAUS", "LAUCN<fips>0000000004", "Mean of 3 monthly values; missing if any month missing"),
+         "BLS LAUS", "LAUCN<fips>0000000004", "Mean of available monthly values; needs at least 2 of 3 months"),
         ("cty_employed", "county", "Employed residents (household concept, not payroll jobs), not seasonally adjusted",
-         "persons", "BLS LAUS", "LAUCN<fips>0000000005", "Mean of 3 monthly values; missing if any month missing"),
+         "persons", "BLS LAUS", "LAUCN<fips>0000000005", "Mean of available monthly values; needs at least 2 of 3 months"),
         ("cty_labor_force", "county", "Civilian labor force, not seasonally adjusted", "persons",
-         "BLS LAUS", "LAUCN<fips>0000000006", "Mean of 3 monthly values; missing if any month missing"),
+         "BLS LAUS", "LAUCN<fips>0000000006", "Mean of available monthly values; needs at least 2 of 3 months"),
         ("cty_unemployment_rate_pct", "county", "Unemployment rate", "percent",
          "Derived", "LAUCN<fips>...04 / 06", "100 x cty_unemployed / cty_labor_force (not an average of monthly rates)"),
         ("*_n_obs, *_n_months", "quality", "Number of source observations used in the quarterly value", "count", "", "", ""),
+        ("*_partial, *_partial_quarter", "quality",
+         "True if the quarterly value uses only 2 of 3 months (2025Q4: October 2025 not published)", "boolean", "", "", ""),
         ("*_any_preliminary", "quality", "True if any month in the quarter is flagged preliminary (P) by BLS", "boolean", "BLS", "", ""),
         ("*_missing_reason", "quality", "Why a labor value is missing: incomplete_period or not_available", "text", "", "", ""),
     ]
@@ -343,19 +354,29 @@ def build() -> None:
     expected = len(COUNTIES) * (END_YEAR - START_YEAR + 1) * 4
     assert len(combined) == expected, f"Expected {expected} rows, got {len(combined)}"
 
+    (OUT / "BLS").mkdir(parents=True, exist_ok=True)
     for sub in ("FRED", "BLS"):
-        (OUT / sub).mkdir(parents=True, exist_ok=True)
-    national.to_csv(OUT / "FRED" / "national_quarterly.csv", index=False)
-    state.to_csv(OUT / "BLS" / "state_labor_quarterly.csv", index=False)
+        (UNUSED_OUT / sub).mkdir(parents=True, exist_ok=True)
+    national.to_csv(UNUSED_OUT / "FRED" / "national_quarterly.csv", index=False)
+    state.to_csv(UNUSED_OUT / "BLS" / "state_labor_quarterly.csv", index=False)
     county.to_csv(OUT / "BLS" / "county_labor_quarterly.csv", index=False)
     combined.to_csv(OUT / "econ_labor_county_quarter.csv", index=False)
     variable_definitions().to_csv(OUT / "econ_labor_variable_definitions.csv", index=False)
 
     value_cols = [c for c in combined.columns if c not in keys + ["county_name"]
-                  and not c.endswith(("_n_obs", "_n_months", "_any_preliminary", "_missing_reason"))]
+                  and not c.endswith(("_n_obs", "_n_months", "_any_preliminary", "_missing_reason",
+                                      "_partial", "_partial_quarter"))]
+    def partial_col(c):
+        if c.startswith("cty_"):
+            return "cty_partial_quarter"
+        if c.startswith("state_"):
+            return "state_partial_quarter"
+        return f"{c}_partial" if f"{c}_partial" in combined else None
+
     cov = pd.DataFrame({
         "variable": value_cols,
         "missing_cells": [int(combined[c].isna().sum()) for c in value_cols],
+        "partial_quarter_cells": [int(combined[partial_col(c)].sum()) if partial_col(c) else 0 for c in value_cols],
         "total_cells": len(combined),
         "missing_quarters": [", ".join(sorted({f"{y}Q{q}" for y, q in
                               combined.loc[combined[c].isna(), ["year", "quarter"]].itertuples(index=False)}))
@@ -363,7 +384,7 @@ def build() -> None:
     })
     cov.to_csv(OUT / "econ_labor_coverage.csv", index=False)
     print(f"Combined table: {len(combined)} rows ({len(COUNTIES)} counties x {expected // len(COUNTIES)} quarters)")
-    print(cov[["variable", "missing_cells", "missing_quarters"]].to_string(index=False))
+    print(cov[["variable", "missing_cells", "partial_quarter_cells", "missing_quarters"]].to_string(index=False))
 
 
 if __name__ == "__main__":
