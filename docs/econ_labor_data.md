@@ -108,8 +108,8 @@ Under the original complete-quarter rule, 2025Q4 CPI, inflation and labor values
 | File | Rows |
 |---|---|
 | `data/processed/econ_labor_county_quarter.csv` (main deliverable) | 396 |
-| `data/unused_data/FRED/national_quarterly.csv` | 44; standalone national table retained outside the integration deliverable |
-| `data/unused_data/BLS/state_labor_quarterly.csv` | 44; standalone Ohio table retained outside the integration deliverable |
+| `data/processed/FRED/national_quarterly.csv` | 44; national input table used to build the county-quarter panel |
+| `data/processed/BLS/state_labor_quarterly.csv` | 44; Ohio reference table used to build the county-quarter panel |
 | `data/processed/BLS/county_labor_quarterly.csv` | 396 |
 | `data/processed/econ_labor_variable_definitions.csv` | — |
 | `data/processed/econ_labor_coverage.csv` (missing cells per variable) | — |
