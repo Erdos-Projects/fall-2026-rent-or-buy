@@ -13,8 +13,8 @@ Outputs
     data/raw/FRED/<retrieved_date>/<SERIES>.csv          unchanged FRED downloads
     data/raw/BLS/<retrieved_date>/bls_response_<n>.json  unchanged BLS API responses
     data/raw/raw_manifest_econ_labor.csv                 URL, series, retrieval time, SHA-256 per raw file
-    data/unused_data/FRED/national_quarterly.csv         standalone national variables, one row per quarter
-    data/unused_data/BLS/state_labor_quarterly.csv       standalone Ohio (state-level) labor variables per quarter
+    data/processed/FRED/national_quarterly.csv           national variables, one row per quarter
+    data/processed/BLS/state_labor_quarterly.csv         Ohio (state-level) labor variables per quarter
     data/processed/BLS/county_labor_quarterly.csv        county labor variables per county x quarter
     data/processed/econ_labor_county_quarter.csv         combined table: 9 counties x 44 quarters
     data/processed/econ_labor_variable_definitions.csv   variable definition table
@@ -37,7 +37,6 @@ RAW_FRED = ROOT / "data" / "raw" / "FRED"
 RAW_BLS = ROOT / "data" / "raw" / "BLS"
 MANIFEST = ROOT / "data" / "raw" / "raw_manifest_econ_labor.csv"
 OUT = ROOT / "data" / "processed"
-UNUSED_OUT = ROOT / "data" / "unused_data"
 
 # Study window. Raw downloads start one year earlier so 2015 year-over-year inflation can be computed.
 START_YEAR, END_YEAR = 2015, 2025
@@ -354,11 +353,10 @@ def build() -> None:
     expected = len(COUNTIES) * (END_YEAR - START_YEAR + 1) * 4
     assert len(combined) == expected, f"Expected {expected} rows, got {len(combined)}"
 
-    (OUT / "BLS").mkdir(parents=True, exist_ok=True)
     for sub in ("FRED", "BLS"):
-        (UNUSED_OUT / sub).mkdir(parents=True, exist_ok=True)
-    national.to_csv(UNUSED_OUT / "FRED" / "national_quarterly.csv", index=False)
-    state.to_csv(UNUSED_OUT / "BLS" / "state_labor_quarterly.csv", index=False)
+        (OUT / sub).mkdir(parents=True, exist_ok=True)
+    national.to_csv(OUT / "FRED" / "national_quarterly.csv", index=False)
+    state.to_csv(OUT / "BLS" / "state_labor_quarterly.csv", index=False)
     county.to_csv(OUT / "BLS" / "county_labor_quarterly.csv", index=False)
     combined.to_csv(OUT / "econ_labor_county_quarter.csv", index=False)
     variable_definitions().to_csv(OUT / "econ_labor_variable_definitions.csv", index=False)
