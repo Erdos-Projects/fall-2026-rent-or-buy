@@ -37,7 +37,7 @@ nine Ohio counties, 2015Q1–2025Q4, or 396 rows.
 For county `c` in quarter `t`, the model uses current housing (`zhvi_usd`,
 `zori_usd_month`, `fhfa_hpi`, and affordability ratios), county demographics,
 national economic (`nat_*`), Ohio labor (`state_*`), and county labor
-(`cty_*`) conditions to predict growth twelve quarters ahead.
+(`cty_*`) conditions to predict growth three years (i.e. twelve quarters) ahead.
 
 The targets are `zhvi_growth_3y_pct` and `zori_growth_3y_pct`:
 
