@@ -32,6 +32,54 @@ nine Ohio counties, 2015Q1–2025Q4, or 396 rows.
   state (`state_*`) fields repeat across counties by design. County labor
   fields (`cty_*`) vary by county and quarter.
 
+## Modeling Variables and Prediction Targets
+
+The machine-learning task uses information available for county `c` in quarter
+`t` to predict housing-market growth twelve quarters later. The prediction
+unit is therefore one `county_fips × year × quarter` row.
+
+**Predictor groups** include:
+
+- **Current housing conditions:** `zhvi_usd`, `zori_usd_month`, `fhfa_hpi`,
+  `price_to_income`, and `price_to_rent`.
+- **County demographics:** `population`, `median_household_income_usd`,
+  `housing_units`, and `vacancy_rate_pct`. ACS margins of error are retained
+  for data-quality assessment, rather than treated as core predictors by
+  default.
+- **National economic context:** mortgage rate, CPI, inflation, Treasury and
+  Treasury-bill rate columns with the `nat_*` prefix.
+- **Labor-market conditions:** Ohio statewide `state_*` employment, labor
+  force, and unemployment measures, plus county-specific `cty_*` measures.
+
+The two supervised-learning targets are three-year percentage growth in Zillow
+home values and rents:
+
+\[
+\text{ZHVI growth}_{c,t \rightarrow t+12}
+= 100\left(\frac{\text{ZHVI}_{c,t+12}}{\text{ZHVI}_{c,t}} - 1\right)
+\]
+
+\[
+\text{ZORI growth}_{c,t \rightarrow t+12}
+= 100\left(\frac{\text{ZORI}_{c,t+12}}{\text{ZORI}_{c,t}} - 1\right)
+\]
+
+These are stored as `zhvi_growth_3y_pct` and `zori_growth_3y_pct`.
+After estimating either growth rate, the implied future level for the
+rent-versus-buy application is:
+
+\[
+\widehat{V}_{c,t+12}=V_{c,t}\left(1+
+\frac{\widehat{g}_{c,t \rightarrow t+12}}{100}\right),
+\]
+
+where \(V\) is ZHVI or ZORI and \(\widehat{g}\) is the model prediction.
+
+The source table aligns ACS estimates with their reference year. Before a
+real-time forecasting exercise, the modeling workflow must lag ACS features
+to their public release dates so that a model never uses data unavailable at
+the prediction date.
+
 ## Derived Fields
 
 - `price_to_income = zhvi_usd / median_household_income_usd`
