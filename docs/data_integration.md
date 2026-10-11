@@ -34,51 +34,22 @@ nine Ohio counties, 2015Q1–2025Q4, or 396 rows.
 
 ## Modeling Variables and Prediction Targets
 
-The machine-learning task uses information available for county `c` in quarter
-`t` to predict housing-market growth twelve quarters later. The prediction
-unit is therefore one `county_fips × year × quarter` row.
+For county `c` in quarter `t`, the model uses current housing (`zhvi_usd`,
+`zori_usd_month`, `fhfa_hpi`, and affordability ratios), county demographics,
+national economic (`nat_*`), Ohio labor (`state_*`), and county labor
+(`cty_*`) conditions to predict growth twelve quarters ahead.
 
-**Predictor groups** include:
+The targets are `zhvi_growth_3y_pct` and `zori_growth_3y_pct`:
 
-- **Current housing conditions:** `zhvi_usd`, `zori_usd_month`, `fhfa_hpi`,
-  `price_to_income`, and `price_to_rent`.
-- **County demographics:** `population`, `median_household_income_usd`,
-  `housing_units`, and `vacancy_rate_pct`. ACS margins of error are retained
-  for data-quality assessment, rather than treated as core predictors by
-  default.
-- **National economic context:** mortgage rate, CPI, inflation, Treasury and
-  Treasury-bill rate columns with the `nat_*` prefix.
-- **Labor-market conditions:** Ohio statewide `state_*` employment, labor
-  force, and unemployment measures, plus county-specific `cty_*` measures.
+$$
+g_{c,t}^{V}=100\left(\frac{V_{c,t+12}}{V_{c,t}}-1\right),
+\qquad V \in \{\mathrm{ZHVI}, \mathrm{ZORI}\}.
+$$
 
-The two supervised-learning targets are three-year percentage growth in Zillow
-home values and rents:
-
-\[
-\text{ZHVI growth}_{c,t \rightarrow t+12}
-= 100\left(\frac{\text{ZHVI}_{c,t+12}}{\text{ZHVI}_{c,t}} - 1\right)
-\]
-
-\[
-\text{ZORI growth}_{c,t \rightarrow t+12}
-= 100\left(\frac{\text{ZORI}_{c,t+12}}{\text{ZORI}_{c,t}} - 1\right)
-\]
-
-These are stored as `zhvi_growth_3y_pct` and `zori_growth_3y_pct`.
-After estimating either growth rate, the implied future level for the
-rent-versus-buy application is:
-
-\[
-\widehat{V}_{c,t+12}=V_{c,t}\left(1+
-\frac{\widehat{g}_{c,t \rightarrow t+12}}{100}\right),
-\]
-
-where \(V\) is ZHVI or ZORI and \(\widehat{g}\) is the model prediction.
-
-The source table aligns ACS estimates with their reference year. Before a
-real-time forecasting exercise, the modeling workflow must lag ACS features
-to their public release dates so that a model never uses data unavailable at
-the prediction date.
+For the rent-versus-buy calculator, a predicted growth rate gives the implied
+future level: $\widehat{V}_{c,t+12}=V_{c,t}(1+\widehat{g}_{c,t}^{V}/100)$.
+ACS values are aligned to their reference year; a real-time model must lag them
+to their public release date to avoid using unavailable information.
 
 ## Derived Fields
 
