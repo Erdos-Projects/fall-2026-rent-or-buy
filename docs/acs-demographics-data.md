@@ -1,29 +1,36 @@
 ## Demographic Data Sources
 
-### Data Source
-The acs_{year}_all_counties.csv were downloaded from the US census (https://www.census.gov/programs-surveys/acs/data.html). The data were downloaded using the Census API with an API key. 
+### Source and Geographic Scope
+The `acs_{year}_all_counties.csv` files were downloaded from the U.S. Census
+ACS 1-year API. They contain a wider Ohio county extract in their raw form.
+The integration pipeline retains only the project's nine target counties using
+five-digit county FIPS codes: Butler, Cuyahoga, Franklin, Hamilton, Lucas,
+Montgomery, Stark, Summit, and Warren.
 
-### Data Range & Missingness
-Note that 2020 and 2025 are missing. There was no data available for 2020, and 2025 data has not yet been released (as of 10/9/2026). 
+### Time Coverage and Missingness
+The available source years are 2015–2019 and 2021–2024. ACS 1-year estimates
+were not released for 2020, and 2025 estimates were not available when the
+files were collected. In the county-quarter panel, all four quarters of 2020
+and 2025 remain missing. No ACS value is carried forward or imputed.
 
-### Data Downloaded
-For each MSA, the following estimates and measures of error were acquired:
+### Variables Downloaded
+For each county, the following estimates and margins of error were acquired:
 - B01003: Total Population
 - B19013: Median Household Income in the Past 12 Months (in Inflation-Adjusted Dollars)
 - B25001: Number of Housing Units
 - B25002_003: Occupancy Status - Number of Vacancies
 - B25002_001: Occupancy Status - Total
 
-### Variables
-In the complete_data.csv file, the following measures are included for each county x year:
-- total_population_estimate: estimated total population
-- total_population_MoE: margin error of total population
-- median_HH_income_estimate: estimate of the median household income
-- median_HH_income_MoE: margin of error of the median household income
-- total_housing_units_estimate: estimate total number of housing units
-- total_housing_units_MoE: margin of error of the total number of housing units
-- vacant_housing_units_estimate: estimate number of vacant housing units (B25002_003E)
-- vacant_housing_units_MoE: margin of error of vacant housing units (B25002_003M)
-- total_housing_units_occupancy_table_estimate: total housing units from the B25002 Occupancy Status table (B25002_001E)
-- total_housing_units_occupancy_table_MoE: margin of error for that estimate (B25002_001M)
-- vacancy_rate_pct: percent of vacant units out of all housing units (100* (vacant_housing_units_estimate / total_housing_units_occupancy_table_estimate))
+### Processed Variables
+The integration pipeline writes `data/processed/ACS/acs_county_year.csv` with
+standardized names. `acs_county_quarter.csv` repeats each observed annual value
+across Q1–Q4 of that same year. The processed variables include:
+
+- `population` and `population_moe`
+- `median_household_income_usd` and `median_household_income_moe_usd`
+- `housing_units` and `housing_units_moe`
+- `vacant_housing_units` and `vacant_housing_units_moe`
+- `occupancy_total_units` and `occupancy_total_units_moe`
+- `vacancy_rate_pct = 100 × vacant_housing_units / occupancy_total_units`
+
+The Census missing-value sentinel `-555555555` is converted to a missing value.

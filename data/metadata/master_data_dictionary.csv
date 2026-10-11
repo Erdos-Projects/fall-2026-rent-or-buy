@@ -1,0 +1,63 @@
+variable_name,description,unit,source,geographic_level,native_frequency,panel_frequency,transformation_or_rule,source_url
+acs_carried_forward,Whether the ACS value was carried from another year.,boolean,Derived,county,Annual,Quarterly,Always False. No ACS values are carried forward.,
+acs_reference_year,Year of the ACS observation attached to the panel row.,year,ACS,county,Annual,Quarterly,Equals calendar year where ACS is observed; missing in 2020 and 2025.,
+county_fips,Five-digit Ohio county FIPS code.,code,Project key,county,Not applicable,Quarterly,Exact source county identifier.,
+county_name,Ohio county name without the word County.,text,Project key,county,Not applicable,Quarterly,Mapped from county_fips.,
+cty_any_preliminary,Whether any county BLS source month is preliminary.,boolean,BLS LAUS,county,Monthly,Quarterly,True when any source month is marked preliminary.,https://www.bls.gov/lau/
+cty_employed,"Employed residents (household concept, not payroll jobs), not seasonally adjusted",persons,BLS LAUS,county,Monthly or daily,Quarterly,Mean of available monthly values; needs at least 2 of 3 months,https://www.bls.gov/lau/
+cty_labor_force,"Civilian labor force, not seasonally adjusted",persons,BLS LAUS,county,Monthly or daily,Quarterly,Mean of available monthly values; needs at least 2 of 3 months,https://www.bls.gov/lau/
+cty_missing_reason,Reason a county labor value is missing.,text,BLS LAUS,county,Monthly,Quarterly,Values include incomplete_period or not_available.,https://www.bls.gov/lau/
+cty_n_months,Number of BLS county source months used in the quarterly value.,count,BLS LAUS,county,Monthly,Quarterly,Three normally; two for the documented 2025Q4 partial quarter.,https://www.bls.gov/lau/
+cty_partial_quarter,Whether the county quarterly value uses an incomplete source quarter.,boolean,BLS LAUS,county,Monthly,Quarterly,True for the documented 2025Q4 partial quarter.,https://www.bls.gov/lau/
+cty_unemployed,"Unemployed residents, not seasonally adjusted",persons,BLS LAUS,county,Monthly or daily,Quarterly,Mean of available monthly values; needs at least 2 of 3 months,https://www.bls.gov/lau/
+cty_unemployment_rate_pct,Unemployment rate,percent,Derived,county,Monthly or daily,Quarterly,100 x cty_unemployed / cty_labor_force (not an average of monthly rates),
+fhfa_hpi,FHFA county House Price Index.,index points,FHFA,county,Annual,Quarterly,Annual value repeated across Q1 through Q4.,
+housing_units,ACS housing-unit estimate.,housing units,ACS,county,Annual,Quarterly,Repeated across all quarters of observed years; missing in 2020 and 2025.,
+housing_units_moe,Margin of error for ACS housing units.,housing units,ACS,county,Annual,Quarterly,Repeated across all quarters of observed years; source sentinel values become missing.,
+hpi_index_basis,Base year for the supplied FHFA HPI values.,text,FHFA,county,Annual,Quarterly,Retained from the FHFA annual input.,
+hpi_source_frequency,Frequency of the source HPI series.,text,FHFA,county,Annual,Quarterly,Always annual for the supplied HPI data.,
+median_household_income_moe_usd,Margin of error for ACS median household income.,USD,ACS,county,Annual,Quarterly,Repeated across all quarters of observed years; source sentinel values become missing.,
+median_household_income_usd,ACS median household income estimate.,USD,ACS,county,Annual,Quarterly,Repeated across all quarters of observed years; missing in 2020 and 2025.,
+nat_cpi_index,"CPI for All Urban Consumers, all items, seasonally adjusted",index 1982-84=100,FRED,national,Monthly or daily,Quarterly,Mean of available monthly values; needs at least 2 of 3 months,https://fred.stlouisfed.org/series/CPIAUCSL
+nat_cpi_index_n_obs,Number of monthly CPI observations used in the quarter.,count,FRED,national,Monthly,Quarterly,Repeated across counties by design.,https://fred.stlouisfed.org/series/CPIAUCSL
+nat_cpi_index_partial,Whether the quarterly CPI value is based on an incomplete source period.,boolean,FRED,national,Monthly,Quarterly,Repeated across counties by design.,https://fred.stlouisfed.org/series/CPIAUCSL
+nat_inflation_yoy_pct,Year-over-year CPI inflation,percent,Derived,national,Monthly or daily,Quarterly,100 x (CPI_q / CPI_same_quarter_prior_year - 1),
+nat_inflation_yoy_pct_partial,Whether the quarterly year-over-year inflation value uses an incomplete source period.,boolean,Derived from FRED,national,Monthly,Quarterly,Repeated across counties by design.,https://fred.stlouisfed.org/series/CPIAUCSL
+nat_mortgage_rate_30y_pct,30-year fixed mortgage average rate (Freddie Mac PMMS),percent,FRED,national,Monthly or daily,Quarterly,Mean of weekly observations dated in the quarter; missing if fewer than 12,https://fred.stlouisfed.org/series/MORTGAGE30US
+nat_mortgage_rate_30y_pct_n_obs,Number of weekly mortgage-rate observations used in the quarter.,count,FRED,national,Weekly,Quarterly,Repeated across counties by design.,https://fred.stlouisfed.org/series/MORTGAGE30US
+nat_mortgage_rate_30y_pct_partial,Whether the quarterly mortgage rate is based on an incomplete source period.,boolean,FRED,national,Weekly,Quarterly,Repeated across counties by design.,https://fred.stlouisfed.org/series/MORTGAGE30US
+nat_tbill_3m_pct,3-month Treasury bill secondary market rate,percent,FRED,national,Monthly or daily,Quarterly,Mean of available monthly values; needs at least 2 of 3 months,https://fred.stlouisfed.org/series/TB3MS
+nat_tbill_3m_pct_n_obs,Number of monthly 3-month Treasury bill observations used in the quarter.,count,FRED,national,Monthly,Quarterly,Repeated across counties by design.,https://fred.stlouisfed.org/series/TB3MS
+nat_tbill_3m_pct_partial,Whether the quarterly 3-month Treasury bill rate is based on an incomplete source period.,boolean,FRED,national,Monthly,Quarterly,Repeated across counties by design.,https://fred.stlouisfed.org/series/TB3MS
+nat_treasury_10y_pct,10-year Treasury constant-maturity yield,percent,FRED,national,Monthly or daily,Quarterly,Mean of daily values in the quarter; missing if fewer than 55 trading days,https://fred.stlouisfed.org/series/DGS10
+nat_treasury_10y_pct_n_obs,Number of daily 10-year Treasury observations used in the quarter.,count,FRED,national,Daily,Quarterly,Repeated across counties by design.,https://fred.stlouisfed.org/series/DGS10
+nat_treasury_10y_pct_partial,Whether the quarterly 10-year Treasury yield is based on an incomplete source period.,boolean,FRED,national,Daily,Quarterly,Repeated across counties by design.,https://fred.stlouisfed.org/series/DGS10
+nat_treasury_3y_pct,3-year Treasury constant-maturity yield; the team's low-risk return benchmark,percent,FRED,national,Monthly or daily,Quarterly,Mean of daily values in the quarter; missing if fewer than 55 trading days,https://fred.stlouisfed.org/series/DGS3
+nat_treasury_3y_pct_n_obs,Number of daily 3-year Treasury observations used in the quarter.,count,FRED,national,Daily,Quarterly,Repeated across counties by design.,https://fred.stlouisfed.org/series/DGS3
+nat_treasury_3y_pct_partial,Whether the quarterly 3-year Treasury yield is based on an incomplete source period.,boolean,FRED,national,Daily,Quarterly,Repeated across counties by design.,https://fred.stlouisfed.org/series/DGS3
+occupancy_total_units,ACS total housing units in the occupancy-status table.,housing units,ACS,county,Annual,Quarterly,Repeated across all quarters of observed years; missing in 2020 and 2025.,
+occupancy_total_units_moe,Margin of error for ACS total housing units in the occupancy-status table.,housing units,ACS,county,Annual,Quarterly,Repeated across all quarters of observed years; source sentinel values become missing.,
+population,ACS total population estimate.,persons,ACS,county,Annual,Quarterly,Repeated across all quarters of observed years; missing in 2020 and 2025.,
+population_moe,Margin of error for ACS population.,persons,ACS,county,Annual,Quarterly,Repeated across all quarters of observed years; source sentinel values become missing.,
+price_to_income,ZHVI divided by ACS median household income.,ratio,Derived,county,Quarterly and annual,Quarterly,Missing whenever either source value is missing.,
+price_to_rent,ZHVI divided by twelve times monthly ZORI.,ratio,Derived,county,Quarterly,Quarterly,Uses the quarter-end Zillow values.,
+quarter,Calendar quarter number.,quarter,Project key,county,Not applicable,Quarterly,1 through 4.,
+quarter_end_date,Last calendar day of the panel quarter.,date,Derived,county,Not applicable,Quarterly,Used as the panel time label.,
+state_any_preliminary,Whether any Ohio state BLS source month is preliminary.,boolean,BLS LAUS,state,Monthly,Quarterly,Repeated across counties by design.,https://www.bls.gov/lau/
+state_employed,"Ohio employed persons, seasonally adjusted",persons,BLS LAUS,state,Monthly or daily,Quarterly,Mean of available monthly values; needs at least 2 of 3 months,https://www.bls.gov/lau/
+state_labor_force,"Ohio civilian labor force, seasonally adjusted",persons,BLS LAUS,state,Monthly or daily,Quarterly,Mean of available monthly values; needs at least 2 of 3 months,https://www.bls.gov/lau/
+state_missing_reason,Reason an Ohio state labor value is missing.,text,BLS LAUS,state,Monthly,Quarterly,Repeated across counties by design.,https://www.bls.gov/lau/
+state_n_months,Number of Ohio state BLS source months used in the quarterly value.,count,BLS LAUS,state,Monthly,Quarterly,Repeated across counties by design.,https://www.bls.gov/lau/
+state_partial_quarter,Whether the Ohio state quarterly value uses an incomplete source quarter.,boolean,BLS LAUS,state,Monthly,Quarterly,Repeated across counties by design.,https://www.bls.gov/lau/
+state_unemployed,"Ohio unemployed persons, seasonally adjusted",persons,BLS LAUS,state,Monthly or daily,Quarterly,Mean of available monthly values; needs at least 2 of 3 months,https://www.bls.gov/lau/
+state_unemployment_rate_pct,Ohio unemployment rate,percent,Derived,state,Monthly or daily,Quarterly,100 x state_unemployed / state_labor_force,
+vacancy_rate_pct,Vacant ACS units divided by total ACS occupancy-table units.,percent,Derived from ACS,county,Annual,Quarterly,100 x vacant_housing_units / occupancy_total_units; repeated across all quarters of observed years.,
+vacant_housing_units,ACS vacant-housing-unit estimate.,housing units,ACS,county,Annual,Quarterly,Repeated across all quarters of observed years; missing in 2020 and 2025.,
+vacant_housing_units_moe,Margin of error for ACS vacant housing units.,housing units,ACS,county,Annual,Quarterly,Repeated across all quarters of observed years; source sentinel values become missing.,
+year,Calendar year of the quarter.,year,Project key,county,Not applicable,Quarterly,2015 through 2025.,
+zhvi_growth_3y_pct,Three-year-ahead ZHVI growth.,percent,Derived,county,Quarterly,Quarterly,100 x (zhvi_usd_t_plus_12 / zhvi_usd - 1).,
+zhvi_usd,Zillow Home Value Index at the quarter-end month.,USD,Zillow,county,Monthly,Quarterly,"March, June, September, and December month-end observations.",
+zhvi_usd_t_plus_12,ZHVI value twelve quarters after the current row.,USD,Derived,county,Quarterly,Quarterly,Within-county lead of 12 quarters.,
+zori_growth_3y_pct,Three-year-ahead ZORI growth.,percent,Derived,county,Quarterly,Quarterly,100 x (zori_usd_month_t_plus_12 / zori_usd_month - 1).,
+zori_usd_month,Zillow Observed Rent Index at the quarter-end month.,USD/month,Zillow,county,Monthly,Quarterly,"March, June, September, and December month-end observations.",
+zori_usd_month_t_plus_12,ZORI value twelve quarters after the current row.,USD/month,Derived,county,Quarterly,Quarterly,Within-county lead of 12 quarters.,
