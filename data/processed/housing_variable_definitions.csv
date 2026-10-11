@@ -1,6 +1,4 @@
-"variable","definition","units","source"
-"County","Ohio county the observation belongs to.","County name","Source dataset"
-"Date or Year","Time period the observation represents.","Date or year","Source dataset"
-"ZHVI","Zillow Home Value Index: a measure of typical home value in the area.","USD","Zillow"
-"ZORI","Zillow Observed Rent Index: a measure of typical monthly market rent in the area.","USD per month","Zillow"
-"HPI","FHFA House Price Index: measures changes in house prices over time.","Index points","Federal Housing Finance Agency (FHFA)"
+variable_name,description,unit,source,native_frequency,panel_frequency,transformation_rule,missing_value_rule
+zhvi_usd,Zillow Home Value Index for the selected Ohio county and middle-price-tier SFR/condo housing category.,USD,Zillow,Monthly,Quarterly,"Use the March, June, September, and December month-end observations as Q1, Q2, Q3, and Q4 values.",Leave source missing values missing; do not interpolate.
+zori_usd_month,Zillow Observed Rent Index for the selected Ohio county and SFR/condo/MFR rental housing category.,USD/month,Zillow,Monthly,Quarterly,"Use the March, June, September, and December month-end observations as Q1, Q2, Q3, and Q4 values.",Leave source missing values missing; do not interpolate.
+fhfa_hpi,FHFA county House Price Index with 2000=100 in the supplied annual file.,Index points,FHFA,Annual,Quarterly,Repeat the annual reference-year value across Q1 through Q4 and set hpi_source_frequency to annual.,Leave source missing values missing; do not interpolate.
