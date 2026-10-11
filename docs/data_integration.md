@@ -47,7 +47,12 @@ g_{c,t}^{V}=100\left(\frac{V_{c,t+12}}{V_{c,t}}-1\right),
 $$
 
 For the rent-versus-buy calculator, a predicted growth rate gives the implied
-future level: $\widehat{V}_{c,t+12}=V_{c,t}(1+\widehat{g}_{c,t}^{V}/100)$.
+future level:
+
+$$
+\widehat{V}_{c,t+12}=V_{c,t}\left(1+\frac{\widehat{g}_{c,t}^{V}}{100}\right).
+$$
+
 ACS values are aligned to their reference year; a real-time model must lag them
 to their public release date to avoid using unavailable information.
 
