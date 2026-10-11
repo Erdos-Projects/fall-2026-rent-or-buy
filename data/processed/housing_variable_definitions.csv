@@ -1,0 +1,6 @@
+"variable","definition","units","source"
+"County","Ohio county the observation belongs to.","County name","Source dataset"
+"Date or Year","Time period the observation represents.","Date or year","Source dataset"
+"ZHVI","Zillow Home Value Index: a measure of typical home value in the area.","USD","Zillow"
+"ZORI","Zillow Observed Rent Index: a measure of typical monthly market rent in the area.","USD per month","Zillow"
+"HPI","FHFA House Price Index: measures changes in house prices over time.","Index points","Federal Housing Finance Agency (FHFA)"
