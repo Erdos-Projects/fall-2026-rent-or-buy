@@ -10,11 +10,11 @@ python src/build_master_county_quarter.py
 
 It produces the following canonical files:
 
-- `data/processed/ACS/acs_county_year.csv`
-- `data/processed/ACS/acs_county_quarter.csv`
-- `data/processed/master_county_quarter.csv`
-- `data/processed/master_county_quarter_missingness.csv`
-- `data/metadata/master_data_dictionary.csv`
+- `data/processed/ACS/acs_county_year.csv` **Person 2's cleaned ACS original county × year**
+- `data/processed/ACS/acs_county_quarter.csv` **The ACS county-year values repeated across Q1–Q4**
+- `data/processed/master_county_quarter.csv` **The final analysis-ready dataset**
+- `data/processed/master_county_quarter_missingness.csv` **A variable-by-variable missingness audit.**
+- `data/metadata/master_data_dictionary.csv` **The documentation table for every column in the master dataset.**
 
 The master panel has one row for every `county_fips × year × quarter` combination:
 nine Ohio counties, 2015Q1–2025Q4, or 396 rows.
