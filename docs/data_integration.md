@@ -32,6 +32,30 @@ nine Ohio counties, 2015Q1–2025Q4, or 396 rows.
   state (`state_*`) fields repeat across counties by design. County labor
   fields (`cty_*`) vary by county and quarter.
 
+## Modeling Variables and Prediction Targets
+
+For county `c` in quarter `t`, the model uses current housing (`zhvi_usd`,
+`zori_usd_month`, `fhfa_hpi`, and affordability ratios), county demographics,
+national economic (`nat_*`), Ohio labor (`state_*`), and county labor
+(`cty_*`) conditions to predict growth three years (i.e. twelve quarters) ahead.
+
+The targets are `zhvi_growth_3y_pct` and `zori_growth_3y_pct`:
+
+$$
+g_{c,t}^{V}=100\left(\frac{V_{c,t+12}}{V_{c,t}}-1\right),
+\qquad V \in \{\mathrm{ZHVI}, \mathrm{ZORI}\}.
+$$
+
+For the rent-versus-buy calculator, a predicted growth rate gives the implied
+future level:
+
+$$
+\widehat{V}_{c,t+12}=V_{c,t}\left(1+\frac{\widehat{g}_{c,t}^{V}}{100}\right).
+$$
+
+ACS values are aligned to their reference year; a real-time model must lag them
+to their public release date to avoid using unavailable information.
+
 ## Derived Fields
 
 - `price_to_income = zhvi_usd / median_household_income_usd`
