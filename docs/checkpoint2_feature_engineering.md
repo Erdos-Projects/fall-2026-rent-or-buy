@@ -9,10 +9,10 @@ python src/build_master_county_quarter_features.py
 
 ## Outputs
 
-- `data/processed/master_county_quarter.csv`: cleaned source panel, ordered as keys, housing, demographics, national economics, county labor, Ohio labor, and source-quality flags.
-- `data/processed/master_county_quarter_features.csv`: model-ready panel. It retains the source groups, then places engineered historical and affordability features, followed by four prediction labels.
-- `data/processed/master_county_quarter_features_missingness.csv`: missingness, affected counties, and affected periods for every feature-panel column.
-- `data/processed/master_county_quarter_features_quality_summary.csv`: descriptive statistics for engineered features and labels.
+- `data/processed/merged data/master_county_quarter.csv`: cleaned source panel, ordered as keys, housing, demographics, national economics, county labor, Ohio labor, and source-quality flags.
+- `data/processed/feature engineered data/master_county_quarter_features.csv`: model-ready panel. It retains the source groups, then places engineered historical and affordability features, followed by four prediction labels.
+- `data/processed/feature engineered data/master_county_quarter_features_missingness.csv`: missingness, affected counties, and affected periods for every feature-panel column.
+- `data/processed/feature engineered data/master_county_quarter_features_quality_summary.csv`: descriptive statistics for engineered features and labels.
 - `data/metadata/master_feature_dictionary.csv`: one definition for every feature-panel column.
 
 Both panels contain 396 rows: nine counties and 44 quarterly observations from 2015Q1 through 2025Q4. Keys are unique.

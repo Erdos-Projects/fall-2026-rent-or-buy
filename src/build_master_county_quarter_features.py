@@ -21,12 +21,15 @@ ROOT = Path(__file__).resolve().parents[1]
 PROCESSED = ROOT / "data" / "processed"
 METADATA = ROOT / "data" / "metadata"
 
-SOURCE_PANEL_FILE = PROCESSED / "master_county_quarter.csv"
+MERGED_DATA = PROCESSED / "merged data"
+FEATURE_DATA = PROCESSED / "feature engineered data"
+
+SOURCE_PANEL_FILE = MERGED_DATA / "master_county_quarter.csv"
 SOURCE_DICTIONARY_FILE = METADATA / "master_data_dictionary.csv"
-FEATURE_PANEL_FILE = PROCESSED / "master_county_quarter_features.csv"
-FEATURE_MISSINGNESS_FILE = PROCESSED / "master_county_quarter_features_missingness.csv"
+FEATURE_PANEL_FILE = FEATURE_DATA / "master_county_quarter_features.csv"
+FEATURE_MISSINGNESS_FILE = FEATURE_DATA / "master_county_quarter_features_missingness.csv"
 FEATURE_DICTIONARY_FILE = METADATA / "master_feature_dictionary.csv"
-QUALITY_SUMMARY_FILE = PROCESSED / "master_county_quarter_features_quality_summary.csv"
+QUALITY_SUMMARY_FILE = FEATURE_DATA / "master_county_quarter_features_quality_summary.csv"
 
 KEY_COLUMNS = ["county_fips", "county_name", "year", "quarter", "quarter_end_date"]
 EXPECTED_FIPS = {"39017", "39035", "39049", "39061", "39095", "39113", "39151", "39153", "39165"}
@@ -262,6 +265,7 @@ assert set(feature_dictionary["variable_name"]) == set(panel.columns)
 # 10. WRITE ALL FEATURE-ENGINEERING OUTPUTS
 # =============================================================================
 
+FEATURE_DATA.mkdir(parents=True, exist_ok=True)
 panel.to_csv(FEATURE_PANEL_FILE, index=False)
 missingness.to_csv(FEATURE_MISSINGNESS_FILE, index=False)
 feature_dictionary.to_csv(FEATURE_DICTIONARY_FILE, index=False)

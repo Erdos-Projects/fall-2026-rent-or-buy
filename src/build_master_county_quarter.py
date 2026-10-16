@@ -47,8 +47,9 @@ FHFA_FILE = PROCESSED / "FHFA" / "Ohio_9_Counties_FHFA_HPI_Annual_2015_2025.csv"
 ECONOMIC_LABOR_FILE = PROCESSED / "econ_labor_county_quarter.csv"
 ECONOMIC_LABOR_DICTIONARY_FILE = PROCESSED / "econ_labor_variable_definitions.csv"
 
-MASTER_FILE = PROCESSED / "master_county_quarter.csv"
-MISSINGNESS_FILE = PROCESSED / "master_county_quarter_missingness.csv"
+MERGED_DATA = PROCESSED / "merged data"
+MASTER_FILE = MERGED_DATA / "master_county_quarter.csv"
+MISSINGNESS_FILE = MERGED_DATA / "master_county_quarter_missingness.csv"
 ACS_YEAR_FILE = PROCESSED / "ACS" / "acs_county_year.csv"
 ACS_QUARTER_FILE = PROCESSED / "ACS" / "acs_county_quarter.csv"
 
@@ -346,7 +347,7 @@ panel = panel[column_order]
 # 11. WRITE THE MASTER PANEL, MISSINGNESS REPORT, AND DATA DICTIONARY
 # =============================================================================
 
-MASTER_FILE.parent.mkdir(parents=True, exist_ok=True)
+MERGED_DATA.mkdir(parents=True, exist_ok=True)
 METADATA.mkdir(parents=True, exist_ok=True)
 
 panel.to_csv(MASTER_FILE, index=False)

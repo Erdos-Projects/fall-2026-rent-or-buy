@@ -12,8 +12,8 @@ It produces the following canonical files:
 
 - `data/processed/ACS/acs_county_year.csv` **Person 2's cleaned ACS original county × year**
 - `data/processed/ACS/acs_county_quarter.csv` **The ACS county-year values repeated across Q1–Q4**
-- `data/processed/master_county_quarter.csv` **The cleaned source panel, arranged by keys, source, and quality flags**
-- `data/processed/master_county_quarter_missingness.csv` **A variable-by-variable missingness audit.**
+- `data/processed/merged data/master_county_quarter.csv` **The cleaned source panel, arranged by keys, source, and quality flags**
+- `data/processed/merged data/master_county_quarter_missingness.csv` **A variable-by-variable missingness audit.**
 - `data/metadata/master_data_dictionary.csv` **The documentation table for every column in the master dataset.**
 
 The master panel has one row for every `county_fips × year × quarter` combination:
