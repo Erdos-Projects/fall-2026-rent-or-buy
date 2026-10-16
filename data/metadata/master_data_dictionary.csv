@@ -25,8 +25,6 @@ nat_treasury_10y_pct_n_obs,Number of daily 10-year Treasury observations used in
 nat_treasury_3y_pct,3-year Treasury constant-maturity yield; the team's low-risk return benchmark,percent,FRED,national,Monthly or daily,Quarterly,Mean of daily values in the quarter; missing if fewer than 55 trading days,https://fred.stlouisfed.org/series/DGS3
 nat_treasury_3y_pct_n_obs,Number of daily 3-year Treasury observations used in the quarter.,count,FRED,national,Daily,Quarterly,Repeated across counties by design.,https://fred.stlouisfed.org/series/DGS3
 population,ACS total population estimate.,persons,ACS,county,Annual,Quarterly,Repeated across all quarters of observed years; missing in 2020 and 2025.,
-price_to_income,ZHVI divided by ACS median household income.,ratio,Derived,county,Quarterly and annual,Quarterly,Missing whenever either source value is missing.,
-price_to_rent,ZHVI divided by twelve times monthly ZORI.,ratio,Derived,county,Quarterly,Quarterly,Uses the quarter-end Zillow values.,
 quarter,Calendar quarter number.,quarter,Project key,county,Not applicable,Quarterly,1 through 4.,
 quarter_end_date,Last calendar day of the panel quarter.,date,Derived,county,Not applicable,Quarterly,Used as the panel time label.,
 state_employed,"Ohio employed persons, seasonally adjusted",persons,BLS LAUS,state,Monthly or daily,Quarterly,Mean of available monthly values; needs at least 2 of 3 months,https://www.bls.gov/lau/
@@ -39,9 +37,5 @@ vacancy_rate_pct,Vacant ACS units divided by total ACS housing units.,percent,De
 vacant_housing_units,ACS vacant-housing-unit estimate.,housing units,ACS,county,Annual,Quarterly,Repeated across all quarters of observed years; missing in 2020 and 2025.,
 vacant_housing_units_moe,Margin of error for ACS vacant housing units.,housing units,ACS,county,Annual,Quarterly,Repeated across all quarters of observed years; source sentinel values become missing.,
 year,Calendar year of the quarter.,year,Project key,county,Not applicable,Quarterly,2015 through 2025.,
-zhvi_growth_3y_pct,Three-year-ahead ZHVI growth.,percent,Derived,county,Quarterly,Quarterly,100 x (zhvi_usd_t_plus_12 / zhvi_usd - 1).,
 zhvi_usd,Zillow Home Value Index at the quarter-end month.,USD,Zillow,county,Monthly,Quarterly,"March, June, September, and December month-end observations.",
-zhvi_usd_t_plus_12,ZHVI value twelve quarters after the current row.,USD,Derived,county,Quarterly,Quarterly,Within-county lead of 12 quarters.,
-zori_growth_3y_pct,Three-year-ahead ZORI growth.,percent,Derived,county,Quarterly,Quarterly,100 x (zori_usd_month_t_plus_12 / zori_usd_month - 1).,
 zori_usd_month,Zillow Observed Rent Index at the quarter-end month.,USD/month,Zillow,county,Monthly,Quarterly,"March, June, September, and December month-end observations.",
-zori_usd_month_t_plus_12,ZORI value twelve quarters after the current row.,USD/month,Derived,county,Quarterly,Quarterly,Within-county lead of 12 quarters.,
