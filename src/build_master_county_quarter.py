@@ -286,20 +286,13 @@ assert not panel.duplicated(KEY_COLUMNS).any(), "The final panel has duplicate c
 
 
 # =============================================================================
-# 9. CREATE DERIVED FEATURES AND THREE-YEAR-AHEAD HOUSING TARGETS
+# 9. ORDER THE SOURCE PANEL BY KEYS, DATA SOURCE, AND QUALITY FLAGS
 # =============================================================================
 
-panel["price_to_income"] = panel["zhvi_usd"] / panel["median_household_income_usd"]
-panel["price_to_rent"] = panel["zhvi_usd"] / (12 * panel["zori_usd_month"])
-
+# Keep this file as the cleaned source panel. Feature engineering and targets
+# are built separately in build_master_county_quarter_features.py so no
+# forward-looking values can be mistaken for model inputs.
 panel = panel.sort_values(KEY_COLUMNS).reset_index(drop=True)
-panel["zhvi_usd_t_plus_12"] = panel.groupby("county_fips")["zhvi_usd"].shift(-12)
-panel["zori_usd_month_t_plus_12"] = panel.groupby("county_fips")["zori_usd_month"].shift(-12)
-panel["zhvi_growth_3y_pct"] = 100 * (panel["zhvi_usd_t_plus_12"] / panel["zhvi_usd"] - 1)
-panel["zori_growth_3y_pct"] = 100 * (
-    panel["zori_usd_month_t_plus_12"] / panel["zori_usd_month"] - 1
-)
-
 
 # =============================================================================
 # 10. REMOVE EMPTY, DUPLICATE, AND CONSTANT QUALITY FIELDS
@@ -327,6 +320,26 @@ panel = panel.drop(columns=columns_to_remove, errors="ignore")
 
 assert not panel.isna().all().any(), "The EDA-ready master table has an all-missing column."
 assert not panel.duplicated(KEY_COLUMNS).any(), "The cleaned master table has duplicate keys."
+
+# The written order makes the CSV easy to inspect: identifying keys first,
+# then source data grouped by provider, followed by source-quality flags.
+column_order = [
+    "county_fips", "county_name", "year", "quarter", "quarter_end_date",
+    "zhvi_usd", "zori_usd_month", "fhfa_hpi",
+    "population", "median_household_income_usd", "median_household_income_moe_usd",
+    "housing_units", "housing_units_moe", "vacant_housing_units",
+    "vacant_housing_units_moe", "vacancy_rate_pct",
+    "nat_mortgage_rate_30y_pct", "nat_cpi_index", "nat_treasury_3y_pct",
+    "nat_treasury_10y_pct", "nat_tbill_3m_pct", "nat_inflation_yoy_pct",
+    "cty_unemployed", "cty_employed", "cty_labor_force", "cty_unemployment_rate_pct",
+    "state_unemployed", "state_employed", "state_labor_force", "state_unemployment_rate_pct",
+    "cty_n_months", "cty_partial_quarter", "nat_mortgage_rate_30y_pct_n_obs",
+    "nat_cpi_index_n_obs", "nat_cpi_index_partial", "nat_treasury_3y_pct_n_obs",
+    "nat_treasury_10y_pct_n_obs", "nat_inflation_yoy_pct_partial",
+    "state_n_months", "state_partial_quarter",
+]
+assert set(column_order) == set(panel.columns), "The source-panel column order is incomplete."
+panel = panel[column_order]
 
 
 # =============================================================================
@@ -382,12 +395,6 @@ dictionary = pd.DataFrame(
         ("vacant_housing_units", "ACS vacant-housing-unit estimate.", "housing units", "ACS", "county", "Annual", "Quarterly", "Repeated across all quarters of observed years; missing in 2020 and 2025.", ""),
         ("vacant_housing_units_moe", "Margin of error for ACS vacant housing units.", "housing units", "ACS", "county", "Annual", "Quarterly", "Repeated across all quarters of observed years; source sentinel values become missing.", ""),
         ("vacancy_rate_pct", "Vacant ACS units divided by total ACS housing units.", "percent", "Derived from ACS", "county", "Annual", "Quarterly", "100 x vacant_housing_units / housing_units; repeated across all quarters of observed years.", ""),
-        ("price_to_income", "ZHVI divided by ACS median household income.", "ratio", "Derived", "county", "Quarterly and annual", "Quarterly", "Missing whenever either source value is missing.", ""),
-        ("price_to_rent", "ZHVI divided by twelve times monthly ZORI.", "ratio", "Derived", "county", "Quarterly", "Quarterly", "Uses the quarter-end Zillow values.", ""),
-        ("zhvi_usd_t_plus_12", "ZHVI value twelve quarters after the current row.", "USD", "Derived", "county", "Quarterly", "Quarterly", "Within-county lead of 12 quarters.", ""),
-        ("zori_usd_month_t_plus_12", "ZORI value twelve quarters after the current row.", "USD/month", "Derived", "county", "Quarterly", "Quarterly", "Within-county lead of 12 quarters.", ""),
-        ("zhvi_growth_3y_pct", "Three-year-ahead ZHVI growth.", "percent", "Derived", "county", "Quarterly", "Quarterly", "100 x (zhvi_usd_t_plus_12 / zhvi_usd - 1).", ""),
-        ("zori_growth_3y_pct", "Three-year-ahead ZORI growth.", "percent", "Derived", "county", "Quarterly", "Quarterly", "100 x (zori_usd_month_t_plus_12 / zori_usd_month - 1).", ""),
     ],
     columns=dictionary_columns,
 )

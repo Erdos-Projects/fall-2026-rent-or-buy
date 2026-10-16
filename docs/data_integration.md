@@ -12,7 +12,7 @@ It produces the following canonical files:
 
 - `data/processed/ACS/acs_county_year.csv` **Person 2's cleaned ACS original county × year**
 - `data/processed/ACS/acs_county_quarter.csv` **The ACS county-year values repeated across Q1–Q4**
-- `data/processed/master_county_quarter.csv` **The cleaned EDA- and analysis-ready dataset**
+- `data/processed/master_county_quarter.csv` **The cleaned source panel, arranged by keys, source, and quality flags**
 - `data/processed/master_county_quarter_missingness.csv` **A variable-by-variable missingness audit.**
 - `data/metadata/master_data_dictionary.csv` **The documentation table for every column in the master dataset.**
 
@@ -44,40 +44,9 @@ It retains fields that identify an actual source limitation. For example,
 `nat_inflation_yoy_pct_partial` are `True` for the nine 2025Q4 rows because
 their underlying quarterly values use only November and December observations.
 
-## Modeling Variables and Prediction Targets
+## Feature Engineering
 
-For county `c` in quarter `t`, the model uses current housing (`zhvi_usd`,
-`zori_usd_month`, `fhfa_hpi`, and affordability ratios), county demographics,
-national economic (`nat_*`), Ohio labor (`state_*`), and county labor
-(`cty_*`) conditions to predict growth three years (i.e. twelve quarters) ahead.
-
-The targets are `zhvi_growth_3y_pct` and `zori_growth_3y_pct`:
-
-$$
-g_{c,t}^{V}=100\left(\frac{V_{c,t+12}}{V_{c,t}}-1\right),
-\qquad V \in \{\mathrm{ZHVI}, \mathrm{ZORI}\}.
-$$
-
-For the rent-versus-buy calculator, a predicted growth rate gives the implied
-future level:
-
-$$
-\widehat{V}_{c,t+12}=V_{c,t}\left(1+\frac{\widehat{g}_{c,t}^{V}}{100}\right).
-$$
-
-ACS values are aligned to their reference year; a real-time model must lag them
-to their public release date to avoid using unavailable information.
-
-## Derived Fields
-
-- `price_to_income = zhvi_usd / median_household_income_usd`
-- `price_to_rent = zhvi_usd / (12 × zori_usd_month)`
-- `zhvi_growth_3y_pct` and `zori_growth_3y_pct` use the same county's value
-  twelve quarters later.
-
-The three-year-ahead outcomes are missing for 2023Q1–2025Q4 because the panel
-ends in 2025Q4. This indicates an unavailable future outcome, not a missing
-current Zillow observation.
+The source panel intentionally contains only current source variables and source-quality fields. `src/build_master_county_quarter_features.py` creates the separate model-ready feature panel and documents one-year and three-year historical features and prediction targets in [checkpoint2_feature_engineering.md](checkpoint2_feature_engineering.md). This keeps forward-looking labels out of the source panel and prevents them from being treated as predictors.
 
 ## Checks Performed by the Script
 

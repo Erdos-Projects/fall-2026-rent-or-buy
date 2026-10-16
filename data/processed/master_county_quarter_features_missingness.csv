@@ -1,0 +1,62 @@
+variable_name,missing_cells,total_cells,missing_pct,affected_counties,affected_periods
+county_fips,0,396,0.0,,
+county_name,0,396,0.0,,
+year,0,396,0.0,,
+quarter,0,396,0.0,,
+quarter_end_date,0,396,0.0,,
+zhvi_usd,0,396,0.0,,
+zori_usd_month,0,396,0.0,,
+fhfa_hpi,0,396,0.0,,
+population,72,396,18.181818181818183,"Butler, Cuyahoga, Franklin, Hamilton, Lucas, Montgomery, Stark, Summit, Warren","2020-03-31, 2020-06-30, 2020-09-30, 2020-12-31, 2025-03-31, 2025-06-30, 2025-09-30, 2025-12-31; additional periods"
+median_household_income_usd,72,396,18.181818181818183,"Butler, Cuyahoga, Franklin, Hamilton, Lucas, Montgomery, Stark, Summit, Warren","2020-03-31, 2020-06-30, 2020-09-30, 2020-12-31, 2025-03-31, 2025-06-30, 2025-09-30, 2025-12-31; additional periods"
+median_household_income_moe_usd,72,396,18.181818181818183,"Butler, Cuyahoga, Franklin, Hamilton, Lucas, Montgomery, Stark, Summit, Warren","2020-03-31, 2020-06-30, 2020-09-30, 2020-12-31, 2025-03-31, 2025-06-30, 2025-09-30, 2025-12-31; additional periods"
+housing_units,72,396,18.181818181818183,"Butler, Cuyahoga, Franklin, Hamilton, Lucas, Montgomery, Stark, Summit, Warren","2020-03-31, 2020-06-30, 2020-09-30, 2020-12-31, 2025-03-31, 2025-06-30, 2025-09-30, 2025-12-31; additional periods"
+housing_units_moe,72,396,18.181818181818183,"Butler, Cuyahoga, Franklin, Hamilton, Lucas, Montgomery, Stark, Summit, Warren","2020-03-31, 2020-06-30, 2020-09-30, 2020-12-31, 2025-03-31, 2025-06-30, 2025-09-30, 2025-12-31; additional periods"
+vacant_housing_units,72,396,18.181818181818183,"Butler, Cuyahoga, Franklin, Hamilton, Lucas, Montgomery, Stark, Summit, Warren","2020-03-31, 2020-06-30, 2020-09-30, 2020-12-31, 2025-03-31, 2025-06-30, 2025-09-30, 2025-12-31; additional periods"
+vacant_housing_units_moe,72,396,18.181818181818183,"Butler, Cuyahoga, Franklin, Hamilton, Lucas, Montgomery, Stark, Summit, Warren","2020-03-31, 2020-06-30, 2020-09-30, 2020-12-31, 2025-03-31, 2025-06-30, 2025-09-30, 2025-12-31; additional periods"
+vacancy_rate_pct,72,396,18.181818181818183,"Butler, Cuyahoga, Franklin, Hamilton, Lucas, Montgomery, Stark, Summit, Warren","2020-03-31, 2020-06-30, 2020-09-30, 2020-12-31, 2025-03-31, 2025-06-30, 2025-09-30, 2025-12-31; additional periods"
+nat_mortgage_rate_30y_pct,0,396,0.0,,
+nat_cpi_index,0,396,0.0,,
+nat_treasury_3y_pct,0,396,0.0,,
+nat_treasury_10y_pct,0,396,0.0,,
+nat_tbill_3m_pct,0,396,0.0,,
+nat_inflation_yoy_pct,0,396,0.0,,
+cty_unemployed,0,396,0.0,,
+cty_employed,0,396,0.0,,
+cty_labor_force,0,396,0.0,,
+cty_unemployment_rate_pct,0,396,0.0,,
+state_unemployed,0,396,0.0,,
+state_employed,0,396,0.0,,
+state_labor_force,0,396,0.0,,
+state_unemployment_rate_pct,0,396,0.0,,
+cty_n_months,0,396,0.0,,
+cty_partial_quarter,0,396,0.0,,
+nat_mortgage_rate_30y_pct_n_obs,0,396,0.0,,
+nat_cpi_index_n_obs,0,396,0.0,,
+nat_cpi_index_partial,0,396,0.0,,
+nat_treasury_3y_pct_n_obs,0,396,0.0,,
+nat_treasury_10y_pct_n_obs,0,396,0.0,,
+nat_inflation_yoy_pct_partial,0,396,0.0,,
+state_n_months,0,396,0.0,,
+state_partial_quarter,0,396,0.0,,
+zhvi_growth_qoq_pct,9,396,2.272727272727273,"Butler, Cuyahoga, Franklin, Hamilton, Lucas, Montgomery, Stark, Summit, Warren",2015-03-31
+zhvi_growth_prev_1y_pct,36,396,9.090909090909092,"Butler, Cuyahoga, Franklin, Hamilton, Lucas, Montgomery, Stark, Summit, Warren","2015-03-31, 2015-06-30, 2015-09-30, 2015-12-31; additional periods"
+zhvi_growth_prev_3y_pct,108,396,27.27272727272727,"Butler, Cuyahoga, Franklin, Hamilton, Lucas, Montgomery, Stark, Summit, Warren","2015-03-31, 2015-06-30, 2015-09-30, 2015-12-31, 2016-03-31, 2016-06-30, 2016-09-30, 2016-12-31, 2017-03-31, 2017-06-30, 2017-09-30, 2017-12-31; additional periods"
+zori_growth_qoq_pct,9,396,2.272727272727273,"Butler, Cuyahoga, Franklin, Hamilton, Lucas, Montgomery, Stark, Summit, Warren",2015-03-31
+zori_growth_prev_1y_pct,36,396,9.090909090909092,"Butler, Cuyahoga, Franklin, Hamilton, Lucas, Montgomery, Stark, Summit, Warren","2015-03-31, 2015-06-30, 2015-09-30, 2015-12-31; additional periods"
+zori_growth_prev_3y_pct,108,396,27.27272727272727,"Butler, Cuyahoga, Franklin, Hamilton, Lucas, Montgomery, Stark, Summit, Warren","2015-03-31, 2015-06-30, 2015-09-30, 2015-12-31, 2016-03-31, 2016-06-30, 2016-09-30, 2016-12-31, 2017-03-31, 2017-06-30, 2017-09-30, 2017-12-31; additional periods"
+mortgage_rate_change_prev_1y_pp,36,396,9.090909090909092,"Butler, Cuyahoga, Franklin, Hamilton, Lucas, Montgomery, Stark, Summit, Warren","2015-03-31, 2015-06-30, 2015-09-30, 2015-12-31; additional periods"
+cty_unemployment_change_prev_1y_pp,36,396,9.090909090909092,"Butler, Cuyahoga, Franklin, Hamilton, Lucas, Montgomery, Stark, Summit, Warren","2015-03-31, 2015-06-30, 2015-09-30, 2015-12-31; additional periods"
+state_unemployment_change_prev_1y_pp,36,396,9.090909090909092,"Butler, Cuyahoga, Franklin, Hamilton, Lucas, Montgomery, Stark, Summit, Warren","2015-03-31, 2015-06-30, 2015-09-30, 2015-12-31; additional periods"
+inflation_change_prev_1y_pp,36,396,9.090909090909092,"Butler, Cuyahoga, Franklin, Hamilton, Lucas, Montgomery, Stark, Summit, Warren","2015-03-31, 2015-06-30, 2015-09-30, 2015-12-31; additional periods"
+population_growth_prev_1y_pct,144,396,36.36363636363637,"Butler, Cuyahoga, Franklin, Hamilton, Lucas, Montgomery, Stark, Summit, Warren","2015-03-31, 2015-06-30, 2015-09-30, 2015-12-31, 2020-03-31, 2020-06-30, 2020-09-30, 2020-12-31, 2021-03-31, 2021-06-30, 2021-09-30, 2021-12-31; additional periods"
+income_growth_prev_1y_pct,144,396,36.36363636363637,"Butler, Cuyahoga, Franklin, Hamilton, Lucas, Montgomery, Stark, Summit, Warren","2015-03-31, 2015-06-30, 2015-09-30, 2015-12-31, 2020-03-31, 2020-06-30, 2020-09-30, 2020-12-31, 2021-03-31, 2021-06-30, 2021-09-30, 2021-12-31; additional periods"
+housing_units_growth_prev_1y_pct,144,396,36.36363636363637,"Butler, Cuyahoga, Franklin, Hamilton, Lucas, Montgomery, Stark, Summit, Warren","2015-03-31, 2015-06-30, 2015-09-30, 2015-12-31, 2020-03-31, 2020-06-30, 2020-09-30, 2020-12-31, 2021-03-31, 2021-06-30, 2021-09-30, 2021-12-31; additional periods"
+vacant_units_growth_prev_1y_pct,144,396,36.36363636363637,"Butler, Cuyahoga, Franklin, Hamilton, Lucas, Montgomery, Stark, Summit, Warren","2015-03-31, 2015-06-30, 2015-09-30, 2015-12-31, 2020-03-31, 2020-06-30, 2020-09-30, 2020-12-31, 2021-03-31, 2021-06-30, 2021-09-30, 2021-12-31; additional periods"
+price_to_rent_ratio,0,396,0.0,,
+price_to_income_ratio,72,396,18.181818181818183,"Butler, Cuyahoga, Franklin, Hamilton, Lucas, Montgomery, Stark, Summit, Warren","2020-03-31, 2020-06-30, 2020-09-30, 2020-12-31, 2025-03-31, 2025-06-30, 2025-09-30, 2025-12-31; additional periods"
+rent_to_income_ratio,72,396,18.181818181818183,"Butler, Cuyahoga, Franklin, Hamilton, Lucas, Montgomery, Stark, Summit, Warren","2020-03-31, 2020-06-30, 2020-09-30, 2020-12-31, 2025-03-31, 2025-06-30, 2025-09-30, 2025-12-31; additional periods"
+zhvi_growth_ahead_1y_pct,36,396,9.090909090909092,"Butler, Cuyahoga, Franklin, Hamilton, Lucas, Montgomery, Stark, Summit, Warren","2025-03-31, 2025-06-30, 2025-09-30, 2025-12-31; additional periods"
+zhvi_growth_ahead_3y_pct,108,396,27.27272727272727,"Butler, Cuyahoga, Franklin, Hamilton, Lucas, Montgomery, Stark, Summit, Warren","2023-03-31, 2023-06-30, 2023-09-30, 2023-12-31, 2024-03-31, 2024-06-30, 2024-09-30, 2024-12-31, 2025-03-31, 2025-06-30, 2025-09-30, 2025-12-31; additional periods"
+zori_growth_ahead_1y_pct,36,396,9.090909090909092,"Butler, Cuyahoga, Franklin, Hamilton, Lucas, Montgomery, Stark, Summit, Warren","2025-03-31, 2025-06-30, 2025-09-30, 2025-12-31; additional periods"
+zori_growth_ahead_3y_pct,108,396,27.27272727272727,"Butler, Cuyahoga, Franklin, Hamilton, Lucas, Montgomery, Stark, Summit, Warren","2023-03-31, 2023-06-30, 2023-09-30, 2023-12-31, 2024-03-31, 2024-06-30, 2024-09-30, 2024-12-31, 2025-03-31, 2025-06-30, 2025-09-30, 2025-12-31; additional periods"
