@@ -19,21 +19,21 @@ Both panels contain 396 rows: nine counties and 44 quarterly observations from 2
 
 ## Feature and Target Rules
 
-For a county (c) and quarter (t), backward-looking housing growth uses only observations at or before (t):
+For county $c$ and quarter $t$, backward-looking housing growth uses only observations at or before $t$:
 
-- quarter-over-quarter: \(100(X_t/X_{t-1}-1)\)
-- previous one year: \(100(X_t/X_{t-4}-1)\)
-- previous three years: \(100(X_t/X_{t-12}-1)\)
+- quarter-over-quarter: $100\left(X_t / X_{t-1} - 1\right)$
+- previous one year: $100\left(X_t / X_{t-4} - 1\right)$
+- previous three years: $100\left(X_t / X_{t-12} - 1\right)$
 
 Rate changes use percentage points, for example
-\(\mathrm{mortgage\ rate}_t-\mathrm{mortgage\ rate}_{t-4}\).
+$\text{mortgage rate}_t - \text{mortgage rate}_{t-4}$.
 
 The four labels are intentionally forward-looking and must never be model inputs:
 
-\[
-\mathrm{growth\_ahead\_h}=100\left(\frac{X_{t+h}}{X_t}-1\right),
-\qquad h\in\{4,12\}.
-\]
+$$
+\operatorname{growth\_ahead\_h} = 100\left(\frac{X_{t+h}}{X_t} - 1\right),
+\qquad h \in \{4, 12\}.
+$$
 
 This produces 360 observed labels for each one-year target and 288 for each three-year target. The final four or twelve quarters of each county lack labels because the observed panel ends at 2025Q4.
 
