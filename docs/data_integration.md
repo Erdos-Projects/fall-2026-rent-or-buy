@@ -12,7 +12,7 @@ It produces the following canonical files:
 
 - `data/processed/ACS/acs_county_year.csv` **Person 2's cleaned ACS original county × year**
 - `data/processed/ACS/acs_county_quarter.csv` **The ACS county-year values repeated across Q1–Q4**
-- `data/processed/master_county_quarter.csv` **The final analysis-ready dataset**
+- `data/processed/master_county_quarter.csv` **The cleaned EDA- and analysis-ready dataset**
 - `data/processed/master_county_quarter_missingness.csv` **A variable-by-variable missingness audit.**
 - `data/metadata/master_data_dictionary.csv` **The documentation table for every column in the master dataset.**
 
@@ -23,14 +23,26 @@ nine Ohio counties, 2015Q1–2025Q4, or 396 rows.
 
 - **Zillow ZHVI and ZORI:** March, June, September, and December month-end
   observations are the Q1, Q2, Q3, and Q4 values.
-- **FHFA HPI:** the supplied annual county value is repeated in Q1–Q4 of its
-  reference year. `hpi_source_frequency` remains `annual`.
+- **FHFA HPI:** the supplied annual county value, indexed to 2000=100, is
+  repeated in Q1–Q4 of its reference year.
 - **ACS:** each observed annual estimate is repeated within its own four
   quarters. All ACS fields remain missing for 2020 and 2025; the pipeline does
   not carry values forward or impute them.
 - **Economic and labor variables:** Person 3's national (`nat_*`) and Ohio
   state (`state_*`) fields repeat across counties by design. County labor
   fields (`cty_*`) vary by county and quarter.
+
+## EDA-Ready Master Table
+
+The master table excludes empty columns, exact duplicate ACS columns, and
+constant source metadata. In particular, it excludes `population_moe`,
+`occupancy_total_units`, `occupancy_total_units_moe`, `acs_reference_year`,
+`acs_carried_forward`, `hpi_index_basis`, and `hpi_source_frequency`.
+
+It retains fields that identify an actual source limitation. For example,
+`cty_partial_quarter`, `state_partial_quarter`, `nat_cpi_index_partial`, and
+`nat_inflation_yoy_pct_partial` are `True` for the nine 2025Q4 rows because
+their underlying quarterly values use only November and December observations.
 
 ## Modeling Variables and Prediction Targets
 

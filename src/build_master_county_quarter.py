@@ -156,7 +156,7 @@ fhfa_wide = pd.read_csv(FHFA_FILE)
 fhfa_year_columns = [str(year) for year in range(2015, 2026)]
 
 fhfa = fhfa_wide.melt(
-    id_vars=["County", "FIPS", "Index_basis", "Frequency"],
+    id_vars=["County", "FIPS"],
     value_vars=fhfa_year_columns,
     var_name="year",
     value_name="fhfa_hpi",
@@ -164,14 +164,12 @@ fhfa = fhfa_wide.melt(
 
 fhfa["county_fips"] = pd.to_numeric(fhfa["FIPS"]).astype(int).astype(str).str.zfill(5)
 fhfa["year"] = fhfa["year"].astype(int)
-fhfa["hpi_index_basis"] = fhfa["Index_basis"]
-fhfa["hpi_source_frequency"] = "annual"
 fhfa = fhfa.merge(QUARTERS, how="cross")
 
 assert set(fhfa["county_fips"]) == set(COUNTY_FIPS), "FHFA counties do not match scope."
 assert not fhfa.duplicated(KEY_COLUMNS).any(), "FHFA has duplicate county-quarter keys."
 
-fhfa = fhfa[KEY_COLUMNS + ["fhfa_hpi", "hpi_index_basis", "hpi_source_frequency"]]
+fhfa = fhfa[KEY_COLUMNS + ["fhfa_hpi"]]
 
 panel = panel.merge(fhfa, on=KEY_COLUMNS, how="left", validate="one_to_one")
 assert len(panel) == 396, "FHFA merge changed the panel row count."
@@ -205,11 +203,11 @@ for raw_file in acs_raw_files:
         raise ValueError(f"{raw_file.name} is missing required counties: {missing_fips}")
 
     census_columns = [
-        "B01003_001E", "B01003_001M",
+        "B01003_001E",
         "B19013_001E", "B19013_001M",
         "B25001_001E", "B25001_001M",
         "B25002_003E", "B25002_003M",
-        "B25002_001E", "B25002_001M",
+        "B25002_001E",
     ]
 
     for census_column in census_columns:
@@ -219,25 +217,27 @@ for raw_file in acs_raw_files:
     acs["county_name"] = acs["county_fips"].map(COUNTY_NAMES)
     acs["year"] = acs_year
     acs["population"] = acs["B01003_001E"]
-    acs["population_moe"] = acs["B01003_001M"]
     acs["median_household_income_usd"] = acs["B19013_001E"]
     acs["median_household_income_moe_usd"] = acs["B19013_001M"]
     acs["housing_units"] = acs["B25001_001E"]
     acs["housing_units_moe"] = acs["B25001_001M"]
     acs["vacant_housing_units"] = acs["B25002_003E"]
     acs["vacant_housing_units_moe"] = acs["B25002_003M"]
-    acs["occupancy_total_units"] = acs["B25002_001E"]
-    acs["occupancy_total_units_moe"] = acs["B25002_001M"]
-    acs["vacancy_rate_pct"] = 100 * acs["vacant_housing_units"] / acs["occupancy_total_units"]
+    # B25001 total units and B25002 total units are identical for every
+    # project county-year. Keep B25001 as the single canonical housing-units
+    # measure and use it as the vacancy-rate denominator.
+    assert (acs["B25001_001E"] == acs["B25002_001E"]).all(), (
+        "ACS total housing-unit variables disagree; do not remove the occupancy-table total."
+    )
+    acs["vacancy_rate_pct"] = 100 * acs["vacant_housing_units"] / acs["housing_units"]
 
     acs_year_tables.append(
         acs[
             [
-                "county_fips", "county_name", "year", "population", "population_moe",
+                "county_fips", "county_name", "year", "population",
                 "median_household_income_usd", "median_household_income_moe_usd",
                 "housing_units", "housing_units_moe", "vacant_housing_units",
-                "vacant_housing_units_moe", "occupancy_total_units",
-                "occupancy_total_units_moe", "vacancy_rate_pct",
+                "vacant_housing_units_moe", "vacancy_rate_pct",
             ]
         ]
     )
@@ -256,8 +256,6 @@ acs_year.to_csv(ACS_YEAR_FILE, index=False)
 # =============================================================================
 
 acs_quarter = acs_year.merge(QUARTERS, how="cross")
-acs_quarter["acs_reference_year"] = acs_quarter["year"]
-acs_quarter["acs_carried_forward"] = False
 
 assert not acs_quarter.duplicated(KEY_COLUMNS).any(), "ACS has duplicate county-quarter keys."
 
@@ -304,7 +302,35 @@ panel["zori_growth_3y_pct"] = 100 * (
 
 
 # =============================================================================
-# 10. WRITE THE MASTER PANEL, MISSINGNESS REPORT, AND DATA DICTIONARY
+# 10. REMOVE EMPTY, DUPLICATE, AND CONSTANT QUALITY FIELDS
+# =============================================================================
+
+# These fields either contain no observed values, duplicate another retained
+# field, or are constant across the current 396-row panel. Their definitions
+# remain documented in source notes when needed, but they do not belong in the
+# EDA-ready master table.
+columns_to_remove = [
+    "cty_any_preliminary",
+    "cty_missing_reason",
+    "hpi_index_basis",
+    "hpi_source_frequency",
+    "nat_mortgage_rate_30y_pct_partial",
+    "nat_tbill_3m_pct_n_obs",
+    "nat_tbill_3m_pct_partial",
+    "nat_treasury_10y_pct_partial",
+    "nat_treasury_3y_pct_partial",
+    "state_any_preliminary",
+    "state_missing_reason",
+]
+
+panel = panel.drop(columns=columns_to_remove, errors="ignore")
+
+assert not panel.isna().all().any(), "The EDA-ready master table has an all-missing column."
+assert not panel.duplicated(KEY_COLUMNS).any(), "The cleaned master table has duplicate keys."
+
+
+# =============================================================================
+# 11. WRITE THE MASTER PANEL, MISSINGNESS REPORT, AND DATA DICTIONARY
 # =============================================================================
 
 MASTER_FILE.parent.mkdir(parents=True, exist_ok=True)
@@ -313,8 +339,7 @@ METADATA.mkdir(parents=True, exist_ok=True)
 panel.to_csv(MASTER_FILE, index=False)
 
 quality_columns = {
-    "county_fips", "county_name", "year", "quarter", "quarter_end_date", "acs_reference_year",
-    "acs_carried_forward", "hpi_index_basis", "hpi_source_frequency",
+    "county_fips", "county_name", "year", "quarter", "quarter_end_date",
 }
 quality_suffixes = ("_moe", "_n_obs", "_n_months", "_partial", "_partial_quarter", "_missing_reason")
 
@@ -348,22 +373,15 @@ dictionary = pd.DataFrame(
         ("quarter_end_date", "Last calendar day of the panel quarter.", "date", "Derived", "county", "Not applicable", "Quarterly", "Used as the panel time label.", ""),
         ("zhvi_usd", "Zillow Home Value Index at the quarter-end month.", "USD", "Zillow", "county", "Monthly", "Quarterly", "March, June, September, and December month-end observations.", ""),
         ("zori_usd_month", "Zillow Observed Rent Index at the quarter-end month.", "USD/month", "Zillow", "county", "Monthly", "Quarterly", "March, June, September, and December month-end observations.", ""),
-        ("fhfa_hpi", "FHFA county House Price Index.", "index points", "FHFA", "county", "Annual", "Quarterly", "Annual value repeated across Q1 through Q4.", ""),
-        ("hpi_index_basis", "Base year for the supplied FHFA HPI values.", "text", "FHFA", "county", "Annual", "Quarterly", "Retained from the FHFA annual input.", ""),
-        ("hpi_source_frequency", "Frequency of the source HPI series.", "text", "FHFA", "county", "Annual", "Quarterly", "Always annual for the supplied HPI data.", ""),
+        ("fhfa_hpi", "FHFA county House Price Index.", "index points", "FHFA", "county", "Annual", "Quarterly", "Annual source value, indexed to 2000=100, repeated across Q1 through Q4.", ""),
         ("population", "ACS total population estimate.", "persons", "ACS", "county", "Annual", "Quarterly", "Repeated across all quarters of observed years; missing in 2020 and 2025.", ""),
-        ("population_moe", "Margin of error for ACS population.", "persons", "ACS", "county", "Annual", "Quarterly", "Repeated across all quarters of observed years; source sentinel values become missing.", ""),
         ("median_household_income_usd", "ACS median household income estimate.", "USD", "ACS", "county", "Annual", "Quarterly", "Repeated across all quarters of observed years; missing in 2020 and 2025.", ""),
         ("median_household_income_moe_usd", "Margin of error for ACS median household income.", "USD", "ACS", "county", "Annual", "Quarterly", "Repeated across all quarters of observed years; source sentinel values become missing.", ""),
         ("housing_units", "ACS housing-unit estimate.", "housing units", "ACS", "county", "Annual", "Quarterly", "Repeated across all quarters of observed years; missing in 2020 and 2025.", ""),
         ("housing_units_moe", "Margin of error for ACS housing units.", "housing units", "ACS", "county", "Annual", "Quarterly", "Repeated across all quarters of observed years; source sentinel values become missing.", ""),
         ("vacant_housing_units", "ACS vacant-housing-unit estimate.", "housing units", "ACS", "county", "Annual", "Quarterly", "Repeated across all quarters of observed years; missing in 2020 and 2025.", ""),
         ("vacant_housing_units_moe", "Margin of error for ACS vacant housing units.", "housing units", "ACS", "county", "Annual", "Quarterly", "Repeated across all quarters of observed years; source sentinel values become missing.", ""),
-        ("occupancy_total_units", "ACS total housing units in the occupancy-status table.", "housing units", "ACS", "county", "Annual", "Quarterly", "Repeated across all quarters of observed years; missing in 2020 and 2025.", ""),
-        ("occupancy_total_units_moe", "Margin of error for ACS total housing units in the occupancy-status table.", "housing units", "ACS", "county", "Annual", "Quarterly", "Repeated across all quarters of observed years; source sentinel values become missing.", ""),
-        ("vacancy_rate_pct", "Vacant ACS units divided by total ACS occupancy-table units.", "percent", "Derived from ACS", "county", "Annual", "Quarterly", "100 x vacant_housing_units / occupancy_total_units; repeated across all quarters of observed years.", ""),
-        ("acs_reference_year", "Year of the ACS observation attached to the panel row.", "year", "ACS", "county", "Annual", "Quarterly", "Equals calendar year where ACS is observed; missing in 2020 and 2025.", ""),
-        ("acs_carried_forward", "Whether the ACS value was carried from another year.", "boolean", "Derived", "county", "Annual", "Quarterly", "Always False. No ACS values are carried forward.", ""),
+        ("vacancy_rate_pct", "Vacant ACS units divided by total ACS housing units.", "percent", "Derived from ACS", "county", "Annual", "Quarterly", "100 x vacant_housing_units / housing_units; repeated across all quarters of observed years.", ""),
         ("price_to_income", "ZHVI divided by ACS median household income.", "ratio", "Derived", "county", "Quarterly and annual", "Quarterly", "Missing whenever either source value is missing.", ""),
         ("price_to_rent", "ZHVI divided by twelve times monthly ZORI.", "ratio", "Derived", "county", "Quarterly", "Quarterly", "Uses the quarter-end Zillow values.", ""),
         ("zhvi_usd_t_plus_12", "ZHVI value twelve quarters after the current row.", "USD", "Derived", "county", "Quarterly", "Quarterly", "Within-county lead of 12 quarters.", ""),
@@ -397,23 +415,14 @@ economic_dictionary = economic_dictionary[
 quality_dictionary = pd.DataFrame(
     [
         ("cty_n_months", "Number of BLS county source months used in the quarterly value.", "count", "BLS LAUS", "county", "Monthly", "Quarterly", "Three normally; two for the documented 2025Q4 partial quarter.", "https://www.bls.gov/lau/"),
-        ("cty_any_preliminary", "Whether any county BLS source month is preliminary.", "boolean", "BLS LAUS", "county", "Monthly", "Quarterly", "True when any source month is marked preliminary.", "https://www.bls.gov/lau/"),
         ("cty_partial_quarter", "Whether the county quarterly value uses an incomplete source quarter.", "boolean", "BLS LAUS", "county", "Monthly", "Quarterly", "True for the documented 2025Q4 partial quarter.", "https://www.bls.gov/lau/"),
-        ("cty_missing_reason", "Reason a county labor value is missing.", "text", "BLS LAUS", "county", "Monthly", "Quarterly", "Values include incomplete_period or not_available.", "https://www.bls.gov/lau/"),
         ("state_n_months", "Number of Ohio state BLS source months used in the quarterly value.", "count", "BLS LAUS", "state", "Monthly", "Quarterly", "Repeated across counties by design.", "https://www.bls.gov/lau/"),
-        ("state_any_preliminary", "Whether any Ohio state BLS source month is preliminary.", "boolean", "BLS LAUS", "state", "Monthly", "Quarterly", "Repeated across counties by design.", "https://www.bls.gov/lau/"),
         ("state_partial_quarter", "Whether the Ohio state quarterly value uses an incomplete source quarter.", "boolean", "BLS LAUS", "state", "Monthly", "Quarterly", "Repeated across counties by design.", "https://www.bls.gov/lau/"),
-        ("state_missing_reason", "Reason an Ohio state labor value is missing.", "text", "BLS LAUS", "state", "Monthly", "Quarterly", "Repeated across counties by design.", "https://www.bls.gov/lau/"),
         ("nat_mortgage_rate_30y_pct_n_obs", "Number of weekly mortgage-rate observations used in the quarter.", "count", "FRED", "national", "Weekly", "Quarterly", "Repeated across counties by design.", "https://fred.stlouisfed.org/series/MORTGAGE30US"),
-        ("nat_mortgage_rate_30y_pct_partial", "Whether the quarterly mortgage rate is based on an incomplete source period.", "boolean", "FRED", "national", "Weekly", "Quarterly", "Repeated across counties by design.", "https://fred.stlouisfed.org/series/MORTGAGE30US"),
         ("nat_cpi_index_n_obs", "Number of monthly CPI observations used in the quarter.", "count", "FRED", "national", "Monthly", "Quarterly", "Repeated across counties by design.", "https://fred.stlouisfed.org/series/CPIAUCSL"),
         ("nat_cpi_index_partial", "Whether the quarterly CPI value is based on an incomplete source period.", "boolean", "FRED", "national", "Monthly", "Quarterly", "Repeated across counties by design.", "https://fred.stlouisfed.org/series/CPIAUCSL"),
         ("nat_treasury_3y_pct_n_obs", "Number of daily 3-year Treasury observations used in the quarter.", "count", "FRED", "national", "Daily", "Quarterly", "Repeated across counties by design.", "https://fred.stlouisfed.org/series/DGS3"),
-        ("nat_treasury_3y_pct_partial", "Whether the quarterly 3-year Treasury yield is based on an incomplete source period.", "boolean", "FRED", "national", "Daily", "Quarterly", "Repeated across counties by design.", "https://fred.stlouisfed.org/series/DGS3"),
         ("nat_treasury_10y_pct_n_obs", "Number of daily 10-year Treasury observations used in the quarter.", "count", "FRED", "national", "Daily", "Quarterly", "Repeated across counties by design.", "https://fred.stlouisfed.org/series/DGS10"),
-        ("nat_treasury_10y_pct_partial", "Whether the quarterly 10-year Treasury yield is based on an incomplete source period.", "boolean", "FRED", "national", "Daily", "Quarterly", "Repeated across counties by design.", "https://fred.stlouisfed.org/series/DGS10"),
-        ("nat_tbill_3m_pct_n_obs", "Number of monthly 3-month Treasury bill observations used in the quarter.", "count", "FRED", "national", "Monthly", "Quarterly", "Repeated across counties by design.", "https://fred.stlouisfed.org/series/TB3MS"),
-        ("nat_tbill_3m_pct_partial", "Whether the quarterly 3-month Treasury bill rate is based on an incomplete source period.", "boolean", "FRED", "national", "Monthly", "Quarterly", "Repeated across counties by design.", "https://fred.stlouisfed.org/series/TB3MS"),
         ("nat_inflation_yoy_pct_partial", "Whether the quarterly year-over-year inflation value uses an incomplete source period.", "boolean", "Derived from FRED", "national", "Monthly", "Quarterly", "Repeated across counties by design.", "https://fred.stlouisfed.org/series/CPIAUCSL"),
     ],
     columns=dictionary_columns,

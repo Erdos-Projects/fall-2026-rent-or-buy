@@ -7,12 +7,10 @@ median_household_income_usd,72,396,18.181818181818183
 median_household_income_moe_usd,72,396,18.181818181818183
 housing_units,72,396,18.181818181818183
 vacant_housing_units,72,396,18.181818181818183
-occupancy_total_units,72,396,18.181818181818183
 vacancy_rate_pct,72,396,18.181818181818183
 cty_unemployed,0,396,0.0
 cty_employed,0,396,0.0
 cty_labor_force,0,396,0.0
-cty_any_preliminary,0,396,0.0
 cty_unemployment_rate_pct,0,396,0.0
 nat_mortgage_rate_30y_pct,0,396,0.0
 nat_cpi_index,0,396,0.0
@@ -23,7 +21,6 @@ nat_inflation_yoy_pct,0,396,0.0
 state_unemployed,0,396,0.0
 state_employed,0,396,0.0
 state_labor_force,0,396,0.0
-state_any_preliminary,0,396,0.0
 state_unemployment_rate_pct,0,396,0.0
 price_to_income,72,396,18.181818181818183
 price_to_rent,0,396,0.0
