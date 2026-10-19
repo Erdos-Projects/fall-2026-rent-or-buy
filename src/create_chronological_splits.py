@@ -64,6 +64,8 @@ split_schedules = [
         "output_folder": ONE_YEAR_OUTPUT,
     },
     {
+        # 12 train prediction quarters (2015Q1–2017Q4), then 4 validation
+        # quarters (2021) and 4 test quarters (2022). Each quarter has 9 counties.
         "label": "3-year-ahead",
         "horizon_quarters": 12,
         "target_columns": ["zhvi_growth_ahead_3y_pct", "zori_growth_ahead_3y_pct"],

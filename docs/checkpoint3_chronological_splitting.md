@@ -45,10 +45,10 @@ validation start are deliberately omitted from training.
 
 ## Fixed schedules and sample sizes
 
-| Horizon | Train prediction quarters | Validation prediction quarters | Test prediction quarters | Rows: train / validation / test |
-| --- | --- | --- | --- | --- |
-| 1 year (4 quarters) | 2015Q1–2019Q4 | 2021Q1–2022Q4 | 2023Q1–2024Q4 | 180 / 72 / 72 |
-| 3 years (12 quarters) | 2015Q1–2017Q4 | 2021Q1–2021Q4 | 2022Q1–2022Q4 | 108 / 36 / 36 |
+| Horizon | Train prediction quarters | Validation prediction quarters | Test prediction quarters | Quarters: train / validation / test | County-quarter rows: train / validation / test |
+| --- | --- | --- | --- | --- | --- |
+| 1 year (4-quarter target) | 2015Q1–2019Q4 | 2021Q1–2022Q4 | 2023Q1–2024Q4 | 20 / 8 / 8 | 180 / 72 / 72 |
+| 3 years (12-quarter target) | 2015Q1–2017Q4 | 2021Q1–2021Q4 | 2022Q1–2022Q4 | **12 / 4 / 4** | 108 / 36 / 36 |
 
 Every split includes all nine project counties. Each horizon-specific CSV
 contains only that horizon's two labels: one ZHVI target and one ZORI target.
@@ -102,6 +102,6 @@ for the final evaluation.
 These splits prevent target-window leakage; they do not prove that every
 predictor was publicly available at the prediction quarter. ACS estimates have
 publication delays, and the project must define a release-lag rule before
-claiming a fully real-time model. The three-year target has only 108 training
-rows, so its estimates and validation results will be materially less stable
-than the one-year model.
+claiming a fully real-time model. The three-year model trains on 12 prediction
+quarters (2015Q1–2017Q4), representing 108 county-quarter rows. Its estimates
+and validation results will be materially less stable than the one-year model.
