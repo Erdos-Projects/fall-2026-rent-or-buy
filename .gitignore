@@ -27,3 +27,9 @@ data/processed/*
 !data/processed/master_county_quarter.csv
 !data/processed/master_county_quarter_missingness.csv
 
+
+# Canonical chronological train/validation/test datasets.
+!data/processed/1-year-ahead split/
+!data/processed/1-year-ahead split/*.csv
+!data/processed/3-year-ahead split/
+!data/processed/3-year-ahead split/*.csv
