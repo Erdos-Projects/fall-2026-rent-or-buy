@@ -53,12 +53,14 @@ panel["_split_quarter_number"] = panel["year"] * 4 + (panel["quarter"] - 1)
 # 3. DEFINE THE ONE-YEAR-AHEAD SPLIT SCHEDULE
 # =============================================================================
 
-# Training prediction origins: 2015Q1 through 2018Q4 (16 quarters, 144 rows).
-# Their one-year-ahead targets end no later than 2019Q4.
-validation_start = "2020Q1"
+# Training prediction origins: 2015Q1 through 2019Q4 (20 quarters, 180 rows).
+# Their one-year-ahead targets end no later than 2020Q4.
+# Calendar year 2020 is intentionally unused as the gap before validation,
+# because several annual ACS variables are unavailable in that year.
+validation_start = "2021Q1"
 validation_end = "2021Q4"
 
-# Validation prediction origins: 2020Q1 through 2021Q4 (8 quarters, 72 rows).
+# Validation prediction origins: 2021Q1 through 2021Q4 (4 quarters, 36 rows).
 # Their one-year-ahead targets end no later than 2022Q4.
 test_start = "2023Q1"
 test_end = "2024Q4"
@@ -132,8 +134,8 @@ assert latest_train_origin + horizon_quarters < validation_start_number
 # Rule 2: model selection never uses targets from the test prediction period.
 assert latest_validation_origin + horizon_quarters < test_start_number
 
-assert len(train_data) == 144, "Expected 144 train rows (16 quarters x 9 counties)."
-assert len(validation_data) == 72, "Expected 72 validation rows (8 quarters x 9 counties)."
+assert len(train_data) == 180, "Expected 180 train rows (20 quarters x 9 counties)."
+assert len(validation_data) == 36, "Expected 36 validation rows (4 quarters x 9 counties)."
 assert len(test_data) == 72, "Expected 72 test rows (8 quarters x 9 counties)."
 assert set(train_data["county_fips"]) == expected_counties
 assert set(validation_data["county_fips"]) == expected_counties
@@ -150,6 +152,6 @@ validation_data.to_csv(ONE_YEAR_OUTPUT / "validation.csv", index=False)
 test_data.to_csv(ONE_YEAR_OUTPUT / "test.csv", index=False)
 
 print("1-year-ahead split")
-print(f"  train: {len(train_data)} rows (2015Q1-2018Q4)")
-print(f"  validation: {len(validation_data)} rows (2020Q1-2021Q4)")
+print(f"  train: {len(train_data)} rows (2015Q1-2019Q4)")
+print(f"  validation: {len(validation_data)} rows (2021Q1-2021Q4)")
 print(f"  test: {len(test_data)} rows (2023Q1-2024Q4)")

@@ -33,12 +33,19 @@ where $X$ is either ZHVI or ZORI.
 
 | Dataset | Prediction origins | Target observations end by | Prediction quarters | County-quarter rows |
 | --- | --- | --- | ---: | ---: |
-| Train | 2015Q1–2018Q4 | 2019Q4 | 16 | 144 |
-| Validation | 2020Q1–2021Q4 | 2022Q4 | 8 | 72 |
+| Train | 2015Q1–2019Q4 | 2020Q4 | 20 | 180 |
+| Validation | 2021Q1–2021Q4 | 2022Q4 | 4 | 36 |
 | Test | 2023Q1–2024Q4 | 2025Q4 | 8 | 72 |
 
-Each file includes all nine project counties. The 144 / 72 / 72 row totals are
-therefore 16 / 8 / 8 prediction quarters multiplied by nine counties.
+Each file includes all nine project counties. The 180 / 36 / 72 row totals are
+therefore 20 / 4 / 8 prediction quarters multiplied by nine counties.
+
+The 2020 prediction-origin rows are intentionally not assigned to any split.
+Several annual ACS variables are unavailable in 2020, so leaving the year as a
+gap keeps those incomplete observations out of training and validation. The
+2022 prediction-origin rows are also a gap: their one-year-ahead outcomes occur
+during 2023, the test prediction year, and therefore cannot be used for model
+selection.
 
 ## Leakage controls
 
@@ -54,8 +61,8 @@ $$
 \max(t_{\mathrm{validation}}) + 4 < \min(t_{\mathrm{test}}).
 $$
 
-Consequently, training targets end in 2019Q4 before validation starts in
-2020Q1, and validation targets end in 2022Q4 before test prediction starts in
+Consequently, training targets end in 2020Q4 before validation starts in
+2021Q1, and validation targets end in 2022Q4 before test prediction starts in
 2023Q1. Model fitting and model selection therefore cannot use Zillow outcomes
 from the test prediction period.
 
