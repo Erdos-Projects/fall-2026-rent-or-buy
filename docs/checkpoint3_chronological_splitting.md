@@ -1,76 +1,83 @@
-# Checkpoint 3: Chronological Data Splits
+# Checkpoint 3: Leakage-Controlled One-Year-Ahead Data Split
 
 ## Purpose
 
-This project predicts future county-level ZHVI and ZORI growth. A random row
-split would allow later housing outcomes to influence a model evaluated on
-earlier quarters. `src/create_chronological_splits.py` instead creates fixed
-chronological train, validation, and test datasets from
-`data/processed/feature engineered data/master_county_quarter_features.csv`.
-
-The script does not fit models, choose features, impute values, or modify raw
-data. It writes three CSV files for each forecast horizon:
+This project models one-year-ahead county-level ZHVI and ZORI growth. The
+canonical split files are created from
+`data/processed/feature engineered data/master_county_quarter_features.csv` by
+`src/create_chronological_splits.py`:
 
 - `data/processed/1-year-ahead split/train.csv`
 - `data/processed/1-year-ahead split/validation.csv`
 - `data/processed/1-year-ahead split/test.csv`
-- `data/processed/3-year-ahead split/train.csv`
-- `data/processed/3-year-ahead split/validation.csv`
-- `data/processed/3-year-ahead split/test.csv`
 
-Run it from the repository root whenever the feature panel changes:
+Run the script from the repository root whenever the feature panel changes:
 
 ```bash
 python src/create_chronological_splits.py
 ```
 
-## Target-window rule
+The script does not fit a model, impute data, or modify raw data.
 
-For a prediction quarter $t$ and forecast horizon $h$, the target is:
+## One-year target
 
-$$
-g_{t,h} = 100\left(\frac{X_{t+h}}{X_t} - 1\right).
-$$
-
-A training row is eligible only when its target end quarter is strictly before
-the validation start quarter:
+For prediction quarter $t$, the one-year-ahead growth target is:
 
 $$
-t + h < \text{validation start}.
+g_{t,4} = 100\left(\frac{X_{t+4}}{X_t} - 1\right),
 $$
 
-This prevents a training target from using an outcome that occurs during the
-validation period. Rows between the latest eligible training quarter and the
-validation start are deliberately omitted from training.
+where $X$ is either ZHVI or ZORI.
 
-## Fixed schedules and sample sizes
+## Final schedule
 
-| Horizon | Train prediction quarters | Validation prediction quarters | Test prediction quarters | Quarters: train / validation / test | County-quarter rows: train / validation / test |
-| --- | --- | --- | --- | --- | --- |
-| 1 year (4-quarter target) | 2015Q1–2019Q4 | 2021Q1–2022Q4 | 2023Q1–2024Q4 | 20 / 8 / 8 | 180 / 72 / 72 |
-| 3 years (12-quarter target) | 2015Q1–2017Q4 | 2021Q1–2021Q4 | 2022Q1–2022Q4 | **12 / 4 / 4** | 108 / 36 / 36 |
+| Dataset | Prediction origins | Target observations end by | Prediction quarters | County-quarter rows |
+| --- | --- | --- | ---: | ---: |
+| Train | 2015Q1–2019Q4 | 2020Q4 | 20 | 180 |
+| Validation | 2021Q1–2021Q4 | 2022Q4 | 4 | 36 |
+| Test | 2023Q1–2024Q4 | 2025Q4 | 8 | 72 |
 
-Every split includes all nine project counties. Each horizon-specific CSV
-contains only that horizon's two labels: one ZHVI target and one ZORI target.
-The labels for the other horizon are removed so they cannot accidentally be
-used as model inputs.
+Each file includes all nine project counties. The 180 / 36 / 72 row totals are
+therefore 20 / 4 / 8 prediction quarters multiplied by nine counties.
 
-## Why validation and test files contain future targets
+The 2020 prediction-origin rows are intentionally not assigned to any split.
+Several annual ACS variables are unavailable in 2020, so leaving the year as a
+gap keeps those incomplete observations out of training and validation. The
+2022 prediction-origin rows are also a gap: their one-year-ahead outcomes occur
+during 2023, the test prediction year, and therefore cannot be used for model
+selection.
 
-A validation row must retain its future target so that a completed model can be
-evaluated after prediction. This is not leakage by itself. For example, the
-one-year validation row for 2021Q1 uses 2022Q1 only as its held-out target.
-The model is trained only on the separate training CSV, whose latest target
-ends at 2020Q4.
+## Leakage controls
 
-For the three-year split, the final training prediction quarter is 2017Q4, and
-its target ends in 2020Q4. Validation begins in 2021Q1. Thus no training target
-window reaches the validation period.
+The split applies two timing rules:
 
-## Safe modeling use
+$$
+\max(t_{\mathrm{train}}) + 4 < \min(t_{\mathrm{validation}})
+$$
 
-For one target, remove **both** remaining forward-looking target columns from
-predictors. Fit every model-dependent operation on training data only:
+and
+
+$$
+\max(t_{\mathrm{validation}}) + 4 < \min(t_{\mathrm{test}}).
+$$
+
+Consequently, training targets end in 2020Q4 before validation starts in
+2021Q1, and validation targets end in 2022Q4 before test prediction starts in
+2023Q1. Model fitting and model selection therefore cannot use Zillow outcomes
+from the test prediction period.
+
+The split script also removes all three-year-ahead target columns from every
+output file. They cannot become accidental one-year model predictors.
+
+## Modeling use
+
+Use the training data to fit preprocessing and candidate models. Use validation
+data only to select among a small, pre-specified set of models. After selection,
+refit the selected pipeline on the combined train and validation data, then
+report final performance once on the untouched test data.
+
+For either one-year target, remove **both** forward-looking one-year target
+columns from predictors:
 
 ```python
 import pandas as pd
@@ -87,21 +94,16 @@ feature_columns = [column for column in train_df.columns if column not in target
 
 X_train = train_df[feature_columns]
 y_train = train_df["zhvi_growth_ahead_1y_pct"]
-X_validation = validation_df[feature_columns]
-y_validation = validation_df["zhvi_growth_ahead_1y_pct"]
-X_test = test_df[feature_columns]
-y_test = test_df["zhvi_growth_ahead_1y_pct"]
 ```
 
-Scalers, imputers, feature selection, and hyperparameter selection must use
-training data only. Use validation data for model selection and keep test data
-for the final evaluation.
+Fit scalers, imputers, feature selection, and model tuning on the training data
+only. Do not inspect test metrics until the modeling choices are final.
 
-## Limitations
+## Why there is no three-year target split
 
-These splits prevent target-window leakage; they do not prove that every
-predictor was publicly available at the prediction quarter. ACS estimates have
-publication delays, and the project must define a release-lag rule before
-claiming a fully real-time model. The three-year model trains on 12 prediction
-quarters (2015Q1–2017Q4), representing 108 county-quarter rows. Its estimates
-and validation results will be materially less stable than the one-year model.
+The 2015–2025 panel does not contain enough earlier history to construct a
+separate three-year train, validation, and test design in which training labels
+precede validation prediction origins and validation labels precede test
+prediction origins. A three-year split would require either earlier source data
+or a weaker, non-real-time evaluation rule. The project therefore excludes the
+three-year target from its current model-development workflow.
