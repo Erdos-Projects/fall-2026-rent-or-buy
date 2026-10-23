@@ -1,0 +1,541 @@
+county_fips,county_name,year,quarter,zhvi_growth_ahead_1y_pct,model,split,prediction
+39017,Butler,2021,1,13.1081,Mean baseline,validation,6.7372
+39035,Cuyahoga,2021,1,10.1469,Mean baseline,validation,6.7372
+39049,Franklin,2021,1,13.1213,Mean baseline,validation,6.7372
+39061,Hamilton,2021,1,10.9866,Mean baseline,validation,6.7372
+39095,Lucas,2021,1,8.2738,Mean baseline,validation,6.7372
+39113,Montgomery,2021,1,12.4087,Mean baseline,validation,6.7372
+39151,Stark,2021,1,9.925,Mean baseline,validation,6.7372
+39153,Summit,2021,1,9.5413,Mean baseline,validation,6.7372
+39165,Warren,2021,1,11.9952,Mean baseline,validation,6.7372
+39017,Butler,2021,2,13.3396,Mean baseline,validation,6.7372
+39035,Cuyahoga,2021,2,9.8662,Mean baseline,validation,6.7372
+39049,Franklin,2021,2,13.6165,Mean baseline,validation,6.7372
+39061,Hamilton,2021,2,10.5737,Mean baseline,validation,6.7372
+39095,Lucas,2021,2,8.5012,Mean baseline,validation,6.7372
+39113,Montgomery,2021,2,11.8018,Mean baseline,validation,6.7372
+39151,Stark,2021,2,10.2297,Mean baseline,validation,6.7372
+39153,Summit,2021,2,9.388,Mean baseline,validation,6.7372
+39165,Warren,2021,2,12.6708,Mean baseline,validation,6.7372
+39017,Butler,2021,3,12.2544,Mean baseline,validation,6.7372
+39035,Cuyahoga,2021,3,9.3565,Mean baseline,validation,6.7372
+39049,Franklin,2021,3,13.3139,Mean baseline,validation,6.7372
+39061,Hamilton,2021,3,9.6266,Mean baseline,validation,6.7372
+39095,Lucas,2021,3,8.8392,Mean baseline,validation,6.7372
+39113,Montgomery,2021,3,11.6078,Mean baseline,validation,6.7372
+39151,Stark,2021,3,8.2428,Mean baseline,validation,6.7372
+39153,Summit,2021,3,8.9482,Mean baseline,validation,6.7372
+39165,Warren,2021,3,12.1854,Mean baseline,validation,6.7372
+39017,Butler,2021,4,9.7015,Mean baseline,validation,6.7372
+39035,Cuyahoga,2021,4,9.4645,Mean baseline,validation,6.7372
+39049,Franklin,2021,4,11.8006,Mean baseline,validation,6.7372
+39061,Hamilton,2021,4,8.3766,Mean baseline,validation,6.7372
+39095,Lucas,2021,4,9.1376,Mean baseline,validation,6.7372
+39113,Montgomery,2021,4,10.6829,Mean baseline,validation,6.7372
+39151,Stark,2021,4,7.4782,Mean baseline,validation,6.7372
+39153,Summit,2021,4,8.8737,Mean baseline,validation,6.7372
+39165,Warren,2021,4,10.6328,Mean baseline,validation,6.7372
+39017,Butler,2023,1,6.4582,Mean baseline,test,7.3737
+39035,Cuyahoga,2023,1,8.2411,Mean baseline,test,7.3737
+39049,Franklin,2023,1,6.8811,Mean baseline,test,7.3737
+39061,Hamilton,2023,1,8.0411,Mean baseline,test,7.3737
+39095,Lucas,2023,1,9.5498,Mean baseline,test,7.3737
+39113,Montgomery,2023,1,8.4703,Mean baseline,test,7.3737
+39151,Stark,2023,1,8.6057,Mean baseline,test,7.3737
+39153,Summit,2023,1,7.4561,Mean baseline,test,7.3737
+39165,Warren,2023,1,5.6707,Mean baseline,test,7.3737
+39017,Butler,2023,2,5.6855,Mean baseline,test,7.3737
+39035,Cuyahoga,2023,2,8.7776,Mean baseline,test,7.3737
+39049,Franklin,2023,2,5.917,Mean baseline,test,7.3737
+39061,Hamilton,2023,2,6.7143,Mean baseline,test,7.3737
+39095,Lucas,2023,2,8.7505,Mean baseline,test,7.3737
+39113,Montgomery,2023,2,8.5758,Mean baseline,test,7.3737
+39151,Stark,2023,2,6.9181,Mean baseline,test,7.3737
+39153,Summit,2023,2,7.7323,Mean baseline,test,7.3737
+39165,Warren,2023,2,4.8585,Mean baseline,test,7.3737
+39017,Butler,2023,3,4.8047,Mean baseline,test,7.3737
+39035,Cuyahoga,2023,3,7.0699,Mean baseline,test,7.3737
+39049,Franklin,2023,3,3.8894,Mean baseline,test,7.3737
+39061,Hamilton,2023,3,4.4913,Mean baseline,test,7.3737
+39095,Lucas,2023,3,5.5143,Mean baseline,test,7.3737
+39113,Montgomery,2023,3,6.1481,Mean baseline,test,7.3737
+39151,Stark,2023,3,5.5729,Mean baseline,test,7.3737
+39153,Summit,2023,3,5.9367,Mean baseline,test,7.3737
+39165,Warren,2023,3,3.9629,Mean baseline,test,7.3737
+39017,Butler,2023,4,5.2706,Mean baseline,test,7.3737
+39035,Cuyahoga,2023,4,6.5326,Mean baseline,test,7.3737
+39049,Franklin,2023,4,3.5564,Mean baseline,test,7.3737
+39061,Hamilton,2023,4,3.9525,Mean baseline,test,7.3737
+39095,Lucas,2023,4,5.6225,Mean baseline,test,7.3737
+39113,Montgomery,2023,4,5.9255,Mean baseline,test,7.3737
+39151,Stark,2023,4,6.8623,Mean baseline,test,7.3737
+39153,Summit,2023,4,5.7664,Mean baseline,test,7.3737
+39165,Warren,2023,4,4.8148,Mean baseline,test,7.3737
+39017,Butler,2024,1,5.1822,Mean baseline,test,7.3737
+39035,Cuyahoga,2024,1,6.1476,Mean baseline,test,7.3737
+39049,Franklin,2024,1,2.8901,Mean baseline,test,7.3737
+39061,Hamilton,2024,1,3.6172,Mean baseline,test,7.3737
+39095,Lucas,2024,1,5.9556,Mean baseline,test,7.3737
+39113,Montgomery,2024,1,5.8671,Mean baseline,test,7.3737
+39151,Stark,2024,1,7.781,Mean baseline,test,7.3737
+39153,Summit,2024,1,5.7717,Mean baseline,test,7.3737
+39165,Warren,2024,1,4.4921,Mean baseline,test,7.3737
+39017,Butler,2024,2,3.4709,Mean baseline,test,7.3737
+39035,Cuyahoga,2024,2,4.6477,Mean baseline,test,7.3737
+39049,Franklin,2024,2,1.2994,Mean baseline,test,7.3737
+39061,Hamilton,2024,2,1.9573,Mean baseline,test,7.3737
+39095,Lucas,2024,2,4.3694,Mean baseline,test,7.3737
+39113,Montgomery,2024,2,3.6626,Mean baseline,test,7.3737
+39151,Stark,2024,2,5.7972,Mean baseline,test,7.3737
+39153,Summit,2024,2,3.3495,Mean baseline,test,7.3737
+39165,Warren,2024,2,3.223,Mean baseline,test,7.3737
+39017,Butler,2024,3,3.5654,Mean baseline,test,7.3737
+39035,Cuyahoga,2024,3,4.9755,Mean baseline,test,7.3737
+39049,Franklin,2024,3,1.1266,Mean baseline,test,7.3737
+39061,Hamilton,2024,3,1.7218,Mean baseline,test,7.3737
+39095,Lucas,2024,3,5.2208,Mean baseline,test,7.3737
+39113,Montgomery,2024,3,4.1173,Mean baseline,test,7.3737
+39151,Stark,2024,3,6.251,Mean baseline,test,7.3737
+39153,Summit,2024,3,3.6786,Mean baseline,test,7.3737
+39165,Warren,2024,3,2.9379,Mean baseline,test,7.3737
+39017,Butler,2024,4,3.5386,Mean baseline,test,7.3737
+39035,Cuyahoga,2024,4,5.0043,Mean baseline,test,7.3737
+39049,Franklin,2024,4,0.5423,Mean baseline,test,7.3737
+39061,Hamilton,2024,4,2.2203,Mean baseline,test,7.3737
+39095,Lucas,2024,4,5.3213,Mean baseline,test,7.3737
+39113,Montgomery,2024,4,4.4316,Mean baseline,test,7.3737
+39151,Stark,2024,4,4.7348,Mean baseline,test,7.3737
+39153,Summit,2024,4,3.8849,Mean baseline,test,7.3737
+39165,Warren,2024,4,2.144,Mean baseline,test,7.3737
+39017,Butler,2021,1,13.1081,Linear regression,validation,3.1061
+39035,Cuyahoga,2021,1,10.1469,Linear regression,validation,2.0864
+39049,Franklin,2021,1,13.1213,Linear regression,validation,8.8445
+39061,Hamilton,2021,1,10.9866,Linear regression,validation,3.7533
+39095,Lucas,2021,1,8.2738,Linear regression,validation,3.2193
+39113,Montgomery,2021,1,12.4087,Linear regression,validation,6.7956
+39151,Stark,2021,1,9.925,Linear regression,validation,4.5168
+39153,Summit,2021,1,9.5413,Linear regression,validation,3.684
+39165,Warren,2021,1,11.9952,Linear regression,validation,1.1475
+39017,Butler,2021,2,13.3396,Linear regression,validation,-22.3628
+39035,Cuyahoga,2021,2,9.8662,Linear regression,validation,-23.9294
+39049,Franklin,2021,2,13.6165,Linear regression,validation,-18.5152
+39061,Hamilton,2021,2,10.5737,Linear regression,validation,-22.4853
+39095,Lucas,2021,2,8.5012,Linear regression,validation,-22.8674
+39113,Montgomery,2021,2,11.8018,Linear regression,validation,-19.0964
+39151,Stark,2021,2,10.2297,Linear regression,validation,-19.997
+39153,Summit,2021,2,9.388,Linear regression,validation,-21.9934
+39165,Warren,2021,2,12.6708,Linear regression,validation,-25.6204
+39017,Butler,2021,3,12.2544,Linear regression,validation,-14.0343
+39035,Cuyahoga,2021,3,9.3565,Linear regression,validation,-15.4754
+39049,Franklin,2021,3,13.3139,Linear regression,validation,-10.4347
+39061,Hamilton,2021,3,9.6266,Linear regression,validation,-13.3416
+39095,Lucas,2021,3,8.8392,Linear regression,validation,-12.6435
+39113,Montgomery,2021,3,11.6078,Linear regression,validation,-9.8849
+39151,Stark,2021,3,8.2428,Linear regression,validation,-11.7311
+39153,Summit,2021,3,8.9482,Linear regression,validation,-13.3413
+39165,Warren,2021,3,12.1854,Linear regression,validation,-17.6668
+39017,Butler,2021,4,9.7015,Linear regression,validation,-11.122
+39035,Cuyahoga,2021,4,9.4645,Linear regression,validation,-12.275
+39049,Franklin,2021,4,11.8006,Linear regression,validation,-7.9744
+39061,Hamilton,2021,4,8.3766,Linear regression,validation,-9.666
+39095,Lucas,2021,4,9.1376,Linear regression,validation,-6.7345
+39113,Montgomery,2021,4,10.6829,Linear regression,validation,-5.6551
+39151,Stark,2021,4,7.4782,Linear regression,validation,-7.4903
+39153,Summit,2021,4,8.8737,Linear regression,validation,-8.7399
+39165,Warren,2021,4,10.6328,Linear regression,validation,-14.8875
+39017,Butler,2023,1,6.4582,Linear regression,test,4.5809
+39035,Cuyahoga,2023,1,8.2411,Linear regression,test,0.7855
+39049,Franklin,2023,1,6.8811,Linear regression,test,4.2293
+39061,Hamilton,2023,1,8.0411,Linear regression,test,3.1797
+39095,Lucas,2023,1,9.5498,Linear regression,test,1.9912
+39113,Montgomery,2023,1,8.4703,Linear regression,test,4.5833
+39151,Stark,2023,1,8.6057,Linear regression,test,2.0942
+39153,Summit,2023,1,7.4561,Linear regression,test,0.0733
+39165,Warren,2023,1,5.6707,Linear regression,test,4.3725
+39017,Butler,2023,2,5.6855,Linear regression,test,3.9533
+39035,Cuyahoga,2023,2,8.7776,Linear regression,test,0.0135
+39049,Franklin,2023,2,5.917,Linear regression,test,3.7576
+39061,Hamilton,2023,2,6.7143,Linear regression,test,2.4277
+39095,Lucas,2023,2,8.7505,Linear regression,test,0.9464
+39113,Montgomery,2023,2,8.5758,Linear regression,test,3.7388
+39151,Stark,2023,2,6.9181,Linear regression,test,0.723
+39153,Summit,2023,2,7.7323,Linear regression,test,-0.5006
+39165,Warren,2023,2,4.8585,Linear regression,test,4.2977
+39017,Butler,2023,3,4.8047,Linear regression,test,8.1801
+39035,Cuyahoga,2023,3,7.0699,Linear regression,test,3.1903
+39049,Franklin,2023,3,3.8894,Linear regression,test,7.2304
+39061,Hamilton,2023,3,4.4913,Linear regression,test,6.1639
+39095,Lucas,2023,3,5.5143,Linear regression,test,4.138
+39113,Montgomery,2023,3,6.1481,Linear regression,test,6.9587
+39151,Stark,2023,3,5.5729,Linear regression,test,4.7062
+39153,Summit,2023,3,5.9367,Linear regression,test,3.1816
+39165,Warren,2023,3,3.9629,Linear regression,test,8.2387
+39017,Butler,2023,4,5.2706,Linear regression,test,11.9991
+39035,Cuyahoga,2023,4,6.5326,Linear regression,test,6.762
+39049,Franklin,2023,4,3.5564,Linear regression,test,10.8739
+39061,Hamilton,2023,4,3.9525,Linear regression,test,10.1893
+39095,Lucas,2023,4,5.6225,Linear regression,test,7.9194
+39113,Montgomery,2023,4,5.9255,Linear regression,test,11.0624
+39151,Stark,2023,4,6.8623,Linear regression,test,8.377
+39153,Summit,2023,4,5.7664,Linear regression,test,6.7983
+39165,Warren,2023,4,4.8148,Linear regression,test,12.1806
+39017,Butler,2024,1,5.1822,Linear regression,test,15.9127
+39035,Cuyahoga,2024,1,6.1476,Linear regression,test,11.3777
+39049,Franklin,2024,1,2.8901,Linear regression,test,16.0919
+39061,Hamilton,2024,1,3.6172,Linear regression,test,15.0746
+39095,Lucas,2024,1,5.9556,Linear regression,test,11.8073
+39113,Montgomery,2024,1,5.8671,Linear regression,test,14.5542
+39151,Stark,2024,1,7.781,Linear regression,test,12.7779
+39153,Summit,2024,1,5.7717,Linear regression,test,12.3213
+39165,Warren,2024,1,4.4921,Linear regression,test,17.2404
+39017,Butler,2024,2,3.4709,Linear regression,test,20.5433
+39035,Cuyahoga,2024,2,4.6477,Linear regression,test,15.7539
+39049,Franklin,2024,2,1.2994,Linear regression,test,21.2794
+39061,Hamilton,2024,2,1.9573,Linear regression,test,20.01
+39095,Lucas,2024,2,4.3694,Linear regression,test,16.6305
+39113,Montgomery,2024,2,3.6626,Linear regression,test,18.937
+39151,Stark,2024,2,5.7972,Linear regression,test,16.9724
+39153,Summit,2024,2,3.3495,Linear regression,test,16.6005
+39165,Warren,2024,2,3.223,Linear regression,test,22.4019
+39017,Butler,2024,3,3.5654,Linear regression,test,23.2642
+39035,Cuyahoga,2024,3,4.9755,Linear regression,test,18.6524
+39049,Franklin,2024,3,1.1266,Linear regression,test,24.1495
+39061,Hamilton,2024,3,1.7218,Linear regression,test,22.9763
+39095,Lucas,2024,3,5.2208,Linear regression,test,19.6543
+39113,Montgomery,2024,3,4.1173,Linear regression,test,21.8912
+39151,Stark,2024,3,6.251,Linear regression,test,19.8602
+39153,Summit,2024,3,3.6786,Linear regression,test,19.7463
+39165,Warren,2024,3,2.9379,Linear regression,test,25.1733
+39017,Butler,2024,4,3.5386,Linear regression,test,30.7143
+39035,Cuyahoga,2024,4,5.0043,Linear regression,test,25.5753
+39049,Franklin,2024,4,0.5423,Linear regression,test,31.2351
+39061,Hamilton,2024,4,2.2203,Linear regression,test,30.4414
+39095,Lucas,2024,4,5.3213,Linear regression,test,25.7691
+39113,Montgomery,2024,4,4.4316,Linear regression,test,29.1704
+39151,Stark,2024,4,4.7348,Linear regression,test,26.2774
+39153,Summit,2024,4,3.8849,Linear regression,test,26.8863
+39165,Warren,2024,4,2.144,Linear regression,test,32.4771
+39017,Butler,2021,1,13.1081,Ridge (alpha=100),validation,9.009
+39035,Cuyahoga,2021,1,10.1469,Ridge (alpha=100),validation,10.1587
+39049,Franklin,2021,1,13.1213,Ridge (alpha=100),validation,10.4231
+39061,Hamilton,2021,1,10.9866,Ridge (alpha=100),validation,9.6931
+39095,Lucas,2021,1,8.2738,Ridge (alpha=100),validation,9.1009
+39113,Montgomery,2021,1,12.4087,Ridge (alpha=100),validation,10.0149
+39151,Stark,2021,1,9.925,Ridge (alpha=100),validation,8.7824
+39153,Summit,2021,1,9.5413,Ridge (alpha=100),validation,9.0679
+39165,Warren,2021,1,11.9952,Ridge (alpha=100),validation,8.5424
+39017,Butler,2021,2,13.3396,Ridge (alpha=100),validation,8.2475
+39035,Cuyahoga,2021,2,9.8662,Ridge (alpha=100),validation,8.2913
+39049,Franklin,2021,2,13.6165,Ridge (alpha=100),validation,9.7584
+39061,Hamilton,2021,2,10.5737,Ridge (alpha=100),validation,9.0663
+39095,Lucas,2021,2,8.5012,Ridge (alpha=100),validation,7.2381
+39113,Montgomery,2021,2,11.8018,Ridge (alpha=100),validation,9.0274
+39151,Stark,2021,2,10.2297,Ridge (alpha=100),validation,7.9803
+39153,Summit,2021,2,9.388,Ridge (alpha=100),validation,8.4877
+39165,Warren,2021,2,12.6708,Ridge (alpha=100),validation,8.3222
+39017,Butler,2021,3,12.2544,Ridge (alpha=100),validation,8.5148
+39035,Cuyahoga,2021,3,9.3565,Ridge (alpha=100),validation,8.765
+39049,Franklin,2021,3,13.3139,Ridge (alpha=100),validation,9.5282
+39061,Hamilton,2021,3,9.6266,Ridge (alpha=100),validation,8.9754
+39095,Lucas,2021,3,8.8392,Ridge (alpha=100),validation,8.6226
+39113,Montgomery,2021,3,11.6078,Ridge (alpha=100),validation,9.3626
+39151,Stark,2021,3,8.2428,Ridge (alpha=100),validation,8.1969
+39153,Summit,2021,3,8.9482,Ridge (alpha=100),validation,8.704
+39165,Warren,2021,3,12.1854,Ridge (alpha=100),validation,8.4999
+39017,Butler,2021,4,9.7015,Ridge (alpha=100),validation,9.6438
+39035,Cuyahoga,2021,4,9.4645,Ridge (alpha=100),validation,9.9913
+39049,Franklin,2021,4,11.8006,Ridge (alpha=100),validation,10.496
+39061,Hamilton,2021,4,8.3766,Ridge (alpha=100),validation,9.8128
+39095,Lucas,2021,4,9.1376,Ridge (alpha=100),validation,9.4193
+39113,Montgomery,2021,4,10.6829,Ridge (alpha=100),validation,10.3099
+39151,Stark,2021,4,7.4782,Ridge (alpha=100),validation,9.2718
+39153,Summit,2021,4,8.8737,Ridge (alpha=100),validation,9.3787
+39165,Warren,2021,4,10.6328,Ridge (alpha=100),validation,9.3467
+39017,Butler,2023,1,6.4582,Ridge (alpha=100),test,6.4201
+39035,Cuyahoga,2023,1,8.2411,Ridge (alpha=100),test,5.7666
+39049,Franklin,2023,1,6.8811,Ridge (alpha=100),test,7.1873
+39061,Hamilton,2023,1,8.0411,Ridge (alpha=100),test,6.6132
+39095,Lucas,2023,1,9.5498,Ridge (alpha=100),test,4.9904
+39113,Montgomery,2023,1,8.4703,Ridge (alpha=100),test,6.2392
+39151,Stark,2023,1,8.6057,Ridge (alpha=100),test,4.9293
+39153,Summit,2023,1,7.4561,Ridge (alpha=100),test,4.9984
+39165,Warren,2023,1,5.6707,Ridge (alpha=100),test,6.9661
+39017,Butler,2023,2,5.6855,Ridge (alpha=100),test,7.3686
+39035,Cuyahoga,2023,2,8.7776,Ridge (alpha=100),test,6.6039
+39049,Franklin,2023,2,5.917,Ridge (alpha=100),test,7.8499
+39061,Hamilton,2023,2,6.7143,Ridge (alpha=100),test,7.4549
+39095,Lucas,2023,2,8.7505,Ridge (alpha=100),test,5.789
+39113,Montgomery,2023,2,8.5758,Ridge (alpha=100),test,7.3017
+39151,Stark,2023,2,6.9181,Ridge (alpha=100),test,6.0925
+39153,Summit,2023,2,7.7323,Ridge (alpha=100),test,6.0957
+39165,Warren,2023,2,4.8585,Ridge (alpha=100),test,7.5321
+39017,Butler,2023,3,4.8047,Ridge (alpha=100),test,6.9818
+39035,Cuyahoga,2023,3,7.0699,Ridge (alpha=100),test,6.7864
+39049,Franklin,2023,3,3.8894,Ridge (alpha=100),test,7.8294
+39061,Hamilton,2023,3,4.4913,Ridge (alpha=100),test,7.3329
+39095,Lucas,2023,3,5.5143,Ridge (alpha=100),test,6.1909
+39113,Montgomery,2023,3,6.1481,Ridge (alpha=100),test,7.3647
+39151,Stark,2023,3,5.5729,Ridge (alpha=100),test,5.8433
+39153,Summit,2023,3,5.9367,Ridge (alpha=100),test,5.9139
+39165,Warren,2023,3,3.9629,Ridge (alpha=100),test,7.3375
+39017,Butler,2023,4,5.2706,Ridge (alpha=100),test,7.7251
+39035,Cuyahoga,2023,4,6.5326,Ridge (alpha=100),test,7.5632
+39049,Franklin,2023,4,3.5564,Ridge (alpha=100),test,8.5572
+39061,Hamilton,2023,4,3.9525,Ridge (alpha=100),test,7.9535
+39095,Lucas,2023,4,5.6225,Ridge (alpha=100),test,6.6961
+39113,Montgomery,2023,4,5.9255,Ridge (alpha=100),test,7.9161
+39151,Stark,2023,4,6.8623,Ridge (alpha=100),test,6.7201
+39153,Summit,2023,4,5.7664,Ridge (alpha=100),test,6.5251
+39165,Warren,2023,4,4.8148,Ridge (alpha=100),test,7.9775
+39017,Butler,2024,1,5.1822,Ridge (alpha=100),test,8.5346
+39035,Cuyahoga,2024,1,6.1476,Ridge (alpha=100),test,8.1453
+39049,Franklin,2024,1,2.8901,Ridge (alpha=100),test,9.7095
+39061,Hamilton,2024,1,3.6172,Ridge (alpha=100),test,9.1386
+39095,Lucas,2024,1,5.9556,Ridge (alpha=100),test,6.9623
+39113,Montgomery,2024,1,5.8671,Ridge (alpha=100),test,8.6335
+39151,Stark,2024,1,7.781,Ridge (alpha=100),test,7.1718
+39153,Summit,2024,1,5.7717,Ridge (alpha=100),test,7.6673
+39165,Warren,2024,1,4.4921,Ridge (alpha=100),test,8.3061
+39017,Butler,2024,2,3.4709,Ridge (alpha=100),test,8.7152
+39035,Cuyahoga,2024,2,4.6477,Ridge (alpha=100),test,8.7162
+39049,Franklin,2024,2,1.2994,Ridge (alpha=100),test,9.9608
+39061,Hamilton,2024,2,1.9573,Ridge (alpha=100),test,9.3537
+39095,Lucas,2024,2,4.3694,Ridge (alpha=100),test,7.3795
+39113,Montgomery,2024,2,3.6626,Ridge (alpha=100),test,8.9179
+39151,Stark,2024,2,5.7972,Ridge (alpha=100),test,7.6218
+39153,Summit,2024,2,3.3495,Ridge (alpha=100),test,8.0645
+39165,Warren,2024,2,3.223,Ridge (alpha=100),test,8.6283
+39017,Butler,2024,3,3.5654,Ridge (alpha=100),test,9.9719
+39035,Cuyahoga,2024,3,4.9755,Ridge (alpha=100),test,9.6864
+39049,Franklin,2024,3,1.1266,Ridge (alpha=100),test,11.0777
+39061,Hamilton,2024,3,1.7218,Ridge (alpha=100),test,10.3533
+39095,Lucas,2024,3,5.2208,Ridge (alpha=100),test,8.2539
+39113,Montgomery,2024,3,4.1173,Ridge (alpha=100),test,9.8919
+39151,Stark,2024,3,6.251,Ridge (alpha=100),test,8.6674
+39153,Summit,2024,3,3.6786,Ridge (alpha=100),test,9.0904
+39165,Warren,2024,3,2.9379,Ridge (alpha=100),test,9.823
+39017,Butler,2024,4,3.5386,Ridge (alpha=100),test,10.5707
+39035,Cuyahoga,2024,4,5.0043,Ridge (alpha=100),test,10.3761
+39049,Franklin,2024,4,0.5423,Ridge (alpha=100),test,11.6681
+39061,Hamilton,2024,4,2.2203,Ridge (alpha=100),test,10.923
+39095,Lucas,2024,4,5.3213,Ridge (alpha=100),test,9.0052
+39113,Montgomery,2024,4,4.4316,Ridge (alpha=100),test,10.4929
+39151,Stark,2024,4,4.7348,Ridge (alpha=100),test,9.464
+39153,Summit,2024,4,3.8849,Ridge (alpha=100),test,9.6759
+39165,Warren,2024,4,2.144,Ridge (alpha=100),test,10.4828
+39017,Butler,2021,1,13.1081,"ARIMA (1, 1, 0)",validation,12.1478
+39035,Cuyahoga,2021,1,10.1469,"ARIMA (1, 1, 0)",validation,10.519
+39049,Franklin,2021,1,13.1213,"ARIMA (1, 1, 0)",validation,14.4856
+39061,Hamilton,2021,1,10.9866,"ARIMA (1, 1, 0)",validation,13.7895
+39095,Lucas,2021,1,8.2738,"ARIMA (1, 1, 0)",validation,10.516
+39113,Montgomery,2021,1,12.4087,"ARIMA (1, 1, 0)",validation,9.8721
+39151,Stark,2021,1,9.925,"ARIMA (1, 1, 0)",validation,7.3713
+39153,Summit,2021,1,9.5413,"ARIMA (1, 1, 0)",validation,10.523
+39165,Warren,2021,1,11.9952,"ARIMA (1, 1, 0)",validation,13.113
+39017,Butler,2021,2,13.3396,"ARIMA (1, 1, 0)",validation,13.786
+39035,Cuyahoga,2021,2,9.8662,"ARIMA (1, 1, 0)",validation,12.3085
+39049,Franklin,2021,2,13.6165,"ARIMA (1, 1, 0)",validation,17.7301
+39061,Hamilton,2021,2,10.5737,"ARIMA (1, 1, 0)",validation,15.6212
+39095,Lucas,2021,2,8.5012,"ARIMA (1, 1, 0)",validation,9.9717
+39113,Montgomery,2021,2,11.8018,"ARIMA (1, 1, 0)",validation,12.5303
+39151,Stark,2021,2,10.2297,"ARIMA (1, 1, 0)",validation,9.282
+39153,Summit,2021,2,9.388,"ARIMA (1, 1, 0)",validation,11.7781
+39165,Warren,2021,2,12.6708,"ARIMA (1, 1, 0)",validation,14.4748
+39017,Butler,2021,3,12.2544,"ARIMA (1, 1, 0)",validation,6.91
+39035,Cuyahoga,2021,3,9.3565,"ARIMA (1, 1, 0)",validation,7.17
+39049,Franklin,2021,3,13.3139,"ARIMA (1, 1, 0)",validation,8.434
+39061,Hamilton,2021,3,9.6266,"ARIMA (1, 1, 0)",validation,6.8077
+39095,Lucas,2021,3,8.8392,"ARIMA (1, 1, 0)",validation,6.6116
+39113,Montgomery,2021,3,11.6078,"ARIMA (1, 1, 0)",validation,7.7001
+39151,Stark,2021,3,8.2428,"ARIMA (1, 1, 0)",validation,7.0299
+39153,Summit,2021,3,8.9482,"ARIMA (1, 1, 0)",validation,6.632
+39165,Warren,2021,3,12.1854,"ARIMA (1, 1, 0)",validation,6.0835
+39017,Butler,2021,4,9.7015,"ARIMA (1, 1, 0)",validation,7.654
+39035,Cuyahoga,2021,4,9.4645,"ARIMA (1, 1, 0)",validation,5.4666
+39049,Franklin,2021,4,11.8006,"ARIMA (1, 1, 0)",validation,7.5403
+39061,Hamilton,2021,4,8.3766,"ARIMA (1, 1, 0)",validation,6.4794
+39095,Lucas,2021,4,9.1376,"ARIMA (1, 1, 0)",validation,4.981
+39113,Montgomery,2021,4,10.6829,"ARIMA (1, 1, 0)",validation,7.4618
+39151,Stark,2021,4,7.4782,"ARIMA (1, 1, 0)",validation,5.3128
+39153,Summit,2021,4,8.8737,"ARIMA (1, 1, 0)",validation,4.7896
+39165,Warren,2021,4,10.6328,"ARIMA (1, 1, 0)",validation,6.8017
+39017,Butler,2023,1,6.4582,"ARIMA (1, 1, 0)",test,5.4816
+39035,Cuyahoga,2023,1,8.2411,"ARIMA (1, 1, 0)",test,6.3057
+39049,Franklin,2023,1,6.8811,"ARIMA (1, 1, 0)",test,7.259
+39061,Hamilton,2023,1,8.0411,"ARIMA (1, 1, 0)",test,6.6823
+39095,Lucas,2023,1,9.5498,"ARIMA (1, 1, 0)",test,5.5565
+39113,Montgomery,2023,1,8.4703,"ARIMA (1, 1, 0)",test,6.1681
+39151,Stark,2023,1,8.6057,"ARIMA (1, 1, 0)",test,4.8205
+39153,Summit,2023,1,7.4561,"ARIMA (1, 1, 0)",test,5.1744
+39165,Warren,2023,1,5.6707,"ARIMA (1, 1, 0)",test,5.7404
+39017,Butler,2023,2,5.6855,"ARIMA (1, 1, 0)",test,8.6723
+39035,Cuyahoga,2023,2,8.7776,"ARIMA (1, 1, 0)",test,7.749
+39049,Franklin,2023,2,5.917,"ARIMA (1, 1, 0)",test,9.1135
+39061,Hamilton,2023,2,6.7143,"ARIMA (1, 1, 0)",test,8.8503
+39095,Lucas,2023,2,8.7505,"ARIMA (1, 1, 0)",test,7.7754
+39113,Montgomery,2023,2,8.5758,"ARIMA (1, 1, 0)",test,8.6566
+39151,Stark,2023,2,6.9181,"ARIMA (1, 1, 0)",test,7.6199
+39153,Summit,2023,2,7.7323,"ARIMA (1, 1, 0)",test,7.5143
+39165,Warren,2023,2,4.8585,"ARIMA (1, 1, 0)",test,7.8776
+39017,Butler,2023,3,4.8047,"ARIMA (1, 1, 0)",test,7.5702
+39035,Cuyahoga,2023,3,7.0699,"ARIMA (1, 1, 0)",test,8.1457
+39049,Franklin,2023,3,3.8894,"ARIMA (1, 1, 0)",test,9.295
+39061,Hamilton,2023,3,4.4913,"ARIMA (1, 1, 0)",test,8.4761
+39095,Lucas,2023,3,5.5143,"ARIMA (1, 1, 0)",test,8.1073
+39113,Montgomery,2023,3,6.1481,"ARIMA (1, 1, 0)",test,8.9038
+39151,Stark,2023,3,5.5729,"ARIMA (1, 1, 0)",test,7.0931
+39153,Summit,2023,3,5.9367,"ARIMA (1, 1, 0)",test,7.5321
+39165,Warren,2023,3,3.9629,"ARIMA (1, 1, 0)",test,7.2272
+39017,Butler,2023,4,5.2706,"ARIMA (1, 1, 0)",test,6.2312
+39035,Cuyahoga,2023,4,6.5326,"ARIMA (1, 1, 0)",test,7.5184
+39049,Franklin,2023,4,3.5564,"ARIMA (1, 1, 0)",test,8.2717
+39061,Hamilton,2023,4,3.9525,"ARIMA (1, 1, 0)",test,6.9924
+39095,Lucas,2023,4,5.6225,"ARIMA (1, 1, 0)",test,7.4519
+39113,Montgomery,2023,4,5.9255,"ARIMA (1, 1, 0)",test,7.8128
+39151,Stark,2023,4,6.8623,"ARIMA (1, 1, 0)",test,6.4659
+39153,Summit,2023,4,5.7664,"ARIMA (1, 1, 0)",test,6.4391
+39165,Warren,2023,4,4.8148,"ARIMA (1, 1, 0)",test,5.8177
+39017,Butler,2024,1,5.1822,"ARIMA (1, 1, 0)",test,6.93
+39035,Cuyahoga,2024,1,6.1476,"ARIMA (1, 1, 0)",test,7.5321
+39049,Franklin,2024,1,2.8901,"ARIMA (1, 1, 0)",test,8.4364
+39061,Hamilton,2024,1,3.6172,"ARIMA (1, 1, 0)",test,7.7077
+39095,Lucas,2024,1,5.9556,"ARIMA (1, 1, 0)",test,7.3014
+39113,Montgomery,2024,1,5.8671,"ARIMA (1, 1, 0)",test,7.961
+39151,Stark,2024,1,7.781,"ARIMA (1, 1, 0)",test,6.3689
+39153,Summit,2024,1,5.7717,"ARIMA (1, 1, 0)",test,6.7337
+39165,Warren,2024,1,4.4921,"ARIMA (1, 1, 0)",test,6.843
+39017,Butler,2024,2,3.4709,"ARIMA (1, 1, 0)",test,7.7204
+39035,Cuyahoga,2024,2,4.6477,"ARIMA (1, 1, 0)",test,8.1276
+39049,Franklin,2024,2,1.2994,"ARIMA (1, 1, 0)",test,8.1408
+39061,Hamilton,2024,2,1.9573,"ARIMA (1, 1, 0)",test,7.7906
+39095,Lucas,2024,2,4.3694,"ARIMA (1, 1, 0)",test,7.5868
+39113,Montgomery,2024,2,3.6626,"ARIMA (1, 1, 0)",test,8.7002
+39151,Stark,2024,2,5.7972,"ARIMA (1, 1, 0)",test,7.0295
+39153,Summit,2024,2,3.3495,"ARIMA (1, 1, 0)",test,7.7383
+39165,Warren,2024,2,3.223,"ARIMA (1, 1, 0)",test,6.9027
+39017,Butler,2024,3,3.5654,"ARIMA (1, 1, 0)",test,6.5055
+39035,Cuyahoga,2024,3,4.9755,"ARIMA (1, 1, 0)",test,7.2181
+39049,Franklin,2024,3,1.1266,"ARIMA (1, 1, 0)",test,7.3018
+39061,Hamilton,2024,3,1.7218,"ARIMA (1, 1, 0)",test,6.6257
+39095,Lucas,2024,3,5.2208,"ARIMA (1, 1, 0)",test,6.5511
+39113,Montgomery,2024,3,4.1173,"ARIMA (1, 1, 0)",test,7.6691
+39151,Stark,2024,3,6.251,"ARIMA (1, 1, 0)",test,6.5199
+39153,Summit,2024,3,3.6786,"ARIMA (1, 1, 0)",test,6.254
+39165,Warren,2024,3,2.9379,"ARIMA (1, 1, 0)",test,6.1049
+39017,Butler,2024,4,3.5386,"ARIMA (1, 1, 0)",test,6.5316
+39035,Cuyahoga,2024,4,5.0043,"ARIMA (1, 1, 0)",test,7.1525
+39049,Franklin,2024,4,0.5423,"ARIMA (1, 1, 0)",test,7.3663
+39061,Hamilton,2024,4,2.2203,"ARIMA (1, 1, 0)",test,6.1706
+39095,Lucas,2024,4,5.3213,"ARIMA (1, 1, 0)",test,7.3267
+39113,Montgomery,2024,4,4.4316,"ARIMA (1, 1, 0)",test,7.5246
+39151,Stark,2024,4,4.7348,"ARIMA (1, 1, 0)",test,6.8956
+39153,Summit,2024,4,3.8849,"ARIMA (1, 1, 0)",test,6.2969
+39165,Warren,2024,4,2.144,"ARIMA (1, 1, 0)",test,6.4472
+39017,Butler,2021,1,13.1081,"ARIMAX (mortgage rate) (1, 1, 0)",validation,12.2334
+39035,Cuyahoga,2021,1,10.1469,"ARIMAX (mortgage rate) (1, 1, 0)",validation,10.4335
+39049,Franklin,2021,1,13.1213,"ARIMAX (mortgage rate) (1, 1, 0)",validation,14.4325
+39061,Hamilton,2021,1,10.9866,"ARIMAX (mortgage rate) (1, 1, 0)",validation,13.6968
+39095,Lucas,2021,1,8.2738,"ARIMAX (mortgage rate) (1, 1, 0)",validation,10.5438
+39113,Montgomery,2021,1,12.4087,"ARIMAX (mortgage rate) (1, 1, 0)",validation,9.8772
+39151,Stark,2021,1,9.925,"ARIMAX (mortgage rate) (1, 1, 0)",validation,7.3384
+39153,Summit,2021,1,9.5413,"ARIMAX (mortgage rate) (1, 1, 0)",validation,10.5118
+39165,Warren,2021,1,11.9952,"ARIMAX (mortgage rate) (1, 1, 0)",validation,13.1692
+39017,Butler,2021,2,13.3396,"ARIMAX (mortgage rate) (1, 1, 0)",validation,13.9459
+39035,Cuyahoga,2021,2,9.8662,"ARIMAX (mortgage rate) (1, 1, 0)",validation,12.0162
+39049,Franklin,2021,2,13.6165,"ARIMAX (mortgage rate) (1, 1, 0)",validation,17.6322
+39061,Hamilton,2021,2,10.5737,"ARIMAX (mortgage rate) (1, 1, 0)",validation,15.4826
+39095,Lucas,2021,2,8.5012,"ARIMAX (mortgage rate) (1, 1, 0)",validation,10.0201
+39113,Montgomery,2021,2,11.8018,"ARIMAX (mortgage rate) (1, 1, 0)",validation,12.4725
+39151,Stark,2021,2,10.2297,"ARIMAX (mortgage rate) (1, 1, 0)",validation,9.3722
+39153,Summit,2021,2,9.388,"ARIMAX (mortgage rate) (1, 1, 0)",validation,11.7363
+39165,Warren,2021,2,12.6708,"ARIMAX (mortgage rate) (1, 1, 0)",validation,14.5575
+39017,Butler,2021,3,12.2544,"ARIMAX (mortgage rate) (1, 1, 0)",validation,6.9243
+39035,Cuyahoga,2021,3,9.3565,"ARIMAX (mortgage rate) (1, 1, 0)",validation,7.4409
+39049,Franklin,2021,3,13.3139,"ARIMAX (mortgage rate) (1, 1, 0)",validation,8.5299
+39061,Hamilton,2021,3,9.6266,"ARIMAX (mortgage rate) (1, 1, 0)",validation,6.9722
+39095,Lucas,2021,3,8.8392,"ARIMAX (mortgage rate) (1, 1, 0)",validation,6.6336
+39113,Montgomery,2021,3,11.6078,"ARIMAX (mortgage rate) (1, 1, 0)",validation,7.777
+39151,Stark,2021,3,8.2428,"ARIMAX (mortgage rate) (1, 1, 0)",validation,6.9425
+39153,Summit,2021,3,8.9482,"ARIMAX (mortgage rate) (1, 1, 0)",validation,6.7213
+39165,Warren,2021,3,12.1854,"ARIMAX (mortgage rate) (1, 1, 0)",validation,6.1349
+39017,Butler,2021,4,9.7015,"ARIMAX (mortgage rate) (1, 1, 0)",validation,7.6173
+39035,Cuyahoga,2021,4,9.4645,"ARIMAX (mortgage rate) (1, 1, 0)",validation,5.314
+39049,Franklin,2021,4,11.8006,"ARIMAX (mortgage rate) (1, 1, 0)",validation,7.4017
+39061,Hamilton,2021,4,8.3766,"ARIMAX (mortgage rate) (1, 1, 0)",validation,6.3037
+39095,Lucas,2021,4,9.1376,"ARIMAX (mortgage rate) (1, 1, 0)",validation,5.0415
+39113,Montgomery,2021,4,10.6829,"ARIMAX (mortgage rate) (1, 1, 0)",validation,7.3981
+39151,Stark,2021,4,7.4782,"ARIMAX (mortgage rate) (1, 1, 0)",validation,5.4315
+39153,Summit,2021,4,8.8737,"ARIMAX (mortgage rate) (1, 1, 0)",validation,4.7613
+39165,Warren,2021,4,10.6328,"ARIMAX (mortgage rate) (1, 1, 0)",validation,6.7079
+39017,Butler,2023,1,6.4582,"ARIMAX (mortgage rate) (1, 1, 0)",test,5.4762
+39035,Cuyahoga,2023,1,8.2411,"ARIMAX (mortgage rate) (1, 1, 0)",test,6.0011
+39049,Franklin,2023,1,6.8811,"ARIMAX (mortgage rate) (1, 1, 0)",test,6.9923
+39061,Hamilton,2023,1,8.0411,"ARIMAX (mortgage rate) (1, 1, 0)",test,6.5028
+39095,Lucas,2023,1,9.5498,"ARIMAX (mortgage rate) (1, 1, 0)",test,5.2541
+39113,Montgomery,2023,1,8.4703,"ARIMAX (mortgage rate) (1, 1, 0)",test,5.6857
+39151,Stark,2023,1,8.6057,"ARIMAX (mortgage rate) (1, 1, 0)",test,4.4914
+39153,Summit,2023,1,7.4561,"ARIMAX (mortgage rate) (1, 1, 0)",test,5.0479
+39165,Warren,2023,1,5.6707,"ARIMAX (mortgage rate) (1, 1, 0)",test,5.6601
+39017,Butler,2023,2,5.6855,"ARIMAX (mortgage rate) (1, 1, 0)",test,8.4079
+39035,Cuyahoga,2023,2,8.7776,"ARIMAX (mortgage rate) (1, 1, 0)",test,7.3034
+39049,Franklin,2023,2,5.917,"ARIMAX (mortgage rate) (1, 1, 0)",test,8.6321
+39061,Hamilton,2023,2,6.7143,"ARIMAX (mortgage rate) (1, 1, 0)",test,8.6455
+39095,Lucas,2023,2,8.7505,"ARIMAX (mortgage rate) (1, 1, 0)",test,7.524
+39113,Montgomery,2023,2,8.5758,"ARIMAX (mortgage rate) (1, 1, 0)",test,8.3169
+39151,Stark,2023,2,6.9181,"ARIMAX (mortgage rate) (1, 1, 0)",test,7.7343
+39153,Summit,2023,2,7.7323,"ARIMAX (mortgage rate) (1, 1, 0)",test,7.2857
+39165,Warren,2023,2,4.8585,"ARIMAX (mortgage rate) (1, 1, 0)",test,7.4784
+39017,Butler,2023,3,4.8047,"ARIMAX (mortgage rate) (1, 1, 0)",test,6.8862
+39035,Cuyahoga,2023,3,7.0699,"ARIMAX (mortgage rate) (1, 1, 0)",test,7.3693
+39049,Franklin,2023,3,3.8894,"ARIMAX (mortgage rate) (1, 1, 0)",test,8.4603
+39061,Hamilton,2023,3,4.4913,"ARIMAX (mortgage rate) (1, 1, 0)",test,7.7667
+39095,Lucas,2023,3,5.5143,"ARIMAX (mortgage rate) (1, 1, 0)",test,7.5974
+39113,Montgomery,2023,3,6.1481,"ARIMAX (mortgage rate) (1, 1, 0)",test,8.2204
+39151,Stark,2023,3,5.5729,"ARIMAX (mortgage rate) (1, 1, 0)",test,6.7371
+39153,Summit,2023,3,5.9367,"ARIMAX (mortgage rate) (1, 1, 0)",test,6.9521
+39165,Warren,2023,3,3.9629,"ARIMAX (mortgage rate) (1, 1, 0)",test,6.2871
+39017,Butler,2023,4,5.2706,"ARIMAX (mortgage rate) (1, 1, 0)",test,5.6023
+39035,Cuyahoga,2023,4,6.5326,"ARIMAX (mortgage rate) (1, 1, 0)",test,6.8173
+39049,Franklin,2023,4,3.5564,"ARIMAX (mortgage rate) (1, 1, 0)",test,7.4632
+39061,Hamilton,2023,4,3.9525,"ARIMAX (mortgage rate) (1, 1, 0)",test,6.1801
+39095,Lucas,2023,4,5.6225,"ARIMAX (mortgage rate) (1, 1, 0)",test,6.9487
+39113,Montgomery,2023,4,5.9255,"ARIMAX (mortgage rate) (1, 1, 0)",test,7.0136
+39151,Stark,2023,4,6.8623,"ARIMAX (mortgage rate) (1, 1, 0)",test,6.0463
+39153,Summit,2023,4,5.7664,"ARIMAX (mortgage rate) (1, 1, 0)",test,5.8715
+39165,Warren,2023,4,4.8148,"ARIMAX (mortgage rate) (1, 1, 0)",test,4.8815
+39017,Butler,2024,1,5.1822,"ARIMAX (mortgage rate) (1, 1, 0)",test,7.1144
+39035,Cuyahoga,2024,1,6.1476,"ARIMAX (mortgage rate) (1, 1, 0)",test,7.5789
+39049,Franklin,2024,1,2.8901,"ARIMAX (mortgage rate) (1, 1, 0)",test,8.5126
+39061,Hamilton,2024,1,3.6172,"ARIMAX (mortgage rate) (1, 1, 0)",test,7.8094
+39095,Lucas,2024,1,5.9556,"ARIMAX (mortgage rate) (1, 1, 0)",test,7.2567
+39113,Montgomery,2024,1,5.8671,"ARIMAX (mortgage rate) (1, 1, 0)",test,7.9056
+39151,Stark,2024,1,7.781,"ARIMAX (mortgage rate) (1, 1, 0)",test,6.2568
+39153,Summit,2024,1,5.7717,"ARIMAX (mortgage rate) (1, 1, 0)",test,6.8393
+39165,Warren,2024,1,4.4921,"ARIMAX (mortgage rate) (1, 1, 0)",test,7.0694
+39017,Butler,2024,2,3.4709,"ARIMAX (mortgage rate) (1, 1, 0)",test,7.3565
+39035,Cuyahoga,2024,2,4.6477,"ARIMAX (mortgage rate) (1, 1, 0)",test,7.6658
+39049,Franklin,2024,2,1.2994,"ARIMAX (mortgage rate) (1, 1, 0)",test,7.6011
+39061,Hamilton,2024,2,1.9573,"ARIMAX (mortgage rate) (1, 1, 0)",test,7.3838
+39095,Lucas,2024,2,4.3694,"ARIMAX (mortgage rate) (1, 1, 0)",test,7.1928
+39113,Montgomery,2024,2,3.6626,"ARIMAX (mortgage rate) (1, 1, 0)",test,8.2902
+39151,Stark,2024,2,5.7972,"ARIMAX (mortgage rate) (1, 1, 0)",test,6.799
+39153,Summit,2024,2,3.3495,"ARIMAX (mortgage rate) (1, 1, 0)",test,7.4661
+39165,Warren,2024,2,3.223,"ARIMAX (mortgage rate) (1, 1, 0)",test,6.4441
+39017,Butler,2024,3,3.5654,"ARIMAX (mortgage rate) (1, 1, 0)",test,6.6376
+39035,Cuyahoga,2024,3,4.9755,"ARIMAX (mortgage rate) (1, 1, 0)",test,7.1694
+39049,Franklin,2024,3,1.1266,"ARIMAX (mortgage rate) (1, 1, 0)",test,7.3605
+39061,Hamilton,2024,3,1.7218,"ARIMAX (mortgage rate) (1, 1, 0)",test,6.584
+39095,Lucas,2024,3,5.2208,"ARIMAX (mortgage rate) (1, 1, 0)",test,6.355
+39113,Montgomery,2024,3,4.1173,"ARIMAX (mortgage rate) (1, 1, 0)",test,7.4586
+39151,Stark,2024,3,6.251,"ARIMAX (mortgage rate) (1, 1, 0)",test,6.3974
+39153,Summit,2024,3,3.6786,"ARIMAX (mortgage rate) (1, 1, 0)",test,6.1846
+39165,Warren,2024,3,2.9379,"ARIMAX (mortgage rate) (1, 1, 0)",test,6.267
+39017,Butler,2024,4,3.5386,"ARIMAX (mortgage rate) (1, 1, 0)",test,6.1999
+39035,Cuyahoga,2024,4,5.0043,"ARIMAX (mortgage rate) (1, 1, 0)",test,6.653
+39049,Franklin,2024,4,0.5423,"ARIMAX (mortgage rate) (1, 1, 0)",test,6.9357
+39061,Hamilton,2024,4,2.2203,"ARIMAX (mortgage rate) (1, 1, 0)",test,5.7012
+39095,Lucas,2024,4,5.3213,"ARIMAX (mortgage rate) (1, 1, 0)",test,6.9712
+39113,Montgomery,2024,4,4.4316,"ARIMAX (mortgage rate) (1, 1, 0)",test,6.9269
+39151,Stark,2024,4,4.7348,"ARIMAX (mortgage rate) (1, 1, 0)",test,6.699
+39153,Summit,2024,4,3.8849,"ARIMAX (mortgage rate) (1, 1, 0)",test,5.8451
+39165,Warren,2024,4,2.144,"ARIMAX (mortgage rate) (1, 1, 0)",test,6.1001
