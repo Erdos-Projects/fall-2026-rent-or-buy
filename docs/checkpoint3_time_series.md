@@ -38,7 +38,7 @@
 - **Short series:** 44 quarters per county, and a 2021Q1 forecast is fit on only 25 quarters.
 - **Regime changes:** training (2015–2019) was stable, validation (2021) was a boom, and test (2023–2024) was a slowdown. Choosing models on one boom year is unreliable.
 - **Future mortgage rate unknown:** ARIMAX holds the rate at its last observed value.
-- **Numerical convergence:** on the raw log scale, many ARIMA fits did not converge. Rescaling to 100 × log ZHVI fixed this; all fits converge.
+- **Numerical convergence:** on the raw log scale, many ARIMA fits did not converge. Rescaling to 100 × log ZHVI fixed nearly all of them: 0 or 1 of 504 fits still warn, depending on the `statsmodels` version, and the reported results are identical either way.
 - **Annual features in the regression baselines:** the master table repeats annual FHFA and ACS values across all quarters of the same year, so some values were not yet published at the prediction date. This affects Linear and Ridge only.
 - Only ZHVI was modeled. The Linear/Ridge results here use all numeric features and may differ from Person 1's official results.
 
