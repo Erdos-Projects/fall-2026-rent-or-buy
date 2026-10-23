@@ -38,6 +38,10 @@ This produces 360 observed labels for each one-year target and 288 for each thre
 ## Important Limitations
 
 - ACS annual estimates are repeated within their reference-year quarters. Values remain missing for 2020 and 2025, and no values are imputed. ACS features must be lagged to their public release date in a real-time modeling design.
-- The source data do not include a one-year Treasury series. Therefore `treasury_1y_change_prev_1y_pp` is not created.
+- `nat_treasury_1y_pct` is the quarterly mean FRED DGS1 yield. The feature
+  `treasury_1y_change_prev_1y_pp` equals the current quarterly yield minus
+  the yield four quarters earlier. It is a backward-looking change in
+  percentage points and has no observed value in each county's first four
+  quarters.
 - CPI and BLS labor measures in 2025Q4 are based on November–December observations; the retained `*_partial*` flags identify those nine rows.
 - The feature script rejects duplicate keys, unexpected counties, incomplete county histories, infinite values, and non-positive affordability ratios. It does not silently remove suspicious values.

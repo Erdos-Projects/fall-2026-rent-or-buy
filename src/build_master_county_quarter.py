@@ -311,6 +311,7 @@ columns_to_remove = [
     "nat_mortgage_rate_30y_pct_partial",
     "nat_tbill_3m_pct_n_obs",
     "nat_tbill_3m_pct_partial",
+    "nat_treasury_1y_pct_partial",
     "nat_treasury_10y_pct_partial",
     "nat_treasury_3y_pct_partial",
     "state_any_preliminary",
@@ -330,12 +331,12 @@ column_order = [
     "population", "median_household_income_usd", "median_household_income_moe_usd",
     "housing_units", "housing_units_moe", "vacant_housing_units",
     "vacant_housing_units_moe", "vacancy_rate_pct",
-    "nat_mortgage_rate_30y_pct", "nat_cpi_index", "nat_treasury_3y_pct",
+    "nat_mortgage_rate_30y_pct", "nat_cpi_index", "nat_treasury_1y_pct", "nat_treasury_3y_pct",
     "nat_treasury_10y_pct", "nat_tbill_3m_pct", "nat_inflation_yoy_pct",
     "cty_unemployed", "cty_employed", "cty_labor_force", "cty_unemployment_rate_pct",
     "state_unemployed", "state_employed", "state_labor_force", "state_unemployment_rate_pct",
     "cty_n_months", "cty_partial_quarter", "nat_mortgage_rate_30y_pct_n_obs",
-    "nat_cpi_index_n_obs", "nat_cpi_index_partial", "nat_treasury_3y_pct_n_obs",
+    "nat_cpi_index_n_obs", "nat_cpi_index_partial", "nat_treasury_1y_pct_n_obs", "nat_treasury_3y_pct_n_obs",
     "nat_treasury_10y_pct_n_obs", "nat_inflation_yoy_pct_partial",
     "state_n_months", "state_partial_quarter",
 ]
@@ -412,6 +413,12 @@ economic_dictionary = economic_dictionary.rename(
     columns={"variable": "variable_name", "quarterly_rule": "transformation_or_rule"}
 )
 economic_dictionary["native_frequency"] = "Monthly or daily"
+# DGS1 is a daily FRED series, so record its exact frequency in the master
+# dictionary rather than the broader default used by the older source rows.
+economic_dictionary.loc[
+    economic_dictionary["variable_name"] == "nat_treasury_1y_pct",
+    "native_frequency",
+] = "Daily"
 economic_dictionary["panel_frequency"] = "Quarterly"
 economic_dictionary = economic_dictionary[
     [
@@ -429,6 +436,7 @@ quality_dictionary = pd.DataFrame(
         ("nat_mortgage_rate_30y_pct_n_obs", "Number of weekly mortgage-rate observations used in the quarter.", "count", "FRED", "national", "Weekly", "Quarterly", "Repeated across counties by design.", "https://fred.stlouisfed.org/series/MORTGAGE30US"),
         ("nat_cpi_index_n_obs", "Number of monthly CPI observations used in the quarter.", "count", "FRED", "national", "Monthly", "Quarterly", "Repeated across counties by design.", "https://fred.stlouisfed.org/series/CPIAUCSL"),
         ("nat_cpi_index_partial", "Whether the quarterly CPI value is based on an incomplete source period.", "boolean", "FRED", "national", "Monthly", "Quarterly", "Repeated across counties by design.", "https://fred.stlouisfed.org/series/CPIAUCSL"),
+        ("nat_treasury_1y_pct_n_obs", "Number of daily 1-year Treasury observations used in the quarter.", "count", "FRED", "national", "Daily", "Quarterly", "Repeated across counties by design.", "https://fred.stlouisfed.org/series/DGS1"),
         ("nat_treasury_3y_pct_n_obs", "Number of daily 3-year Treasury observations used in the quarter.", "count", "FRED", "national", "Daily", "Quarterly", "Repeated across counties by design.", "https://fred.stlouisfed.org/series/DGS3"),
         ("nat_treasury_10y_pct_n_obs", "Number of daily 10-year Treasury observations used in the quarter.", "count", "FRED", "national", "Daily", "Quarterly", "Repeated across counties by design.", "https://fred.stlouisfed.org/series/DGS10"),
         ("nat_inflation_yoy_pct_partial", "Whether the quarterly year-over-year inflation value uses an incomplete source period.", "boolean", "Derived from FRED", "national", "Monthly", "Quarterly", "Repeated across counties by design.", "https://fred.stlouisfed.org/series/CPIAUCSL"),

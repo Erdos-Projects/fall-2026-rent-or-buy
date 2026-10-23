@@ -24,6 +24,7 @@ Every variable carries a geographic-level prefix: `nat_` = national, `state_` = 
 | `nat_mortgage_rate_30y_pct` | national | FRED `MORTGAGE30US` | weekly | mean of weeks dated in quarter (≥12 obs) |
 | `nat_cpi_index` | national | FRED `CPIAUCSL` (SA, 1982–84=100) | monthly | mean of 3 months |
 | `nat_inflation_yoy_pct` | national | derived from CPI | — | 100 × (CPI_q / CPI_q−4 − 1) |
+| `nat_treasury_1y_pct` | national | FRED `DGS1` | daily | mean of trading days (≥55 obs) |
 | `nat_treasury_3y_pct` | national | FRED `DGS3` | daily | mean of trading days (≥55 obs) |
 | `nat_treasury_10y_pct` | national | FRED `DGS10` | daily | mean of trading days (≥55 obs) |
 | `nat_tbill_3m_pct` | national | FRED `TB3MS` | monthly | mean of 3 months |
@@ -34,7 +35,7 @@ Every variable carries a geographic-level prefix: `nat_` = national, `state_` = 
 
 The full definition table is written to `data/processed/econ_labor_variable_definitions.csv`.
 
-Low-risk return benchmark: `nat_treasury_3y_pct` is proposed as the default because the prediction horizon is 3 years. 10-year and 3-month rates are kept as alternatives. The final choice needs agreement with Person 5.
+Low-risk return benchmark: `nat_treasury_1y_pct` is the default, matching the project's one-year-ahead prediction targets. The 3-year, 10-year, and 3-month Treasury rates remain available as alternatives for other calculator holding periods or sensitivity analyses.
 
 ## Counties
 
@@ -68,7 +69,7 @@ Raw data retrieved 2026-10-08: FRED fredgraph CSV, and BLS API v1 without a key 
 
 | Variable group | Observed | Missing | Reason |
 |---|---|---|---|
-| Mortgage rate, 3y/10y Treasury, 3m T-bill | 2015Q1–2025Q4 (44/44) | none | — |
+| Mortgage rate, 1y/3y/10y Treasury, 3m T-bill | 2015Q1–2025Q4 (44/44) | none | — |
 | CPI, YoY inflation | 2015Q1–2025Q3 (43/44) | 2025Q4 | October 2025 CPI not published (shutdown); only 2 of 3 months available |
 | Ohio labor (state) | 2015Q1–2025Q3 (43/44) | 2025Q4 | October 2025 missing; only 2 of 3 months available |
 | County labor, 9 counties | 2015Q1–2025Q3 (387/396 cells) | 2025Q4, all 9 counties | October 2025 missing; only 2 of 3 months available |
@@ -78,7 +79,7 @@ Checks passed:
 - employed + unemployed = labor force for every county-quarter
 - unemployment rate = unemployed / labor force
 - mortgage rate quarters have 12–14 weekly observations
-- Treasury quarters have 61–64 trading days
+- 1-year, 3-year, and 10-year Treasury quarters have 61–64 trading days
 
 Plausibility:
 

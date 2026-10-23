@@ -72,15 +72,13 @@ for level_column, prefix in [("zhvi_usd", "zhvi"), ("zori_usd_month", "zori")]:
 # Rates are percentages, so their one-year changes are percentage points.
 for level_column, feature_column in [
     ("nat_mortgage_rate_30y_pct", "mortgage_rate_change_prev_1y_pp"),
+    ("nat_treasury_1y_pct", "treasury_1y_change_prev_1y_pp"),
     ("cty_unemployment_rate_pct", "cty_unemployment_change_prev_1y_pp"),
     ("state_unemployment_rate_pct", "state_unemployment_change_prev_1y_pp"),
     ("nat_inflation_yoy_pct", "inflation_change_prev_1y_pp"),
 ]:
     previous_year = panel.groupby("county_fips")[level_column].shift(4)
     panel[feature_column] = panel[level_column] - previous_year
-
-# A 1-year Treasury series is not in the source panel. Do not create a proxy.
-
 
 # =============================================================================
 # 5. CREATE DEMOGRAPHIC GROWTH AND AFFORDABILITY FEATURES
@@ -151,7 +149,7 @@ missingness = pd.DataFrame(
 feature_columns = [
     "zhvi_growth_qoq_pct", "zhvi_growth_prev_1y_pct", "zhvi_growth_prev_3y_pct",
     "zori_growth_qoq_pct", "zori_growth_prev_1y_pct", "zori_growth_prev_3y_pct",
-    "mortgage_rate_change_prev_1y_pp", "cty_unemployment_change_prev_1y_pp",
+    "mortgage_rate_change_prev_1y_pp", "treasury_1y_change_prev_1y_pp", "cty_unemployment_change_prev_1y_pp",
     "state_unemployment_change_prev_1y_pp", "inflation_change_prev_1y_pp",
     "population_growth_prev_1y_pct", "income_growth_prev_1y_pct",
     "housing_units_growth_prev_1y_pct", "vacant_units_growth_prev_1y_pct",
@@ -176,14 +174,14 @@ demographic_columns = [
     "vacant_housing_units_moe", "vacancy_rate_pct",
 ]
 national_columns = [
-    "nat_mortgage_rate_30y_pct", "nat_cpi_index", "nat_treasury_3y_pct",
+    "nat_mortgage_rate_30y_pct", "nat_cpi_index", "nat_treasury_1y_pct", "nat_treasury_3y_pct",
     "nat_treasury_10y_pct", "nat_tbill_3m_pct", "nat_inflation_yoy_pct",
 ]
 county_labor_columns = ["cty_unemployed", "cty_employed", "cty_labor_force", "cty_unemployment_rate_pct"]
 state_labor_columns = ["state_unemployed", "state_employed", "state_labor_force", "state_unemployment_rate_pct"]
 quality_columns = [
     "cty_n_months", "cty_partial_quarter", "nat_mortgage_rate_30y_pct_n_obs",
-    "nat_cpi_index_n_obs", "nat_cpi_index_partial", "nat_treasury_3y_pct_n_obs",
+    "nat_cpi_index_n_obs", "nat_cpi_index_partial", "nat_treasury_1y_pct_n_obs", "nat_treasury_3y_pct_n_obs",
     "nat_treasury_10y_pct_n_obs", "nat_inflation_yoy_pct_partial",
     "state_n_months", "state_partial_quarter",
 ]
@@ -209,6 +207,7 @@ feature_definitions = {
     "zori_growth_prev_1y_pct": ("Housing momentum", "Derived from Zillow", "growth", "prev", "percent", "100 × (ZORI_t / ZORI_t-4 − 1)", "4 quarters", "Yes"),
     "zori_growth_prev_3y_pct": ("Housing momentum", "Derived from Zillow", "growth", "prev", "percent", "100 × (ZORI_t / ZORI_t-12 − 1)", "12 quarters", "Yes"),
     "mortgage_rate_change_prev_1y_pp": ("Economic changes", "Derived from FRED", "change", "prev", "percentage points", "Mortgage rate_t − Mortgage rate_t-4", "4 quarters", "Yes"),
+    "treasury_1y_change_prev_1y_pp": ("Economic changes", "Derived from FRED", "change", "prev", "percentage points", "1-year Treasury yield_t − yield_t-4", "4 quarters", "Yes"),
     "cty_unemployment_change_prev_1y_pp": ("Economic changes", "Derived from BLS LAUS", "change", "prev", "percentage points", "County unemployment rate_t − rate_t-4", "4 quarters", "Yes"),
     "state_unemployment_change_prev_1y_pp": ("Economic changes", "Derived from BLS LAUS", "change", "prev", "percentage points", "Ohio unemployment rate_t − rate_t-4", "4 quarters", "Yes"),
     "inflation_change_prev_1y_pp": ("Economic changes", "Derived from FRED", "change", "prev", "percentage points", "Inflation_t − inflation_t-4", "4 quarters", "Yes"),
