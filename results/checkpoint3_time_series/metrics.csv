@@ -1,0 +1,11 @@
+model,split,MAE,RMSE,R2,n
+Mean baseline,validation,3.8188,4.1829,-5.0052,36
+Mean baseline,test,2.4827,2.9402,-1.2227,72
+Linear regression,validation,20.6342,22.8256,-177.8184,36
+Linear regression,test,10.4663,13.2777,-44.3284,72
+Ridge (alpha=100),validation,1.7425,2.2514,-0.7397,36
+Ridge (alpha=100),test,3.5584,4.3996,-3.9769,72
+"ARIMA (1, 1, 0)",validation,2.6383,3.0144,-2.1187,36
+"ARIMA (1, 1, 0)",test,2.6085,3.0776,-1.4353,72
+"ARIMAX (mortgage rate) (1, 1, 0)",validation,2.6152,2.9924,-2.0734,36
+"ARIMAX (mortgage rate) (1, 1, 0)",test,2.3732,2.8565,-1.0979,72
