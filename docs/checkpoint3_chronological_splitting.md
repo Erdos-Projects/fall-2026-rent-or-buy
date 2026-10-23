@@ -99,6 +99,11 @@ y_train = train_df["zhvi_growth_ahead_1y_pct"]
 Fit scalers, imputers, feature selection, and model tuning on the training data
 only. Do not inspect test metrics until the modeling choices are final.
 
+The split files include the current `nat_treasury_1y_pct` level and the
+backward-looking `treasury_1y_change_prev_1y_pp` feature. Both are available
+at the prediction quarter and are eligible predictors; the forward-looking
+ZHVI and ZORI growth columns remain labels only.
+
 ## Why there is no three-year target split
 
 The 2015–2025 panel does not contain enough earlier history to construct a

@@ -4,6 +4,9 @@ Usage (from the repository root):
     python src/econ_labor_pipeline.py            # download raw files, then build processed tables
     python src/econ_labor_pipeline.py download   # only download raw snapshots
     python src/econ_labor_pipeline.py build      # only rebuild processed tables from saved raw files
+    python src/econ_labor_pipeline.py download-fred DGS1   # download only the named FRED series
+                                                 # (adds a new series without re-pulling, and so
+                                                 # possibly revising, the existing raw files)
 
 Optional API keys (never commit them):
     BLS_API_KEY   - recommended. Without it the script uses the BLS v1 API (smaller batches).
@@ -65,6 +68,8 @@ FRED_SERIES = {
     "DGS3": ("nat_treasury_3y_pct", "daily", 55, 55),  # team decision: low-risk return benchmark
     "DGS10": ("nat_treasury_10y_pct", "daily", 55, 55),
     "TB3MS": ("nat_tbill_3m_pct", "monthly", MIN_MONTHS, 3),
+    # Added 2026-10-21: matches the 1-year-ahead targets; requested for the rent-vs-buy calculator.
+    "DGS1": ("nat_treasury_1y_pct", "daily", 55, 55),
 }
 
 # BLS LAUS measure codes
@@ -101,27 +106,45 @@ def _append_manifest(rows: list[dict]) -> None:
     df.to_csv(MANIFEST, index=False)
 
 
-def download() -> None:
+def download_fred(series_list: list[str], today: str, now: str) -> list[dict]:
+    """Download the given FRED series into data/raw/FRED/<today>/; return manifest rows."""
     import requests
 
-    today = dt.date.today().isoformat()
-    now = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
+    unknown = [s for s in series_list if s not in FRED_SERIES]
+    if unknown:
+        raise ValueError(f"Unknown FRED series {unknown}. Add them to FRED_SERIES first.")
     manifest = []
-
     fred_dir = RAW_FRED / today
     fred_dir.mkdir(parents=True, exist_ok=True)
-    for series in FRED_SERIES:
+    for series in series_list:
         url = (
             "https://fred.stlouisfed.org/graph/fredgraph.csv"
             f"?id={series}&cosd={RAW_START_YEAR}-01-01&coed={END_YEAR}-12-31"
         )
-        resp = requests.get(url, timeout=60)
+        resp = requests.get(url, timeout=60, headers={"User-Agent": "Mozilla/5.0 (rent-or-buy research)"})
         resp.raise_for_status()
+        # FRED sometimes answers with an HTML page instead of CSV. Check before saving.
+        lines = resp.text.lstrip("﻿").splitlines()
+        header = lines[0].strip().split(",") if lines else []
+        if len(header) != 2 or header[0] not in ("observation_date", "DATE") or header[1] != series:
+            raise RuntimeError(
+                f"FRED did not return CSV data for {series}. First line: {lines[0][:120] if lines else '(empty)'}\n"
+                f"Nothing was saved. Download it by hand from https://fred.stlouisfed.org/series/{series} "
+                f"(CSV, {RAW_START_YEAR}-01-01 to {END_YEAR}-12-31) and save it as {fred_dir / (series + '.csv')}")
         path = fred_dir / f"{series}.csv"
         path.write_bytes(resp.content)
         manifest.append(dict(source="FRED", series_id=series, raw_file=str(path.relative_to(ROOT)),
                              url=url, retrieved_at_utc=now, sha256=_sha256(path)))
         print(f"FRED {series}: saved {path.relative_to(ROOT)}")
+    return manifest
+
+
+def download() -> None:
+    import requests
+
+    today = dt.date.today().isoformat()
+    now = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
+    manifest = download_fred(list(FRED_SERIES), today, now)
 
     key = os.environ.get("BLS_API_KEY", "").strip()
     if key:
@@ -174,12 +197,32 @@ def _latest_dir(base: Path) -> Path:
     return dirs[-1]
 
 
+def latest_fred_file(series: str) -> Path:
+    """Most recent raw file for one FRED series, searching all snapshot folders.
+
+    Series are looked up one by one so a series added later (e.g. DGS1, downloaded on its own
+    with `download-fred`) can live in a newer folder while the other series keep their original
+    snapshot. A full `download` puts every series in the newest folder, so it behaves as before.
+    """
+    if not RAW_FRED.exists():
+        raise FileNotFoundError(f"No raw snapshot folders in {RAW_FRED}. Run the download step first.")
+    files = sorted(p / f"{series}.csv" for p in RAW_FRED.iterdir() if (p / f"{series}.csv").is_file())
+    if not files:
+        raise FileNotFoundError(f"No raw file for FRED series {series}. Run: "
+                                f"python src/econ_labor_pipeline.py download-fred {series}")
+    return files[-1]
+
+
 def load_fred(folder: Path | None = None) -> pd.DataFrame:
-    """Long table: date, series, value (NaN where FRED reports no value)."""
-    folder = folder or _latest_dir(RAW_FRED)
+    """Long table: date, series, value (NaN where FRED reports no value).
+
+    With `folder`, every series is read from that folder. Without it, each series is read from
+    its own most recent snapshot (see latest_fred_file).
+    """
     frames = []
     for series in FRED_SERIES:
-        raw = pd.read_csv(folder / f"{series}.csv", dtype=str)
+        path = folder / f"{series}.csv" if folder else latest_fred_file(series)
+        raw = pd.read_csv(path, dtype=str)
         date_col, value_col = raw.columns[0], raw.columns[1]
         frames.append(pd.DataFrame({
             "date": pd.to_datetime(raw[date_col]),
@@ -309,6 +352,9 @@ def variable_definitions() -> pd.DataFrame:
          "FRED", "DGS10", "Mean of daily values in the quarter; missing if fewer than 55 trading days"),
         ("nat_tbill_3m_pct", "national", "3-month Treasury bill secondary market rate", "percent",
          "FRED", "TB3MS", "Mean of available monthly values; needs at least 2 of 3 months"),
+        ("nat_treasury_1y_pct", "national",
+         "1-year Treasury constant-maturity yield; low-risk return matching the 1-year-ahead targets", "percent",
+         "FRED", "DGS1", "Mean of daily values in the quarter; missing if fewer than 55 trading days"),
         ("state_unemployed", "state", "Ohio unemployed persons, seasonally adjusted", "persons",
          "BLS LAUS", "LASST390000000000004", "Mean of available monthly values; needs at least 2 of 3 months"),
         ("state_employed", "state", "Ohio employed persons, seasonally adjusted", "persons",
@@ -339,9 +385,11 @@ def variable_definitions() -> pd.DataFrame:
 
 
 def build() -> None:
-    fred_dir, bls_dir = _latest_dir(RAW_FRED), _latest_dir(RAW_BLS)
-    print(f"Building from raw snapshots: {fred_dir.relative_to(ROOT)}, {bls_dir.relative_to(ROOT)}")
-    national = build_national(load_fred(fred_dir))
+    bls_dir = _latest_dir(RAW_BLS)
+    for series in FRED_SERIES:
+        print(f"FRED {series}: {latest_fred_file(series).relative_to(ROOT)}")
+    print(f"BLS: {bls_dir.relative_to(ROOT)}")
+    national = build_national(load_fred())
     bls = load_bls(bls_dir)
     state = build_labor(bls, "state")
     county = build_labor(bls, "county")
@@ -387,6 +435,17 @@ def build() -> None:
 
 if __name__ == "__main__":
     step = sys.argv[1] if len(sys.argv) > 1 else "all"
+    if step == "download-fred":
+        if len(sys.argv) < 3:
+            sys.exit("Usage: python src/econ_labor_pipeline.py download-fred SERIES [SERIES ...]")
+        rows = download_fred(sys.argv[2:], dt.date.today().isoformat(),
+                             dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"))
+        _append_manifest(rows)
+        print(f"Manifest updated: {MANIFEST.relative_to(ROOT)}")
+        print("Now rebuild the processed tables: python src/econ_labor_pipeline.py build")
+        sys.exit(0)
+    if step not in ("all", "download", "build"):
+        sys.exit(f"Unknown step '{step}'. Use: all, download, build, or download-fred SERIES ...")
     if step in ("all", "download"):
         download()
     if step in ("all", "build"):

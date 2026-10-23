@@ -30,7 +30,9 @@ nine Ohio counties, 2015Q1–2025Q4, or 396 rows.
   not carry values forward or impute them.
 - **Economic and labor variables:** Person 3's national (`nat_*`) and Ohio
   state (`state_*`) fields repeat across counties by design. County labor
-  fields (`cty_*`) vary by county and quarter.
+  fields (`cty_*`) vary by county and quarter. National fields include
+  `nat_treasury_1y_pct`, the quarterly mean FRED DGS1 yield used as the
+  project's default low-risk return benchmark.
 
 ## EDA-Ready Master Table
 
@@ -43,6 +45,11 @@ It retains fields that identify an actual source limitation. For example,
 `cty_partial_quarter`, `state_partial_quarter`, `nat_cpi_index_partial`, and
 `nat_inflation_yoy_pct_partial` are `True` for the nine 2025Q4 rows because
 their underlying quarterly values use only November and December observations.
+
+`nat_treasury_1y_pct` and its daily-observation count
+`nat_treasury_1y_pct_n_obs` are retained. The corresponding source partial
+flag is excluded because it is always `False` in the current 2015Q1–2025Q4
+panel.
 
 ## Feature Engineering
 
