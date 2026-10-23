@@ -9,6 +9,7 @@ nat_inflation_yoy_pct,national,Year-over-year CPI inflation,percent,Derived,CPIA
 nat_treasury_3y_pct,national,3-year Treasury constant-maturity yield; the team's low-risk return benchmark,percent,FRED,DGS3,Mean of daily values in the quarter; missing if fewer than 55 trading days,https://fred.stlouisfed.org/series/DGS3
 nat_treasury_10y_pct,national,10-year Treasury constant-maturity yield,percent,FRED,DGS10,Mean of daily values in the quarter; missing if fewer than 55 trading days,https://fred.stlouisfed.org/series/DGS10
 nat_tbill_3m_pct,national,3-month Treasury bill secondary market rate,percent,FRED,TB3MS,Mean of available monthly values; needs at least 2 of 3 months,https://fred.stlouisfed.org/series/TB3MS
+nat_treasury_1y_pct,national,1-year Treasury constant-maturity yield; low-risk return matching the 1-year-ahead targets,percent,FRED,DGS1,Mean of daily values in the quarter; missing if fewer than 55 trading days,https://fred.stlouisfed.org/series/DGS1
 state_unemployed,state,"Ohio unemployed persons, seasonally adjusted",persons,BLS LAUS,LASST390000000000004,Mean of available monthly values; needs at least 2 of 3 months,https://www.bls.gov/lau/
 state_employed,state,"Ohio employed persons, seasonally adjusted",persons,BLS LAUS,LASST390000000000005,Mean of available monthly values; needs at least 2 of 3 months,https://www.bls.gov/lau/
 state_labor_force,state,"Ohio civilian labor force, seasonally adjusted",persons,BLS LAUS,LASST390000000000006,Mean of available monthly values; needs at least 2 of 3 months,https://www.bls.gov/lau/
