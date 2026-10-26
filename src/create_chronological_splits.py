@@ -79,13 +79,20 @@ test_end_number = int(test_end[:4]) * 4 + (int(test_end[-1]) - 1)
 # 4. BUILD THE THREE LEAKAGE-CONTROLLED DATASETS
 # =============================================================================
 
-# Remove all three-year-ahead targets. They are not part of this modeling task
-# and must never be available as one-year model predictors.
-columns_to_remove = [
-    "zhvi_growth_ahead_3y_pct",
-    "zori_growth_ahead_3y_pct",
-    "_split_quarter_number",
+# Remove every feature or label whose name describes a three-year historical
+# or forward-looking housing-growth horizon. The project no longer evaluates
+# three-year prediction, so these columns should not enter the one-year files
+# as candidate predictors by accident.
+#
+# Do not remove every column containing the characters "3y":
+# nat_treasury_3y_pct is an observed current-quarter Treasury yield, not a
+# three-year-ahead housing feature, and remains eligible for one-year models.
+three_year_housing_columns = [
+    column
+    for column in panel.columns
+    if "prev_3y" in column or "ahead_3y" in column
 ]
+columns_to_remove = three_year_housing_columns + ["_split_quarter_number"]
 output_columns = [column for column in panel.columns if column not in columns_to_remove]
 
 # Keep rows only when both one-year housing outcomes are observed. Predictor
@@ -140,6 +147,23 @@ assert len(test_data) == 72, "Expected 72 test rows (8 quarters x 9 counties)."
 assert set(train_data["county_fips"]) == expected_counties
 assert set(validation_data["county_fips"]) == expected_counties
 assert set(test_data["county_fips"]) == expected_counties
+
+# The one-year modeling files must contain no three-year historical features or
+# forward-looking three-year labels. This protects downstream notebooks that
+# choose numeric predictors programmatically.
+for split_name, split_data in {
+    "train": train_data,
+    "validation": validation_data,
+    "test": test_data,
+}.items():
+    disallowed_columns = [
+        column
+        for column in split_data.columns
+        if "prev_3y" in column or "ahead_3y" in column
+    ]
+    assert not disallowed_columns, (
+        f"{split_name} includes three-year modeling columns: {disallowed_columns}"
+    )
 
 
 # =============================================================================

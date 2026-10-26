@@ -66,8 +66,17 @@ Consequently, training targets end in 2020Q4 before validation starts in
 2023Q1. Model fitting and model selection therefore cannot use Zillow outcomes
 from the test prediction period.
 
-The split script also removes all three-year-ahead target columns from every
-output file. They cannot become accidental one-year model predictors.
+The split script removes every three-year housing-growth modeling field from
+every output file:
+
+- forward-looking three-year labels, such as `zhvi_growth_ahead_3y_pct`;
+- historical three-year housing-growth features, such as
+  `zhvi_growth_prev_3y_pct` and `zori_growth_prev_3y_pct`.
+
+This prevents discontinued three-year targets and features from becoming
+accidental one-year model predictors. It intentionally retains
+`nat_treasury_3y_pct`: that field is the Treasury yield observed in the current
+quarter, not a three-year-ahead housing feature.
 
 ## Modeling use
 
@@ -90,7 +99,16 @@ target_columns = [
     "zhvi_growth_ahead_1y_pct",
     "zori_growth_ahead_1y_pct",
 ]
-feature_columns = [column for column in train_df.columns if column not in target_columns]
+three_year_housing_columns = [
+    column
+    for column in train_df.columns
+    if "prev_3y" in column or "ahead_3y" in column
+]
+feature_columns = [
+    column
+    for column in train_df.columns
+    if column not in target_columns + three_year_housing_columns
+]
 
 X_train = train_df[feature_columns]
 y_train = train_df["zhvi_growth_ahead_1y_pct"]
