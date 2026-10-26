@@ -53,7 +53,7 @@ panel.
 
 ## Feature Engineering
 
-The source panel intentionally contains only current source variables and source-quality fields. `src/build_master_county_quarter_features.py` creates the separate model-ready feature panel and documents one-year and three-year historical features and prediction targets in [checkpoint2_feature_engineering.md](checkpoint2_feature_engineering.md). This keeps forward-looking labels out of the source panel and prevents them from being treated as predictors.
+The source panel intentionally contains only current source variables and source-quality fields. `src/build_master_county_quarter_features.py` creates the separate model-ready feature panel and documents one-year historical features and prediction targets in [checkpoint2_feature_engineering.md](checkpoint2_feature_engineering.md). This keeps forward-looking labels out of the source panel and prevents them from being treated as predictors.
 
 ## Checks Performed by the Script
 

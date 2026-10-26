@@ -66,17 +66,16 @@ Consequently, training targets end in 2020Q4 before validation starts in
 2023Q1. Model fitting and model selection therefore cannot use Zillow outcomes
 from the test prediction period.
 
-The split script removes every three-year housing-growth modeling field from
-every output file:
+The feature-engineering script, rather than the split script, removes the
+discontinued three-year housing fields at their source:
+`zhvi_growth_prev_3y_pct`, `zori_growth_prev_3y_pct`,
+`zhvi_growth_ahead_3y_pct`, and `zori_growth_ahead_3y_pct`. The split script
+checks that none is present before it creates model files. This lets reviewers
+rebuild the feature panel and the splits without relying on a late-stage patch.
 
-- forward-looking three-year labels, such as `zhvi_growth_ahead_3y_pct`;
-- historical three-year housing-growth features, such as
-  `zhvi_growth_prev_3y_pct` and `zori_growth_prev_3y_pct`.
-
-This prevents discontinued three-year targets and features from becoming
-accidental one-year model predictors. It intentionally retains
-`nat_treasury_3y_pct`: that field is the Treasury yield observed in the current
-quarter, not a three-year-ahead housing feature.
+This decision does **not** apply to `nat_treasury_3y_pct`: that field is the
+Treasury yield observed in the current quarter, not a three-year-ahead housing
+feature.
 
 ## Modeling use
 
@@ -99,16 +98,13 @@ target_columns = [
     "zhvi_growth_ahead_1y_pct",
     "zori_growth_ahead_1y_pct",
 ]
-three_year_housing_columns = [
+disallowed_horizon_columns = [
     column
     for column in train_df.columns
     if "prev_3y" in column or "ahead_3y" in column
 ]
-feature_columns = [
-    column
-    for column in train_df.columns
-    if column not in target_columns + three_year_housing_columns
-]
+assert not disallowed_horizon_columns
+feature_columns = [column for column in train_df.columns if column not in target_columns]
 
 X_train = train_df[feature_columns]
 y_train = train_df["zhvi_growth_ahead_1y_pct"]

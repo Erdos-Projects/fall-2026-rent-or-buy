@@ -79,21 +79,19 @@ test_end_number = int(test_end[:4]) * 4 + (int(test_end[-1]) - 1)
 # 4. BUILD THE THREE LEAKAGE-CONTROLLED DATASETS
 # =============================================================================
 
-# Remove every feature or label whose name describes a three-year historical
-# or forward-looking housing-growth horizon. The project no longer evaluates
-# three-year prediction, so these columns should not enter the one-year files
-# as candidate predictors by accident.
-#
-# Do not remove every column containing the characters "3y":
-# nat_treasury_3y_pct is an observed current-quarter Treasury yield, not a
-# three-year-ahead housing feature, and remains eligible for one-year models.
-three_year_housing_columns = [
-    column
-    for column in panel.columns
+# The feature-engineering script owns feature definitions. Its canonical panel
+# must already exclude discontinued three-year housing features and labels.
+# This check prevents a stale panel from silently reaching model development.
+disallowed_horizon_columns = [
+    column for column in panel.columns
     if "prev_3y" in column or "ahead_3y" in column
 ]
-columns_to_remove = three_year_housing_columns + ["_split_quarter_number"]
-output_columns = [column for column in panel.columns if column not in columns_to_remove]
+assert not disallowed_horizon_columns, (
+    "Regenerate the feature panel before splitting; it contains discontinued "
+    f"three-year housing columns: {disallowed_horizon_columns}"
+)
+
+output_columns = [column for column in panel.columns if column != "_split_quarter_number"]
 
 # Keep rows only when both one-year housing outcomes are observed. Predictor
 # missingness is retained for later, model-specific handling.
