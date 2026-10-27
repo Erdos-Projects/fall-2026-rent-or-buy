@@ -59,10 +59,8 @@ assert panel.groupby("county_fips")["quarter_end_date"].max().eq("2025-12-31").a
 for level_column, prefix in [("zhvi_usd", "zhvi"), ("zori_usd_month", "zori")]:
     previous_quarter = panel.groupby("county_fips")[level_column].shift(1)
     previous_year = panel.groupby("county_fips")[level_column].shift(4)
-    previous_three_years = panel.groupby("county_fips")[level_column].shift(12)
     panel[f"{prefix}_growth_qoq_pct"] = 100 * (panel[level_column] / previous_quarter - 1)
     panel[f"{prefix}_growth_prev_1y_pct"] = 100 * (panel[level_column] / previous_year - 1)
-    panel[f"{prefix}_growth_prev_3y_pct"] = 100 * (panel[level_column] / previous_three_years - 1)
 
 
 # =============================================================================
@@ -101,14 +99,12 @@ panel["rent_to_income_ratio"] = (12 * panel["zori_usd_month"]) / panel["median_h
 
 
 # =============================================================================
-# 6. CREATE FORWARD-LOOKING LABELS (TARGETS ONLY; NEVER MODEL INPUTS)
+# 6. CREATE ONE-YEAR-AHEAD LABELS (TARGETS ONLY; NEVER MODEL INPUTS)
 # =============================================================================
 
 for level_column, prefix in [("zhvi_usd", "zhvi"), ("zori_usd_month", "zori")]:
     next_year = panel.groupby("county_fips")[level_column].shift(-4)
-    next_three_years = panel.groupby("county_fips")[level_column].shift(-12)
     panel[f"{prefix}_growth_ahead_1y_pct"] = 100 * (next_year / panel[level_column] - 1)
-    panel[f"{prefix}_growth_ahead_3y_pct"] = 100 * (next_three_years / panel[level_column] - 1)
 
 
 # =============================================================================
@@ -123,8 +119,6 @@ for ratio_column in ["price_to_rent_ratio", "price_to_income_ratio", "rent_to_in
 
 assert panel["zhvi_growth_ahead_1y_pct"].notna().sum() == 360
 assert panel["zori_growth_ahead_1y_pct"].notna().sum() == 360
-assert panel["zhvi_growth_ahead_3y_pct"].notna().sum() == 288
-assert panel["zori_growth_ahead_3y_pct"].notna().sum() == 288
 
 missingness = pd.DataFrame(
     {
@@ -147,18 +141,15 @@ missingness = pd.DataFrame(
 )
 
 feature_columns = [
-    "zhvi_growth_qoq_pct", "zhvi_growth_prev_1y_pct", "zhvi_growth_prev_3y_pct",
-    "zori_growth_qoq_pct", "zori_growth_prev_1y_pct", "zori_growth_prev_3y_pct",
+    "zhvi_growth_qoq_pct", "zhvi_growth_prev_1y_pct",
+    "zori_growth_qoq_pct", "zori_growth_prev_1y_pct",
     "mortgage_rate_change_prev_1y_pp", "treasury_1y_change_prev_1y_pp", "cty_unemployment_change_prev_1y_pp",
     "state_unemployment_change_prev_1y_pp", "inflation_change_prev_1y_pp",
     "population_growth_prev_1y_pct", "income_growth_prev_1y_pct",
     "housing_units_growth_prev_1y_pct", "vacant_units_growth_prev_1y_pct",
     "price_to_rent_ratio", "price_to_income_ratio", "rent_to_income_ratio",
 ]
-target_columns = [
-    "zhvi_growth_ahead_1y_pct", "zori_growth_ahead_1y_pct",
-    "zhvi_growth_ahead_3y_pct", "zori_growth_ahead_3y_pct",
-]
+target_columns = ["zhvi_growth_ahead_1y_pct", "zori_growth_ahead_1y_pct"]
 quality_summary = panel[feature_columns + target_columns].describe().T.reset_index(names="variable_name")
 quality_summary.to_csv(QUALITY_SUMMARY_FILE, index=False)
 
@@ -202,10 +193,8 @@ source_dictionary = pd.read_csv(SOURCE_DICTIONARY_FILE).set_index("variable_name
 feature_definitions = {
     "zhvi_growth_qoq_pct": ("Housing momentum", "Derived from Zillow", "growth", "prev", "percent", "100 × (ZHVI_t / ZHVI_t-1 − 1)", "1 quarter", "Yes"),
     "zhvi_growth_prev_1y_pct": ("Housing momentum", "Derived from Zillow", "growth", "prev", "percent", "100 × (ZHVI_t / ZHVI_t-4 − 1)", "4 quarters", "Yes"),
-    "zhvi_growth_prev_3y_pct": ("Housing momentum", "Derived from Zillow", "growth", "prev", "percent", "100 × (ZHVI_t / ZHVI_t-12 − 1)", "12 quarters", "Yes"),
     "zori_growth_qoq_pct": ("Housing momentum", "Derived from Zillow", "growth", "prev", "percent", "100 × (ZORI_t / ZORI_t-1 − 1)", "1 quarter", "Yes"),
     "zori_growth_prev_1y_pct": ("Housing momentum", "Derived from Zillow", "growth", "prev", "percent", "100 × (ZORI_t / ZORI_t-4 − 1)", "4 quarters", "Yes"),
-    "zori_growth_prev_3y_pct": ("Housing momentum", "Derived from Zillow", "growth", "prev", "percent", "100 × (ZORI_t / ZORI_t-12 − 1)", "12 quarters", "Yes"),
     "mortgage_rate_change_prev_1y_pp": ("Economic changes", "Derived from FRED", "change", "prev", "percentage points", "Mortgage rate_t − Mortgage rate_t-4", "4 quarters", "Yes"),
     "treasury_1y_change_prev_1y_pp": ("Economic changes", "Derived from FRED", "change", "prev", "percentage points", "1-year Treasury yield_t − yield_t-4", "4 quarters", "Yes"),
     "cty_unemployment_change_prev_1y_pp": ("Economic changes", "Derived from BLS LAUS", "change", "prev", "percentage points", "County unemployment rate_t − rate_t-4", "4 quarters", "Yes"),
@@ -220,8 +209,6 @@ feature_definitions = {
     "rent_to_income_ratio": ("Affordability", "Derived from Zillow and ACS", "ratio", "current", "ratio", "(12 × monthly ZORI) / median household income", "Current quarter", "Conditional: ACS release lag"),
     "zhvi_growth_ahead_1y_pct": ("Prediction targets", "Derived from Zillow", "target", "ahead", "percent", "100 × (ZHVI_t+4 / ZHVI_t − 1)", "4 quarters ahead", "No — label only"),
     "zori_growth_ahead_1y_pct": ("Prediction targets", "Derived from Zillow", "target", "ahead", "percent", "100 × (ZORI_t+4 / ZORI_t − 1)", "4 quarters ahead", "No — label only"),
-    "zhvi_growth_ahead_3y_pct": ("Prediction targets", "Derived from Zillow", "target", "ahead", "percent", "100 × (ZHVI_t+12 / ZHVI_t − 1)", "12 quarters ahead", "No — label only"),
-    "zori_growth_ahead_3y_pct": ("Prediction targets", "Derived from Zillow", "target", "ahead", "percent", "100 × (ZORI_t+12 / ZORI_t − 1)", "12 quarters ahead", "No — label only"),
 }
 
 rows = []
@@ -271,6 +258,4 @@ feature_dictionary.to_csv(FEATURE_DICTIONARY_FILE, index=False)
 
 print(f"Wrote {FEATURE_PANEL_FILE.relative_to(ROOT)} with {len(panel)} rows and {len(panel.columns)} columns.")
 print(f"Labeled rows: 1y ZHVI={panel['zhvi_growth_ahead_1y_pct'].notna().sum()}, "
-      f"1y ZORI={panel['zori_growth_ahead_1y_pct'].notna().sum()}, "
-      f"3y ZHVI={panel['zhvi_growth_ahead_3y_pct'].notna().sum()}, "
-      f"3y ZORI={panel['zori_growth_ahead_3y_pct'].notna().sum()}.")
+      f"1y ZORI={panel['zori_growth_ahead_1y_pct'].notna().sum()}.")
