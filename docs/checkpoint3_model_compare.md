@@ -75,29 +75,35 @@ The figures below compare the nine-county average actual test series with model-
 
 ![ZHVI one-year-ahead growth predictions on the test period](../results/checkpoint3_model_compare/zhvi_1y_ahead_growth_test_prediction_comparison.png)
 
-*Figure 1. Average one-year-ahead ZHVI growth for 2023–2024 test origins. Compare each model's colored forecast with the black observed growth line; the shaded band shows its 95% interval. Values are percentages, and panels identify whether quarter indicators were selected.*
+*Figure 1. The y-axis is the mean one-year-ahead ZHVI growth across the nine counties, in percent, calculated as 100 × (ZHVI at t+4 quarters / ZHVI at t − 1). The black line shows observed growth; colored lines show each model's forecast, and shaded areas show 95% uncertainty intervals.*
 
 ### ZORI: one-year-ahead target growth
 
 ![ZORI one-year-ahead growth predictions on the test period](../results/checkpoint3_model_compare/zori_1y_ahead_growth_test_prediction_comparison.png)
 
-*Figure 2. Average one-year-ahead ZORI growth for 2023–2024 test origins. The black line is observed growth, each colored line is a model forecast, and the shaded area is its 95% interval. Values are percentages; compare forecast direction and magnitude with the observed series.*
+*Figure 2. The y-axis is the mean one-year-ahead ZORI growth across the nine counties, in percent, calculated as 100 × (ZORI at t+4 quarters / ZORI at t − 1). The black line shows observed growth; colored lines show model forecasts, with 95% uncertainty intervals shaded.*
 
 ### Model-specific level forecasts
 
 ![ZHVI test-period level forecasts](../results/checkpoint3_model_compare/zhvi_test_prediction_comparison.png)
 
-*Figure 3. Model forecasts of average future ZHVI levels over the test period, shown in U.S. dollars. Pooled growth-model forecasts are converted back to levels for comparison with ARIMA-family level forecasts. The shaded bands show model-specific 95% uncertainty intervals.*
+*Figure 3. The y-axis is the mean future ZHVI level across the nine counties, in U.S. dollars. Pooled growth-model forecasts are converted to this level scale; ARIMA-family models forecast levels directly. Shading marks each model's 95% uncertainty interval.*
 
 ![ZORI test-period level forecasts](../results/checkpoint3_model_compare/zori_test_prediction_comparison.png)
 
-*Figure 4. Model forecasts of average future ZORI levels over the test period, shown in U.S. dollars per month. Pooled growth-model forecasts are converted back to levels; ARIMA-family models forecast levels directly. The shaded bands are model-specific 95% uncertainty intervals.*
+*Figure 4. The y-axis is the mean future ZORI level across the nine counties, in U.S. dollars per month. Pooled growth-model forecasts are converted to this level scale; ARIMA-family models forecast levels directly. Shading marks each model's 95% uncertainty interval.*
 
-## Supplementary results
+## Appendix: additional model-specific forecasts
 
-County-level prediction plots provide more detail about performance differences across counties, but they are not needed for the main model comparison above. They remain available as supplementary files: [ZHVI county-level forecasts](../results/checkpoint3_model_compare/zhvi/test_model_specific_predictions.png) and [ZORI county-level forecasts](../results/checkpoint3_model_compare/zori/test_model_specific_predictions.png).
+These per-target figures provide an additional view of model-specific forecasts. Their y-axes use the same future-level units as Figures 3–4: the average future ZHVI level in U.S. dollars for Figure 5, and the average future ZORI level in U.S. dollars per month for Figure 6. In both figures, black lines are observed county averages, colored lines are model prediction averages, and shaded areas show 95% uncertainty intervals.
 
-Person 4's separate time-series experiment is also preserved under [`results/checkpoint3_model_compare/time_series/`](../results/checkpoint3_model_compare/time_series/). Its comparison plot is available [here](../results/checkpoint3_model_compare/time_series/level_experiment_test_prediction_comparison.png); it uses a distinct model setup and is not part of the main figures.
+![Additional ZHVI model-specific forecasts](../results/checkpoint3_model_compare/zhvi/test_model_specific_predictions.png)
+
+*Figure 5. The y-axis is average future ZHVI across the nine counties, in U.S. dollars. This matches Figure 3's unit and aggregation; this appendix view retains the additional per-target model panels.*
+
+![Additional ZORI model-specific forecasts](../results/checkpoint3_model_compare/zori/test_model_specific_predictions.png)
+
+*Figure 6. The y-axis is average future ZORI across the nine counties, in U.S. dollars per month. This matches Figure 4's unit and aggregation; this appendix view retains the additional per-target model panels.*
 
 ## Limitations and interpretation
 
@@ -109,4 +115,4 @@ Person 4's separate time-series experiment is also preserved under [`results/che
 
 ## Reproducibility and artifacts
 
-Run [`notebooks/pooled_model_comparison_zhvi_1y.ipynb`](../notebooks/pooled_model_comparison_zhvi_1y.ipynb) from the project directory. Input data and predictor definitions are loaded from `processed/` and `metadata/`. The corresponding metric tables, prediction series, interval tables, and plots are stored in [`results/checkpoint3_model_compare/`](../results/checkpoint3_model_compare/). Person 3's original growth-target time-series results remain in [`results/checkpoint3_time_series/`](../results/checkpoint3_time_series/); Person 4's separate time-series experiment outputs are in [`results/checkpoint3_model_compare/time_series/`](../results/checkpoint3_model_compare/time_series/).
+Run [`notebooks/pooled_model_comparison_zhvi_1y.ipynb`](../notebooks/pooled_model_comparison_zhvi_1y.ipynb) from the project directory. Input data and predictor definitions are loaded from `processed/` and `metadata/`. The corresponding metric tables, prediction series, interval tables, and plots are stored in [`results/checkpoint3_model_compare/`](../results/checkpoint3_model_compare/). Person 3's original growth-target time-series results remain in [`results/checkpoint3_time_series/`](../results/checkpoint3_time_series/). The early Person 4 time-series experiment was removed from the results folder.
