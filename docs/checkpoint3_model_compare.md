@@ -1,5 +1,20 @@
 # Checkpoint 3 Model Comparison
 
+## What each model predicts
+
+| # | Model | Model-fitting target | Forecast shown in the main comparison |
+|---:|---|---|---|
+| 1 | Mean baseline | One-year-ahead ZHVI/ZORI growth | Predict growth, then convert it to the Zillow level at t+4 |
+| 2 | LASSO | One-year-ahead ZHVI/ZORI growth | Predict growth, then convert it to the Zillow level at t+4 |
+| 3 | Elastic Net | One-year-ahead ZHVI/ZORI growth | Predict growth, then convert it to the Zillow level at t+4 |
+| 4 | Ridge | One-year-ahead ZHVI/ZORI growth | Predict growth, then convert it to the Zillow level at t+4 |
+| 5 | XGBoost | One-year-ahead ZHVI/ZORI growth | Predict growth, then convert it to the Zillow level at t+4 |
+| 6 | Pooled AR(1) dynamic panel | One-year-ahead ZHVI/ZORI growth | Predict growth, then convert it to the Zillow level at t+4 |
+| 7 | ARIMAX | Original ZHVI/ZORI level at t+4 | Forecast the level directly |
+| 8 | ARIMA | Original ZHVI/ZORI level at t+4 | Forecast the level directly |
+
+Figures 1–2 show one-year-ahead growth. Figures 3–4 show the common future-level scale. For models 1–6: `predicted level(t+4) = level(t) × (1 + predicted growth(t+4) / 100)`. ARIMA and ARIMAX forecast the level directly.
+
 ## Goal and evaluation design
 
 We compared pooled regression and time-series approaches for one-year-ahead housing outcomes in the nine Ohio counties. For the pooled growth models, the target is the engineered one-year-ahead percentage growth (`zhvi_growth_ahead_1y_pct` or `zori_growth_ahead_1y_pct`). Predicted growth is converted to the Zillow value one year later using the observed origin-quarter value:
@@ -75,35 +90,47 @@ The figures below compare the nine-county average actual test series with model-
 
 ![ZHVI one-year-ahead growth predictions on the test period](../results/checkpoint3_model_compare/zhvi_1y_ahead_growth_test_prediction_comparison.png)
 
-*Figure 1. The y-axis is the mean one-year-ahead ZHVI growth across the nine counties, in percent, calculated as 100 × (ZHVI at t+4 quarters / ZHVI at t − 1). The black line shows observed growth; colored lines show each model's forecast, and shaded areas show 95% uncertainty intervals.*
+*Figure 1. The y-axis is average one-year-ahead ZHVI growth across the nine counties, in percent: 100 × (ZHVI at t+4 quarters / ZHVI at t − 1). Black shows observed growth; color shows model predictions; shading shows 95% uncertainty intervals. Panel subtitles identify each selected specification, predictors where applicable, and quarter terms.*
 
 ### ZORI: one-year-ahead target growth
 
 ![ZORI one-year-ahead growth predictions on the test period](../results/checkpoint3_model_compare/zori_1y_ahead_growth_test_prediction_comparison.png)
 
-*Figure 2. The y-axis is the mean one-year-ahead ZORI growth across the nine counties, in percent, calculated as 100 × (ZORI at t+4 quarters / ZORI at t − 1). The black line shows observed growth; colored lines show model forecasts, with 95% uncertainty intervals shaded.*
+*Figure 2. The y-axis is average one-year-ahead ZORI growth across the nine counties, in percent: 100 × (ZORI at t+4 quarters / ZORI at t − 1). Black shows observed growth; color shows model predictions; shading shows 95% uncertainty intervals. Panel subtitles identify each selected specification, predictors where applicable, and quarter terms.*
 
 ### Model-specific level forecasts
 
 ![ZHVI test-period level forecasts](../results/checkpoint3_model_compare/zhvi_test_prediction_comparison.png)
 
-*Figure 3. The y-axis is the mean future ZHVI level across the nine counties, in U.S. dollars. Pooled growth-model forecasts are converted to this level scale; ARIMA-family models forecast levels directly. Shading marks each model's 95% uncertainty interval.*
+*Figure 3. The y-axis is average future ZHVI across the nine counties, in U.S. dollars. Models 1–6 predict one-year growth and convert it to the future level; ARIMAX and ARIMA forecast levels directly. Shading marks 95% uncertainty intervals. Panel subtitles give selected model orders/hyperparameters, predictor bundle where applicable, and quarter terms.*
 
 ![ZORI test-period level forecasts](../results/checkpoint3_model_compare/zori_test_prediction_comparison.png)
 
-*Figure 4. The y-axis is the mean future ZORI level across the nine counties, in U.S. dollars per month. Pooled growth-model forecasts are converted to this level scale; ARIMA-family models forecast levels directly. Shading marks each model's 95% uncertainty interval.*
+*Figure 4. The y-axis is average future ZORI across the nine counties, in U.S. dollars per month. Models 1–6 predict one-year growth and convert it to the future level; ARIMAX and ARIMA forecast levels directly. Shading marks 95% uncertainty intervals. Panel subtitles give selected model orders/hyperparameters, predictor bundle where applicable, and quarter terms.*
 
-## Appendix: additional model-specific forecasts
+## Appendix: separate direct-level experiment
 
-These per-target figures provide an additional view of model-specific forecasts. Their y-axes use the same future-level units as Figures 3–4: the average future ZHVI level in U.S. dollars for Figure 5, and the average future ZORI level in U.S. dollars per month for Figure 6. In both figures, black lines are observed county averages, colored lines are model prediction averages, and shaded areas show 95% uncertainty intervals.
+Figures 5–6 come from a separate preliminary experiment, not the primary growth-to-level comparison in Figures 1–4. In this appendix experiment, **all eight models were fit directly to future levels**. Each Figure 5 panel predicts `zhvi_usd_ahead_1y`; each Figure 6 panel predicts `zori_usd_month_ahead_1y`. Thus the six non-time-series models here also fit levels, not growth rates. This different setup explains why the curves and rankings can differ from Figures 3–4. Treat these plots as exploratory; they are not used for primary model selection.
 
-![Additional ZHVI model-specific forecasts](../results/checkpoint3_model_compare/zhvi/test_model_specific_predictions.png)
+| Model shown in Figures 5–6 | Target fitted in this separate experiment |
+|---|---|
+| Mean baseline | Direct one-year-ahead ZHVI or ZORI level |
+| LASSO regression | Direct one-year-ahead ZHVI or ZORI level |
+| Elastic Net regression | Direct one-year-ahead ZHVI or ZORI level |
+| Ridge regression | Direct one-year-ahead ZHVI or ZORI level |
+| XGBoost | Direct one-year-ahead ZHVI or ZORI level |
+| Pooled AR(1) dynamic panel | Direct one-year-ahead ZHVI or ZORI level |
+| ARIMAX | Direct one-year-ahead ZHVI or ZORI level |
+| ARIMA | Direct one-year-ahead ZHVI or ZORI level |
 
-*Figure 5. The y-axis is average future ZHVI across the nine counties, in U.S. dollars. This matches Figure 3's unit and aggregation; this appendix view retains the additional per-target model panels.*
+![Separate direct-level ZHVI forecasts](../results/checkpoint3_model_compare/zhvi/test_model_specific_predictions.png)
 
-![Additional ZORI model-specific forecasts](../results/checkpoint3_model_compare/zori/test_model_specific_predictions.png)
+*Figure 5. Every model directly predicts one-year-ahead ZHVI level. The y-axis is average future ZHVI across nine counties, in U.S. dollars; black is observed, color is predicted, and shading shows 95% intervals. This is the separate direct-level experiment above.*
 
-*Figure 6. The y-axis is average future ZORI across the nine counties, in U.S. dollars per month. This matches Figure 4's unit and aggregation; this appendix view retains the additional per-target model panels.*
+![Separate direct-level ZORI forecasts](../results/checkpoint3_model_compare/zori/test_model_specific_predictions.png)
+
+*Figure 6. Every model directly predicts one-year-ahead ZORI level. The y-axis is average future ZORI across nine counties, in U.S. dollars per month; black is observed, color is predicted, and shading shows 95% intervals. This is the separate direct-level experiment above.*
+
 
 ## Limitations and interpretation
 
