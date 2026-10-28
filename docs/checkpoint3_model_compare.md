@@ -103,13 +103,13 @@ The figures below compare the nine-county average actual test series with model-
 
 *Figure 6. County-level ZORI forecasts and intervals for the held-out test quarters. Compare the county-specific prediction paths and shaded intervals to see heterogeneity hidden by the nine-county average.*
 
-## Person 4 exploratory time-series level experiment
+## Person 4 separate time-series experiment
 
-Person 4's separate experiment models original ZHVI and ZORI levels with pooled and time-series approaches. Its files are kept in [`results/checkpoint3_model_compare/time_series/`](../results/checkpoint3_model_compare/time_series/) and do not overlap with Person 3's growth-target results.
+Person 4's separate experiment compares pooled regression and time-series approaches for one-year-ahead ZHVI growth. Its files are stored in [`results/checkpoint3_model_compare/time_series/`](../results/checkpoint3_model_compare/time_series/), apart from Person 3's growth-target experiment in `results/checkpoint3_time_series/`. The outputs use a different modeling setup and are kept separate.
 
-![Person 4 level-target time-series model comparison](../results/checkpoint3_model_compare/time_series/level_experiment_test_prediction_comparison.png)
+![Person 4 time-series model comparison](../results/checkpoint3_model_compare/time_series/level_experiment_test_prediction_comparison.png)
 
-*Figure 7. Person 4's exploratory level-target comparison. Each panel shows the average observed Zillow level and a model's average forecast across test quarters; shaded regions are model-specific 95% uncertainty bands. This is a separate analysis from Figures 1–6 and should be interpreted using its own model setup and selection results.*
+*Figure 7. Person 4's model-by-model comparison of average one-year-ahead ZHVI growth for the 2023–2024 test origins. In each panel, the black line is observed growth, the colored line is predicted growth, and the shaded region is the model-specific 95% interval. The horizontal axis is the prediction-origin quarter and the vertical axis is growth in percent. The `level_experiment_` filename prefix is retained from the original export; the plotted target is ZHVI growth, as shown on the y-axis.*
 
 ## Limitations and interpretation
 
@@ -121,4 +121,4 @@ Person 4's separate experiment models original ZHVI and ZORI levels with pooled 
 
 ## Reproducibility and artifacts
 
-Run [`notebooks/pooled_model_comparison_zhvi_1y.ipynb`](../notebooks/pooled_model_comparison_zhvi_1y.ipynb) from the project directory. Input data and predictor definitions are loaded from `processed/` and `metadata/`. The corresponding metric tables, prediction series, interval tables, and plots are stored in [`results/checkpoint3_model_compare/`](../results/checkpoint3_model_compare/). Person 3's original growth-target time-series results remain in [`results/checkpoint3_time_series/`](../results/checkpoint3_time_series/); Person 4's distinct level-target time-series experiment outputs are in [`results/checkpoint3_model_compare/time_series/`](../results/checkpoint3_model_compare/time_series/).
+Run [`notebooks/pooled_model_comparison_zhvi_1y.ipynb`](../notebooks/pooled_model_comparison_zhvi_1y.ipynb) from the project directory. Input data and predictor definitions are loaded from `processed/` and `metadata/`. The corresponding metric tables, prediction series, interval tables, and plots are stored in [`results/checkpoint3_model_compare/`](../results/checkpoint3_model_compare/). Person 3's original growth-target time-series results remain in [`results/checkpoint3_time_series/`](../results/checkpoint3_time_series/); Person 4's separate time-series experiment outputs are in [`results/checkpoint3_model_compare/time_series/`](../results/checkpoint3_model_compare/time_series/).
