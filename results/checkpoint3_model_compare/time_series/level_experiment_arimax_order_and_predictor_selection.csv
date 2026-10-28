@@ -1,0 +1,37 @@
+family,predictor_bundle,predictors,order,p,d,q,complete_validation_forecasts,failed_fits,MAE,RMSE,R2
+ARIMAX,Mortgage + county unemployment,"nat_mortgage_rate_30y_pct, cty_unemployment_rate_pct","(0, 1, 1)",0,1,1,True,0,2.441347743356806,2.8419431723145854,-1.7720360300824023
+ARIMAX,Mortgage rate,nat_mortgage_rate_30y_pct,"(0, 1, 1)",0,1,1,True,0,2.4727599109073086,2.8624218247613196,-1.8121297888997403
+ARIMAX,Mortgage + county unemployment,"nat_mortgage_rate_30y_pct, cty_unemployment_rate_pct","(0, 1, 0)",0,1,0,True,0,2.6514943046232258,3.0204405082900325,-2.1311845402905587
+ARIMAX,Mortgage rate,nat_mortgage_rate_30y_pct,"(0, 1, 0)",0,1,0,True,0,2.654006245013133,3.0235772219688877,-2.137691358888848
+ARIMAX,Mortgage rate,nat_mortgage_rate_30y_pct,"(1, 1, 1)",1,1,1,True,0,2.724645310971888,3.1654991141896387,-2.4391608195876837
+ARIMAX,Mortgage + inflation,"nat_mortgage_rate_30y_pct, nat_inflation_yoy_pct","(1, 1, 1)",1,1,1,True,0,2.8268279750214087,3.2231404911301715,-2.5655502707675475
+ARIMAX,Mortgage + inflation,"nat_mortgage_rate_30y_pct, nat_inflation_yoy_pct","(0, 1, 1)",0,1,1,True,0,2.992091676368765,3.264690546158546,-2.658071038127119
+ARIMAX,Mortgage rate,nat_mortgage_rate_30y_pct,"(1, 1, 0)",1,1,0,True,0,2.924426000071458,3.3115914418248034,-2.7639304935754403
+ARIMAX,Mortgage + inflation,"nat_mortgage_rate_30y_pct, nat_inflation_yoy_pct","(1, 1, 0)",1,1,0,True,0,2.909806267244532,3.3795812928580915,-2.9200705826952658
+ARIMAX,Mortgage + county unemployment,"nat_mortgage_rate_30y_pct, cty_unemployment_rate_pct","(1, 1, 0)",1,1,0,True,0,3.0508145125458213,3.431462032059091,-3.0413502201280185
+ARIMAX,Mortgage + inflation,"nat_mortgage_rate_30y_pct, nat_inflation_yoy_pct","(0, 1, 0)",0,1,0,True,0,3.1962373525219774,3.4884415794054267,-3.176678054447959
+ARIMAX,Mortgage + county unemployment,"nat_mortgage_rate_30y_pct, cty_unemployment_rate_pct","(1, 1, 1)",1,1,1,True,0,3.3219604268428915,3.9681070595690917,-4.4042428125139805
+ARIMAX,Mortgage + inflation,"nat_mortgage_rate_30y_pct, nat_inflation_yoy_pct","(1, 0, 1)",1,0,1,True,0,3.455406819888782,4.142280509507338,-4.889075234202584
+ARIMAX,Mortgage + price-to-rent,"nat_mortgage_rate_30y_pct, price_to_rent_ratio","(1, 1, 0)",1,1,0,True,0,3.4983051079363032,4.216400002120996,-5.101711949695237
+ARIMAX,Mortgage rate,nat_mortgage_rate_30y_pct,"(1, 0, 1)",1,0,1,True,0,3.5546211680830075,4.267104636546305,-5.249347534708262
+ARIMAX,Mortgage + inflation,"nat_mortgage_rate_30y_pct, nat_inflation_yoy_pct","(1, 0, 0)",1,0,0,True,0,4.030606356973688,4.372613251339404,-5.5622115212475505
+ARIMAX,Mortgage + county unemployment,"nat_mortgage_rate_30y_pct, cty_unemployment_rate_pct","(1, 0, 1)",1,0,1,True,0,3.746538058845888,4.450429478371377,-5.797855661283089
+ARIMAX,Mortgage rate,nat_mortgage_rate_30y_pct,"(1, 0, 0)",1,0,0,True,0,4.184331581891426,4.664334694500163,-6.467023258984107
+ARIMAX,Mortgage + county unemployment,"nat_mortgage_rate_30y_pct, cty_unemployment_rate_pct","(1, 0, 0)",1,0,0,True,0,4.314507477742549,4.735013702401821,-6.695034513525745
+ARIMAX,Mortgage + price-to-rent,"nat_mortgage_rate_30y_pct, price_to_rent_ratio","(0, 1, 1)",0,1,1,True,0,4.636091889775897,5.066063015767534,-7.808648230949082
+ARIMAX,Mortgage + price-to-rent,"nat_mortgage_rate_30y_pct, price_to_rent_ratio","(0, 1, 0)",0,1,0,True,0,5.03108513502146,5.3752486009971,-8.91665493281429
+ARIMAX,Mortgage rate,nat_mortgage_rate_30y_pct,"(2, 0, 0)",2,0,0,True,0,5.377457052039632,5.934249166194563,-11.086474683299112
+ARIMAX,Mortgage + county unemployment,"nat_mortgage_rate_30y_pct, cty_unemployment_rate_pct","(2, 0, 0)",2,0,0,True,0,5.578472339165282,6.013931726475328,-11.413237898650165
+ARIMAX,Mortgage + inflation,"nat_mortgage_rate_30y_pct, nat_inflation_yoy_pct","(2, 0, 0)",2,0,0,True,0,5.607243033585034,6.155277177755438,-12.003591579105885
+ARIMAX,Mortgage + price-to-rent,"nat_mortgage_rate_30y_pct, price_to_rent_ratio","(1, 0, 0)",1,0,0,True,0,5.664882918459049,6.851107753506289,-15.109782909275157
+ARIMAX,Mortgage + price-to-rent,"nat_mortgage_rate_30y_pct, price_to_rent_ratio","(1, 1, 1)",1,1,1,True,0,4.736578646382253,7.14653718701053,-16.529091484338878
+ARIMAX,Mortgage + inflation,"nat_mortgage_rate_30y_pct, nat_inflation_yoy_pct","(0, 0, 0)",0,0,0,True,0,6.703471750072251,9.084965586230249,-27.327918540428712
+ARIMAX,Mortgage + price-to-rent,"nat_mortgage_rate_30y_pct, price_to_rent_ratio","(1, 0, 1)",1,0,1,True,0,7.668031456275559,9.59748964355082,-30.614287330391
+ARIMAX,Mortgage + price-to-rent,"nat_mortgage_rate_30y_pct, price_to_rent_ratio","(2, 0, 0)",2,0,0,True,0,8.469399294476519,11.3694665611829,-43.36579510969644
+ARIMAX,Mortgage + price-to-rent,"nat_mortgage_rate_30y_pct, price_to_rent_ratio","(0, 0, 0)",0,0,0,True,0,12.569731702403153,13.490424467064276,-61.46249405956946
+ARIMAX,Mortgage + price-to-rent,"nat_mortgage_rate_30y_pct, price_to_rent_ratio","(0, 0, 1)",0,0,1,True,0,13.088528170711918,13.753755174843178,-63.92480748769677
+ARIMAX,Mortgage + inflation,"nat_mortgage_rate_30y_pct, nat_inflation_yoy_pct","(0, 0, 1)",0,0,1,True,0,14.567478268768651,15.609468310460638,-82.62657544967833
+ARIMAX,Mortgage rate,nat_mortgage_rate_30y_pct,"(0, 0, 0)",0,0,0,True,0,25.386635320038327,25.533457552542558,-222.76252149761328
+ARIMAX,Mortgage + county unemployment,"nat_mortgage_rate_30y_pct, cty_unemployment_rate_pct","(0, 0, 0)",0,0,0,True,0,25.87116011219241,26.044514818106425,-231.80946595260144
+ARIMAX,Mortgage rate,nat_mortgage_rate_30y_pct,"(0, 0, 1)",0,0,1,True,0,26.285139206549232,26.430647506281563,-238.76384648684774
+ARIMAX,Mortgage + county unemployment,"nat_mortgage_rate_30y_pct, cty_unemployment_rate_pct","(0, 0, 1)",0,0,1,True,0,26.48029591211014,26.64095085761269,-242.5945315906109
