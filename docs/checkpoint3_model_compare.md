@@ -93,23 +93,11 @@ The figures below compare the nine-county average actual test series with model-
 
 *Figure 4. Model forecasts of average future ZORI levels over the test period, shown in U.S. dollars per month. Pooled growth-model forecasts are converted back to levels; ARIMA-family models forecast levels directly. The shaded bands are model-specific 95% uncertainty intervals.*
 
-### Per-target forecast and interval details
+## Supplementary results
 
-![ZHVI per-target forecast intervals](../results/checkpoint3_model_compare/zhvi/test_model_specific_predictions.png)
+County-level prediction plots provide more detail about performance differences across counties, but they are not needed for the main model comparison above. They remain available as supplementary files: [ZHVI county-level forecasts](../results/checkpoint3_model_compare/zhvi/test_model_specific_predictions.png) and [ZORI county-level forecasts](../results/checkpoint3_model_compare/zori/test_model_specific_predictions.png).
 
-*Figure 5. County-level ZHVI forecasts and intervals for the held-out test quarters. This view complements the county-averaged plot above by showing how errors and uncertainty vary across the nine counties.*
-
-![ZORI per-target forecast intervals](../results/checkpoint3_model_compare/zori/test_model_specific_predictions.png)
-
-*Figure 6. County-level ZORI forecasts and intervals for the held-out test quarters. Compare the county-specific prediction paths and shaded intervals to see heterogeneity hidden by the nine-county average.*
-
-## Person 4 separate time-series experiment
-
-Person 4's separate experiment compares pooled regression and time-series approaches for one-year-ahead ZHVI growth. Its files are stored in [`results/checkpoint3_model_compare/time_series/`](../results/checkpoint3_model_compare/time_series/), apart from Person 3's growth-target experiment in `results/checkpoint3_time_series/`. The outputs use a different modeling setup and are kept separate.
-
-![Person 4 time-series model comparison](../results/checkpoint3_model_compare/time_series/level_experiment_test_prediction_comparison.png)
-
-*Figure 7. Person 4's model-by-model comparison of average one-year-ahead ZHVI growth for the 2023–2024 test origins. In each panel, the black line is observed growth, the colored line is predicted growth, and the shaded region is the model-specific 95% interval. The horizontal axis is the prediction-origin quarter and the vertical axis is growth in percent. The `level_experiment_` filename prefix is retained from the original export; the plotted target is ZHVI growth, as shown on the y-axis.*
+Person 4's separate time-series experiment is also preserved under [`results/checkpoint3_model_compare/time_series/`](../results/checkpoint3_model_compare/time_series/). Its comparison plot is available [here](../results/checkpoint3_model_compare/time_series/level_experiment_test_prediction_comparison.png); it uses a distinct model setup and is not part of the main figures.
 
 ## Limitations and interpretation
 
