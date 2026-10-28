@@ -50,46 +50,66 @@ Because the primary prediction target is one-year-ahead growth, we also convert 
 
 | Target | Model | Quarter terms | MAE (percentage points) | RMSE (percentage points) | R² |
 |---|---|---:|---:|---:|---:|
-| ZHVI | Ridge | 有季度项 | 2.002 | 2.521 | -0.634 |
-| ZHVI | Elastic Net | 有季度项 | 2.340 | 2.920 | -1.192 |
-| ZHVI | XGBoost | 有季度项 | 2.453 | 2.969 | -1.267 |
-| ZHVI | LASSO | 有季度项 | 2.659 | 3.242 | -1.703 |
-| ZHVI | Mean baseline | 无季度项 | 2.611 | 3.253 | -1.722 |
-| ZHVI | ARIMAX | 无季度项 | 3.149 | 3.706 | -2.532 |
-| ZHVI | Pooled AR(1) dynamic panel | 有季度项 | 3.234 | 3.987 | -3.088 |
-| ZHVI | ARIMA | 有季度项 | 3.591 | 4.241 | -3.625 |
-| ZORI | ARIMAX | 无季度项 | 1.003 | 1.246 | -0.328 |
-| ZORI | XGBoost | 有季度项 | 1.097 | 1.326 | -0.504 |
-| ZORI | Mean baseline | 无季度项 | 1.127 | 1.401 | -0.680 |
-| ZORI | Pooled AR(1) dynamic panel | 无季度项 | 1.748 | 2.211 | -3.182 |
-| ZORI | Elastic Net | 无季度项 | 1.856 | 2.336 | -3.670 |
-| ZORI | LASSO | 无季度项 | 1.904 | 2.368 | -3.799 |
-| ZORI | Ridge | 无季度项 | 1.997 | 2.489 | -4.303 |
-| ZORI | ARIMA | 无季度项 | 3.422 | 3.637 | -10.323 |
+| ZHVI | Ridge | Yes | 2.002 | 2.521 | -0.634 |
+| ZHVI | Elastic Net | Yes | 2.340 | 2.920 | -1.192 |
+| ZHVI | XGBoost | Yes | 2.453 | 2.969 | -1.267 |
+| ZHVI | LASSO | Yes | 2.659 | 3.242 | -1.703 |
+| ZHVI | Mean baseline | No | 2.611 | 3.253 | -1.722 |
+| ZHVI | ARIMAX | No | 3.149 | 3.706 | -2.532 |
+| ZHVI | Pooled AR(1) dynamic panel | Yes | 3.234 | 3.987 | -3.088 |
+| ZHVI | ARIMA | Yes | 3.591 | 4.241 | -3.625 |
+| ZORI | ARIMAX | No | 1.003 | 1.246 | -0.328 |
+| ZORI | XGBoost | Yes | 1.097 | 1.326 | -0.504 |
+| ZORI | Mean baseline | No | 1.127 | 1.401 | -0.680 |
+| ZORI | Pooled AR(1) dynamic panel | No | 1.748 | 2.211 | -3.182 |
+| ZORI | Elastic Net | No | 1.856 | 2.336 | -3.670 |
+| ZORI | LASSO | No | 1.904 | 2.368 | -3.799 |
+| ZORI | Ridge | No | 1.997 | 2.489 | -4.303 |
+| ZORI | ARIMA | No | 3.422 | 3.637 | -10.323 |
 
 ## Figures
 
-The plots show the nine-county average actual test series and each model's average forecast, with model-specific 95% uncertainty bands.
+The figures below compare the nine-county average actual test series with model-average forecasts. In each panel, the black line is the observed series, the colored line is the forecast, and the shaded region is the model's 95% uncertainty band. The horizontal axis shows the prediction-origin quarter; the vertical axis shows either growth in percent or the predicted future Zillow level, as labeled. Narrower bands indicate less estimated uncertainty under that model's interval method, not guaranteed accuracy.
 
 ### ZHVI: one-year-ahead target growth
 
 ![ZHVI one-year-ahead growth predictions on the test period](../results/checkpoint3_model_compare/zhvi_1y_ahead_growth_test_prediction_comparison.png)
 
+*Figure 1. Average one-year-ahead ZHVI growth for 2023–2024 test origins. Compare each model's colored forecast with the black observed growth line; the shaded band shows its 95% interval. Values are percentages, and panels identify whether quarter indicators were selected.*
+
 ### ZORI: one-year-ahead target growth
 
 ![ZORI one-year-ahead growth predictions on the test period](../results/checkpoint3_model_compare/zori_1y_ahead_growth_test_prediction_comparison.png)
+
+*Figure 2. Average one-year-ahead ZORI growth for 2023–2024 test origins. The black line is observed growth, each colored line is a model forecast, and the shaded area is its 95% interval. Values are percentages; compare forecast direction and magnitude with the observed series.*
 
 ### Model-specific level forecasts
 
 ![ZHVI test-period level forecasts](../results/checkpoint3_model_compare/zhvi_test_prediction_comparison.png)
 
+*Figure 3. Model forecasts of average future ZHVI levels over the test period, shown in U.S. dollars. Pooled growth-model forecasts are converted back to levels for comparison with ARIMA-family level forecasts. The shaded bands show model-specific 95% uncertainty intervals.*
+
 ![ZORI test-period level forecasts](../results/checkpoint3_model_compare/zori_test_prediction_comparison.png)
+
+*Figure 4. Model forecasts of average future ZORI levels over the test period, shown in U.S. dollars per month. Pooled growth-model forecasts are converted back to levels; ARIMA-family models forecast levels directly. The shaded bands are model-specific 95% uncertainty intervals.*
 
 ### Per-target forecast and interval details
 
 ![ZHVI per-target forecast intervals](../results/checkpoint3_model_compare/zhvi/test_model_specific_predictions.png)
 
+*Figure 5. County-level ZHVI forecasts and intervals for the held-out test quarters. This view complements the county-averaged plot above by showing how errors and uncertainty vary across the nine counties.*
+
 ![ZORI per-target forecast intervals](../results/checkpoint3_model_compare/zori/test_model_specific_predictions.png)
+
+*Figure 6. County-level ZORI forecasts and intervals for the held-out test quarters. Compare the county-specific prediction paths and shaded intervals to see heterogeneity hidden by the nine-county average.*
+
+## Person 4 exploratory time-series level experiment
+
+Person 4's separate experiment models original ZHVI and ZORI levels with pooled and time-series approaches. Its files are kept in [`results/checkpoint3_model_compare/time_series/`](../results/checkpoint3_model_compare/time_series/) and do not overlap with Person 3's growth-target results.
+
+![Person 4 level-target time-series model comparison](../results/checkpoint3_model_compare/time_series/level_experiment_test_prediction_comparison.png)
+
+*Figure 7. Person 4's exploratory level-target comparison. Each panel shows the average observed Zillow level and a model's average forecast across test quarters; shaded regions are model-specific 95% uncertainty bands. This is a separate analysis from Figures 1–6 and should be interpreted using its own model setup and selection results.*
 
 ## Limitations and interpretation
 
@@ -101,4 +121,4 @@ The plots show the nine-county average actual test series and each model's avera
 
 ## Reproducibility and artifacts
 
-Run [`notebooks/pooled_model_comparison_zhvi_1y.ipynb`](../notebooks/pooled_model_comparison_zhvi_1y.ipynb) from the project directory. Input data and predictor definitions are loaded from `processed/` and `metadata/`. The corresponding metric tables, prediction series, interval tables, and plots are stored in [`results/checkpoint3_model_compare/`](../results/checkpoint3_model_compare/). Earlier time-series experiment artifacts are separated into [`results/checkpoint3_time_series/`](../results/checkpoint3_time_series/).
+Run [`notebooks/pooled_model_comparison_zhvi_1y.ipynb`](../notebooks/pooled_model_comparison_zhvi_1y.ipynb) from the project directory. Input data and predictor definitions are loaded from `processed/` and `metadata/`. The corresponding metric tables, prediction series, interval tables, and plots are stored in [`results/checkpoint3_model_compare/`](../results/checkpoint3_model_compare/). Person 3's original growth-target time-series results remain in [`results/checkpoint3_time_series/`](../results/checkpoint3_time_series/); Person 4's distinct level-target time-series experiment outputs are in [`results/checkpoint3_model_compare/time_series/`](../results/checkpoint3_model_compare/time_series/).
