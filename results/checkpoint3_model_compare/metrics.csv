@@ -29,8 +29,8 @@ ZHVI,XGBoost,test,True,"XGBRegressor(base_score=None, booster=None, callbacks=No
              max_leaves=None, min_child_weight=10, missing=nan,
              monotone_constraints=None, multi_strategy=None, n_estimators=100,
              n_jobs=1, num_parallel_tree=None, ...)",6357.469055641767,8377.979074421037,0.9847116670567074
-ZHVI,Pooled AR(1) dynamic panel,validation,True,LinearRegression(),5719.4659772206005,7964.315337604246,0.9840532890771178
-ZHVI,Pooled AR(1) dynamic panel,test,True,LinearRegression(),8013.932284497951,10660.80469172599,0.9752450779255735
+ZHVI,Ordinary Linear Regression,validation,True,LinearRegression(),5719.4659772206005,7964.315337604246,0.9840532890771178
+ZHVI,Ordinary Linear Regression,test,True,LinearRegression(),8013.932284497951,10660.80469172599,0.9752450779255735
 ZHVI,ARIMAX,validation,False,"order=(1, 0, 0); predictors=Mortgage + inflation",5727.128410436206,6980.324949596479,0.987750298433356
 ZHVI,ARIMAX,test,False,"order=(1, 0, 0); predictors=Mortgage + inflation",8088.635983754436,10192.023726330637,0.9773742782726385
 ZHVI,ARIMA,validation,True,"order=(1, 0, 0); predictors=None",5491.345250816042,6616.921540759296,0.9889925632768083
@@ -65,8 +65,8 @@ ZORI,XGBoost,test,True,"XGBRegressor(base_score=None, booster=None, callbacks=No
              max_leaves=None, min_child_weight=10, missing=nan,
              monotone_constraints=None, multi_strategy=None, n_estimators=100,
              n_jobs=1, num_parallel_tree=None, ...)",14.294997134001669,17.74522157028092,0.9940155504579017
-ZORI,Pooled AR(1) dynamic panel,validation,False,LinearRegression(),45.22969495567776,49.24301960743766,0.9436796578786454
-ZORI,Pooled AR(1) dynamic panel,test,False,LinearRegression(),21.761579304585343,26.931968695262704,0.9862152923865655
+ZORI,Ordinary Linear Regression,validation,False,LinearRegression(),45.22969495567776,49.24301960743766,0.9436796578786454
+ZORI,Ordinary Linear Regression,test,False,LinearRegression(),21.761579304585343,26.931968695262704,0.9862152923865655
 ZORI,ARIMAX,validation,False,"order=(1, 1, 0); predictors=Mortgage + county unemployment",53.68639512281729,62.502862273269436,0.9092648119146054
 ZORI,ARIMAX,test,False,"order=(1, 1, 0); predictors=Mortgage + county unemployment",12.828182872782836,16.102070415481137,0.9950725207989671
 ZORI,ARIMA,validation,False,"order=(1, 0, 0); predictors=None",38.706885731204515,46.635735744146544,0.949485786283399
