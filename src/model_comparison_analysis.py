@@ -24,6 +24,18 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from statsmodels.tsa.arima.model import ARIMA
 
+# GitHub scales figures to the report width. Larger text relative to each
+# canvas keeps model labels readable there without asking readers to zoom in.
+plt.rcParams.update({
+    "font.size": 20,
+    "axes.titlesize": 24,
+    "axes.labelsize": 20,
+    "xtick.labelsize": 18,
+    "ytick.labelsize": 18,
+    "legend.fontsize": 16,
+    "figure.titlesize": 28,
+})
+
 
 # -----------------------------------------------------------------------------
 # 1. Paths, targets, and fixed comparison design
@@ -687,7 +699,7 @@ metric_specs = [
 ]
 for metric, ylabel, filename in metric_specs:
     # Stack targets vertically: their native units and scales differ greatly.
-    fig, axes = plt.subplots(2, 1, figsize=(19, 14), sharex=False, sharey=False)
+    fig, axes = plt.subplots(2, 1, figsize=(19, 18), sharex=False, sharey=False)
     for ax, target_name in zip(axes, TARGETS):
         rows = validation_chosen[validation_chosen["target"].eq(target_name)].copy()
         rows["order"] = rows["model"].map({name: i for i, name in enumerate(MODEL_ORDER)})
@@ -712,7 +724,7 @@ for metric, ylabel, filename in metric_specs:
                       linewidth=1.5)
         values = [f"{value:,.3f}" if metric == "R2" else f"{value:,.0f}" if target_name == "ZHVI"
                   else f"{value:,.1f}" for value in rows[metric]]
-        annotations = ax.bar_label(bars, labels=values, padding=3, rotation=90, fontsize=7)
+        annotations = ax.bar_label(bars, labels=values, padding=3, rotation=90, fontsize=14)
         for label, winner, bar, value_text in zip(annotations, is_winner, bars, values):
             if bar.get_height() < 0:
                 # The top of a negative bar is the zero line. Put its value
@@ -721,13 +733,16 @@ for metric, ylabel, filename in metric_specs:
                 ax.annotate(value_text,
                             (bar.get_x() + bar.get_width() / 2, 0),
                             xytext=(0, 4), textcoords="offset points",
-                            ha="center", va="bottom", rotation=90, fontsize=7)
+                            ha="center", va="bottom", rotation=90, fontsize=14)
             if winner:
                 label.set_fontweight("bold")
-                ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() * 0.6,
-                        "*", ha="center", va="center", color="white",
-                        fontsize=20, fontweight="bold")
-        ax.set_xticks(np.arange(len(rows)), labels, rotation=55, ha="right", fontsize=8)
+                # Short winning bars cannot contain a large asterisk. Put it
+                # beside the value label, outside the bar, to avoid overlap.
+                ax.annotate("*", (bar.get_x() + bar.get_width(), bar.get_height()),
+                            xytext=(2, 0), textcoords="offset points",
+                            ha="left", va="bottom", color="#78350f",
+                            fontsize=28, fontweight="bold")
+        ax.set_xticks(np.arange(len(rows)), labels, rotation=55, ha="right", fontsize=16)
         unit = "USD" if target_name == "ZHVI" else "USD/month"
         ax.set_title(f"{target_name} ({unit})" if metric != "R2" else target_name)
         ax.set_ylabel(ylabel + (f" [{unit}]" if metric != "R2" else ""))
@@ -736,11 +751,11 @@ for metric, ylabel, filename in metric_specs:
             ax.axhline(0, color="black", linewidth=0.8)
         bottom, top = ax.get_ylim()
         ax.set_ylim(bottom - (top - bottom) * 0.04, top + (top - bottom) * 0.16)
-    fig.suptitle(f"Validation model comparison by {metric}", fontsize=15)
-    fig.text(0.5, 0.008,
-             "Bold * marks the eligible winner. Blue = growth fit; slate = eligible ARIMA family; pale gray = ineligible direct-level regression. All bars score the original t+4 level.",
-             ha="center", fontsize=9)
-    fig.tight_layout(rect=(0, 0.04, 1, 0.96), h_pad=3.5)
+    fig.suptitle(f"Validation model comparison by {metric}", fontsize=30)
+    fig.text(0.5, 0.01,
+             "Bold * = eligible winner. Blue = growth fit; slate = ARIMA/ARIMAX; gray = direct-level regression.\nAll bars score the original t+4 Zillow level.",
+             ha="center", va="bottom", fontsize=18)
+    fig.tight_layout(rect=(0, 0.065, 1, 0.96), h_pad=4.0)
     fig.savefig(RESULTS_DIR / filename, dpi=180, bbox_inches="tight")
     plt.close(fig)
 
@@ -796,20 +811,21 @@ for target_name in TARGETS:
             continue
         for fit_target in model_rows["fit_target"].drop_duplicates():
             rows.append((model, fit_target, model_rows[model_rows["fit_target"].eq(fit_target)]))
-    ncols = 3
+    # Two columns give doubled panel-title text enough horizontal room.
+    ncols = 2
     nrows = int(np.ceil(len(rows) / ncols))
-    fig, axes = plt.subplots(nrows, ncols, figsize=(17, 4 * nrows), sharex=True, sharey=True)
+    fig, axes = plt.subplots(nrows, ncols, figsize=(17, 4.5 * nrows), sharex=True, sharey=True)
     axes = np.asarray(axes).reshape(-1)
     for ax, (model, fit_target, forecast) in zip(axes, rows):
         color = plt.cm.tab10(display_order.index(model) % 10)
         ax.plot(actual["period"], actual["actual_level"], color="black", marker="o", label="Actual")
         ax.plot(forecast["period"], forecast["prediction_level"], color=color, marker=".", label="Predicted")
         ax.fill_between(forecast["period"], forecast["lower_95"], forecast["upper_95"], color=color, alpha=0.18, label="95% band")
-        ax.set_title(panel_title(target_name, model, fit_target), fontsize=8)
+        ax.set_title(panel_title(target_name, model, fit_target), fontsize=16)
         ax.grid(alpha=0.25)
     for ax in axes[len(rows):]:
         ax.set_visible(False)
-    axes[0].legend(fontsize=8, frameon=False)
+    axes[0].legend(fontsize=16, frameon=False)
     for ax in axes:
         if ax.get_visible():
             ax.tick_params(axis="x", rotation=45)
@@ -817,7 +833,7 @@ for target_name in TARGETS:
     fig.suptitle(f"2023–2024 {target_name}: one-year-ahead level forecasts", y=0.995)
     fig.supylabel(f"Average t+4 {units}")
     fig.supxlabel("Prediction origin", y=0.035)
-    fig.text(0.5, 0.008, "Regression bands use quarter-block bootstrap refits; ARIMA-family bands are conditional forecast intervals.", ha="center", fontsize=8)
+    fig.text(0.5, 0.008, "Regression bands use quarter-block bootstrap refits; ARIMA-family bands are conditional forecast intervals.", ha="center", fontsize=16)
     fig.tight_layout(rect=(0.02, 0.07, 1, 0.96))
     fig.savefig(RESULTS_DIR / f"{target_name.lower()}_test_prediction_comparison.png", dpi=180, bbox_inches="tight")
     plt.close(fig)
@@ -915,27 +931,27 @@ for target_name in TARGETS:
         model_rows = avg[avg["model"].eq(model)]
         for fit_target in model_rows["fit_target"].drop_duplicates():
             rows.append((model, fit_target, model_rows[model_rows["fit_target"].eq(fit_target)]))
-    ncols = 3
+    ncols = 2
     nrows = int(np.ceil(len(rows) / ncols))
-    fig, axes = plt.subplots(nrows, ncols, figsize=(17, 4 * nrows), sharex=True, sharey=True)
+    fig, axes = plt.subplots(nrows, ncols, figsize=(17, 4.5 * nrows), sharex=True, sharey=True)
     axes = np.asarray(axes).reshape(-1)
     for ax, (model, fit_target, forecast) in zip(axes, rows):
         color = plt.cm.tab10(display_order.index(model) % 10)
         ax.plot(actual["period"], actual["actual_growth_pct"], color="black", marker="o", label="Actual")
         ax.plot(forecast["period"], forecast["predicted_growth_pct"], color=color, marker=".", label="Predicted")
         ax.fill_between(forecast["period"], forecast["lower_95"], forecast["upper_95"], color=color, alpha=0.18, label="95% band")
-        ax.set_title(panel_title(target_name, model, fit_target), fontsize=8)
+        ax.set_title(panel_title(target_name, model, fit_target), fontsize=16)
         ax.grid(alpha=0.25)
     for ax in axes[len(rows):]:
         ax.set_visible(False)
-    axes[0].legend(fontsize=8, frameon=False)
+    axes[0].legend(fontsize=16, frameon=False)
     for ax in axes:
         if ax.get_visible():
             ax.tick_params(axis="x", rotation=45)
     fig.suptitle(f"2023–2024 {target_name}: implied one-year-ahead growth", y=0.995)
     fig.supylabel(f"Average {target_name} growth (%)")
     fig.supxlabel("Prediction origin", y=0.035)
-    fig.text(0.5, 0.008, "Every level forecast is converted to implied growth at its county's observed origin level.", ha="center", fontsize=8)
+    fig.text(0.5, 0.008, "Every level forecast is converted to implied growth at its county's observed origin level.", ha="center", fontsize=16)
     fig.tight_layout(rect=(0.02, 0.07, 1, 0.96))
     fig.savefig(RESULTS_DIR / f"{target_name.lower()}_1y_ahead_growth_test_prediction_comparison.png",
                 dpi=180, bbox_inches="tight")
@@ -1031,7 +1047,7 @@ importance.to_csv(RESULTS_DIR / "winning_model_feature_importance.csv", index=Fa
 pd.DataFrame(importance_model_rows).to_csv(RESULTS_DIR / "winning_model_feature_importance_notes.csv", index=False)
 for target_name in TARGETS:
     rows = importance[importance["target"].eq(target_name)].sort_values("delta_rmse_pct_mean")
-    fig, ax = plt.subplots(figsize=(11, 6.5))
+    fig, ax = plt.subplots(figsize=(13, 9))
     top_three = set(rows.nlargest(3, "delta_rmse_pct_mean")["variable"])
     colors = ["#1d4ed8" if variable in top_three and value > 0 else
               "#93c5fd" if value > 0 else "#9ca3af"
@@ -1045,9 +1061,9 @@ for target_name in TARGETS:
     ax.set_title(f"{target_name}: {selected_note['model']} fitted to one-year growth\n"
                  "Validation permutation sensitivity (36 county-quarters)")
     fig.text(0.5, 0.01,
-             "Whiskers = SD across 30 shuffles, not confidence intervals. Negative values mean shuffling improved RMSE. County/quarter controls are excluded.",
-             ha="center", fontsize=8)
-    fig.tight_layout(rect=(0, 0.05, 1, 1))
+             "Whiskers = SD across 30 shuffles (not confidence intervals). Negative bars mean shuffling improved RMSE.\nCounty and quarter indicators are omitted.",
+             ha="center", va="bottom", fontsize=16)
+    fig.tight_layout(rect=(0, 0.08, 1, 1))
     fig.savefig(RESULTS_DIR / f"{target_name.lower()}_winning_model_feature_importance.png", dpi=180, bbox_inches="tight")
     plt.close(fig)
 
