@@ -1,17 +1,29 @@
-target,model,quarter_terms,validation_RMSE_level
-ZHVI,ARIMA,有季度项,6616.921540759296
-ZHVI,ARIMAX,无季度项,6980.324949596479
-ZHVI,Elastic Net,有季度项,6739.8441085154445
-ZHVI,LASSO,有季度项,6903.515949569027
-ZHVI,Mean baseline,无季度项,9496.26251905629
-ZHVI,Pooled AR(1) dynamic panel,有季度项,7964.315337604246
-ZHVI,Ridge,有季度项,5988.602943039053
-ZHVI,XGBoost,有季度项,7554.956559012155
-ZORI,ARIMA,无季度项,46.635735744146544
-ZORI,ARIMAX,无季度项,62.502862273269436
-ZORI,Elastic Net,无季度项,35.301126315931036
-ZORI,LASSO,无季度项,35.97894089072894
-ZORI,Mean baseline,无季度项,69.76695158369165
-ZORI,Pooled AR(1) dynamic panel,无季度项,49.24301960743766
-ZORI,Ridge,无季度项,43.36585210657571
-ZORI,XGBoost,有季度项,61.8712857309853
+target,model,fit_target,quarter_terms,validation_RMSE_level
+ZORI,Elastic Net,1-year-ahead growth,No,35.301126315931036
+ZORI,LASSO,1-year-ahead growth,No,35.97894089072894
+ZORI,Ridge,1-year-ahead growth,No,43.36585210657571
+ZORI,ARIMA,Original level at t+4,No,46.635735744146544
+ZORI,Ordinary Linear Regression,1-year-ahead growth,No,49.24301960743766
+ZORI,LASSO,Original level at t+4,No,53.04708941794536
+ZORI,XGBoost,1-year-ahead growth,Yes,61.8712857309853
+ZORI,ARIMAX,Original level at t+4,No,62.50286227326944
+ZORI,Ordinary Linear Regression,Original level at t+4,No,69.25324686340011
+ZORI,Mean growth baseline,1-year-ahead growth,No,69.76695158369165
+ZORI,Ridge,Original level at t+4,No,69.77313527032685
+ZORI,Elastic Net,Original level at t+4,No,75.75811194149004
+ZORI,XGBoost,Original level at t+4,Yes,178.8517842752825
+ZORI,Mean level baseline,Original level at t+4,Yes,279.5503881300462
+ZHVI,LASSO,Original level at t+4,Yes,5179.99847244944
+ZHVI,Ordinary Linear Regression,Original level at t+4,Yes,5245.526796797829
+ZHVI,Ridge,Original level at t+4,Yes,5320.335743580616
+ZHVI,Ridge,1-year-ahead growth,Yes,5988.602943039053
+ZHVI,ARIMA,Original level at t+4,Yes,6616.921540759296
+ZHVI,Elastic Net,1-year-ahead growth,Yes,6739.8441085154445
+ZHVI,LASSO,1-year-ahead growth,Yes,6903.515949569027
+ZHVI,ARIMAX,Original level at t+4,No,6980.324949596479
+ZHVI,XGBoost,1-year-ahead growth,Yes,7554.956559012155
+ZHVI,Ordinary Linear Regression,1-year-ahead growth,Yes,7964.315337604246
+ZHVI,Elastic Net,Original level at t+4,Yes,9200.045024909517
+ZHVI,Mean growth baseline,1-year-ahead growth,No,9496.26251905629
+ZHVI,XGBoost,Original level at t+4,Yes,46972.66947892614
+ZHVI,Mean level baseline,Original level at t+4,Yes,71463.32030158973

@@ -1,0 +1,3 @@
+target,model,fit_target,quarter_terms,validation_RMSE_level,explanation
+ZHVI,LASSO,Original level at t+4,Yes,5179.99847244944,Best predictor-based pooled model by validation RMSE; 30-repeat permutation importance on validation rows.
+ZORI,Elastic Net,1-year-ahead growth,No,35.301126315931036,Best predictor-based pooled model by validation RMSE; 30-repeat permutation importance on validation rows.

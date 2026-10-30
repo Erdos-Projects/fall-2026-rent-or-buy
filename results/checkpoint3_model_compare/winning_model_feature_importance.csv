@@ -1,0 +1,22 @@
+target,model,fit_target,variable,delta_rmse_mean,delta_rmse_sd,unpermuted_validation_rmse
+ZHVI,LASSO,Original level at t+4,zhvi_growth_qoq_pct,25.8815378194998,14.364053592120474,5179.99847244944
+ZHVI,LASSO,Original level at t+4,zhvi_growth_prev_1y_pct,10.878961899075785,9.607174654202284,5179.99847244944
+ZHVI,LASSO,Original level at t+4,zori_growth_qoq_pct,10.443549712661449,7.244321045150578,5179.99847244944
+ZHVI,LASSO,Original level at t+4,zori_growth_prev_1y_pct,0.8966373224921881,0.4091463798002295,5179.99847244944
+ZHVI,LASSO,Original level at t+4,nat_mortgage_rate_30y_pct,-18.566202168741075,10.036116181013861,5179.99847244944
+ZHVI,LASSO,Original level at t+4,mortgage_rate_change_prev_1y_pp,663.9522041310919,198.93666712335082,5179.99847244944
+ZHVI,LASSO,Original level at t+4,nat_inflation_yoy_pct,-94.17929409242655,298.91568663332754,5179.99847244944
+ZHVI,LASSO,Original level at t+4,cty_unemployment_rate_pct,368.13950443329924,280.3341363645168,5179.99847244944
+ZHVI,LASSO,Original level at t+4,cty_unemployment_change_prev_1y_pp,-167.89032302413906,121.13418824968652,5179.99847244944
+ZHVI,LASSO,Original level at t+4,price_to_rent_ratio,1049.4448751059494,652.1599801804907,5179.99847244944
+ZHVI,LASSO,Original level at t+4,zhvi_usd,88616.17130877824,7367.125555114277,5179.99847244944
+ZORI,Elastic Net,1-year-ahead growth,zhvi_growth_qoq_pct,0.0,0.0,35.301126315931036
+ZORI,Elastic Net,1-year-ahead growth,zhvi_growth_prev_1y_pct,3.8314892204119273,1.0625749265581586,35.301126315931036
+ZORI,Elastic Net,1-year-ahead growth,zori_growth_qoq_pct,0.32330049875384076,0.1207295830875008,35.301126315931036
+ZORI,Elastic Net,1-year-ahead growth,zori_growth_prev_1y_pct,0.0,0.0,35.301126315931036
+ZORI,Elastic Net,1-year-ahead growth,nat_mortgage_rate_30y_pct,0.0,0.0,35.301126315931036
+ZORI,Elastic Net,1-year-ahead growth,mortgage_rate_change_prev_1y_pp,2.194287606607539,0.4910206775336181,35.301126315931036
+ZORI,Elastic Net,1-year-ahead growth,nat_inflation_yoy_pct,-2.106040924602378,0.928079393188888,35.301126315931036
+ZORI,Elastic Net,1-year-ahead growth,cty_unemployment_rate_pct,-0.9098550580542967,0.7140315776774798,35.301126315931036
+ZORI,Elastic Net,1-year-ahead growth,cty_unemployment_change_prev_1y_pp,0.0,0.0,35.301126315931036
+ZORI,Elastic Net,1-year-ahead growth,price_to_rent_ratio,-0.017981245214812466,0.011346247578778236,35.301126315931036

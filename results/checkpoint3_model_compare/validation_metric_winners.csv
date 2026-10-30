@@ -1,0 +1,7 @@
+target,metric,winning_model,fit_target,quarter_terms,value
+ZHVI,RMSE,LASSO,Original level at t+4,Yes,5179.99847244944
+ZHVI,MAE,LASSO,Original level at t+4,Yes,3908.33006899632
+ZHVI,R2,LASSO,Original level at t+4,Yes,0.9932541995386389
+ZORI,RMSE,Elastic Net,1-year-ahead growth,No,35.301126315931036
+ZORI,MAE,Elastic Net,1-year-ahead growth,No,29.98591043596613
+ZORI,R2,Elastic Net,1-year-ahead growth,No,0.9710563661062014
