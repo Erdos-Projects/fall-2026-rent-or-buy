@@ -1,22 +1,21 @@
-target,model,fit_target,variable,delta_rmse_mean,delta_rmse_sd,unpermuted_validation_rmse
-ZHVI,LASSO,Original level at t+4,zhvi_growth_qoq_pct,25.8815378194998,14.364053592120474,5179.99847244944
-ZHVI,LASSO,Original level at t+4,zhvi_growth_prev_1y_pct,10.878961899075785,9.607174654202284,5179.99847244944
-ZHVI,LASSO,Original level at t+4,zori_growth_qoq_pct,10.443549712661449,7.244321045150578,5179.99847244944
-ZHVI,LASSO,Original level at t+4,zori_growth_prev_1y_pct,0.8966373224921881,0.4091463798002295,5179.99847244944
-ZHVI,LASSO,Original level at t+4,nat_mortgage_rate_30y_pct,-18.566202168741075,10.036116181013861,5179.99847244944
-ZHVI,LASSO,Original level at t+4,mortgage_rate_change_prev_1y_pp,663.9522041310919,198.93666712335082,5179.99847244944
-ZHVI,LASSO,Original level at t+4,nat_inflation_yoy_pct,-94.17929409242655,298.91568663332754,5179.99847244944
-ZHVI,LASSO,Original level at t+4,cty_unemployment_rate_pct,368.13950443329924,280.3341363645168,5179.99847244944
-ZHVI,LASSO,Original level at t+4,cty_unemployment_change_prev_1y_pp,-167.89032302413906,121.13418824968652,5179.99847244944
-ZHVI,LASSO,Original level at t+4,price_to_rent_ratio,1049.4448751059494,652.1599801804907,5179.99847244944
-ZHVI,LASSO,Original level at t+4,zhvi_usd,88616.17130877824,7367.125555114277,5179.99847244944
-ZORI,Elastic Net,1-year-ahead growth,zhvi_growth_qoq_pct,0.0,0.0,35.301126315931036
-ZORI,Elastic Net,1-year-ahead growth,zhvi_growth_prev_1y_pct,3.8314892204119273,1.0625749265581586,35.301126315931036
-ZORI,Elastic Net,1-year-ahead growth,zori_growth_qoq_pct,0.32330049875384076,0.1207295830875008,35.301126315931036
-ZORI,Elastic Net,1-year-ahead growth,zori_growth_prev_1y_pct,0.0,0.0,35.301126315931036
-ZORI,Elastic Net,1-year-ahead growth,nat_mortgage_rate_30y_pct,0.0,0.0,35.301126315931036
-ZORI,Elastic Net,1-year-ahead growth,mortgage_rate_change_prev_1y_pp,2.194287606607539,0.4910206775336181,35.301126315931036
-ZORI,Elastic Net,1-year-ahead growth,nat_inflation_yoy_pct,-2.106040924602378,0.928079393188888,35.301126315931036
-ZORI,Elastic Net,1-year-ahead growth,cty_unemployment_rate_pct,-0.9098550580542967,0.7140315776774798,35.301126315931036
-ZORI,Elastic Net,1-year-ahead growth,cty_unemployment_change_prev_1y_pp,0.0,0.0,35.301126315931036
-ZORI,Elastic Net,1-year-ahead growth,price_to_rent_ratio,-0.017981245214812466,0.011346247578778236,35.301126315931036
+target,model,fit_target,variable,delta_rmse_mean,delta_rmse_sd,delta_rmse_pct_mean,delta_rmse_pct_sd,permutation_rule,unpermuted_validation_rmse
+ZHVI,Ridge,1-year-ahead growth,zhvi_growth_qoq_pct,17.235651019564497,15.079493980732133,0.2878075434872273,0.2518032022520381,across counties within quarter,5988.602943039053
+ZHVI,Ridge,1-year-ahead growth,zhvi_growth_prev_1y_pct,47.94621315323426,40.38710817680061,0.8006243461000415,0.674399497861938,across counties within quarter,5988.602943039053
+ZHVI,Ridge,1-year-ahead growth,zori_growth_qoq_pct,-22.0302431931999,19.203819382542783,-0.3678694914780934,0.3206727773606137,across counties within quarter,5988.602943039053
+ZHVI,Ridge,1-year-ahead growth,zori_growth_prev_1y_pct,-60.61273990442969,54.22422020849659,-1.0121348915757367,0.9054569275046858,across counties within quarter,5988.602943039053
+ZHVI,Ridge,1-year-ahead growth,nat_mortgage_rate_30y_pct,21.80752805628123,29.614314152885466,0.3641505082855686,0.4945112313266341,whole quarter blocks,5988.602943039053
+ZHVI,Ridge,1-year-ahead growth,mortgage_rate_change_prev_1y_pp,239.90568109257723,232.36595886585283,4.006037524518725,3.8801363369055397,whole quarter blocks,5988.602943039053
+ZHVI,Ridge,1-year-ahead growth,nat_inflation_yoy_pct,-1.0232231742596014,517.0347945060738,-0.017086174922466033,8.633646268151027,whole quarter blocks,5988.602943039053
+ZHVI,Ridge,1-year-ahead growth,cty_unemployment_rate_pct,341.55117880856517,93.39354266453759,5.703353220396296,1.559521370056685,across counties within quarter,5988.602943039053
+ZHVI,Ridge,1-year-ahead growth,cty_unemployment_change_prev_1y_pp,440.542726425557,196.8418704259035,7.356352234666499,3.2869414168575957,across counties within quarter,5988.602943039053
+ZHVI,Ridge,1-year-ahead growth,price_to_rent_ratio,-152.20408851637595,47.604210347295655,-2.541562530761749,0.7949134514357671,across counties within quarter,5988.602943039053
+ZORI,Elastic Net,1-year-ahead growth,zhvi_growth_qoq_pct,0.0,0.0,0.0,0.0,across counties within quarter,35.301126315931036
+ZORI,Elastic Net,1-year-ahead growth,zhvi_growth_prev_1y_pct,0.08537307597586287,0.30114205656628024,0.2418423571299335,0.8530664259014815,across counties within quarter,35.301126315931036
+ZORI,Elastic Net,1-year-ahead growth,zori_growth_qoq_pct,0.11896838923715336,0.07980074490509821,0.3370101797105101,0.22605722035867437,across counties within quarter,35.301126315931036
+ZORI,Elastic Net,1-year-ahead growth,zori_growth_prev_1y_pct,0.0,0.0,0.0,0.0,across counties within quarter,35.301126315931036
+ZORI,Elastic Net,1-year-ahead growth,nat_mortgage_rate_30y_pct,0.0,0.0,0.0,0.0,whole quarter blocks,35.301126315931036
+ZORI,Elastic Net,1-year-ahead growth,mortgage_rate_change_prev_1y_pp,2.276055101331345,1.3673230553666675,6.447542440888593,3.873312831805054,whole quarter blocks,35.301126315931036
+ZORI,Elastic Net,1-year-ahead growth,nat_inflation_yoy_pct,-2.337959059637854,1.6565475929842777,-6.62290216667324,4.692619657964553,whole quarter blocks,35.301126315931036
+ZORI,Elastic Net,1-year-ahead growth,cty_unemployment_rate_pct,0.8355002619528572,0.26490910095059667,2.366780749360409,0.7504267670661996,across counties within quarter,35.301126315931036
+ZORI,Elastic Net,1-year-ahead growth,cty_unemployment_change_prev_1y_pp,0.0,0.0,0.0,0.0,across counties within quarter,35.301126315931036
+ZORI,Elastic Net,1-year-ahead growth,price_to_rent_ratio,-0.012871679675735711,0.0072470333435274,-0.03646251839258413,0.02052918447606837,across counties within quarter,35.301126315931036

@@ -2,8 +2,9 @@
 
 Run this file from the repository's ``notebooks`` directory (or run the
 companion notebook). Outputs are written to results/checkpoint3_model_compare.
-The final test period is used only after model specifications are selected on
-the 2021 validation period.
+Model specifications are selected on the 2021 validation period. The explicit
+growth-only eligibility rule was documented after earlier test results were
+seen, so the existing test scores are descriptive for that revised rule.
 """
 
 from pathlib import Path
@@ -92,6 +93,13 @@ MODEL_ORDER = [
     "Ordinary Linear Regression", "LASSO", "Elastic Net", "Ridge", "XGBoost",
     "ARIMA", "ARIMAX",
 ]
+
+# The project's forecasting question is about one-year growth. Direct-level
+# fits remain diagnostic comparisons, but only growth-fitted pooled models
+# are eligible for the tentative model choice. Because this policy was
+# formalized after inspecting the prior comparison, treat test scores as
+# descriptive rather than a pristine evaluation of the revised selection rule.
+ELIGIBLE_FIT_TARGET = GROWTH_FIT
 
 REGRESSION_CANDIDATES = {
     "Ordinary Linear Regression": [LinearRegression()],
@@ -450,18 +458,49 @@ validation_chosen = validation_comparison.sort_values(["RMSE", "MAE"]).drop_dupl
 )
 validation_chosen.to_csv(RESULTS_DIR / "validation_model_comparison.csv", index=False)
 
-# Best model per target and metric is shown separately. RMSE is the predeclared
-# primary selection metric; MAE and R² are comparative diagnostics.
+# Keep unrestricted winners as a diagnostic. The published tentative choice is
+# selected among models fitted to the actual project target: one-year growth.
 winner_rows = []
+all_candidate_winner_rows = []
 for target_name in TARGETS:
-    subset = validation_chosen[validation_chosen["target"].eq(target_name)].copy()
+    all_candidates = validation_chosen[validation_chosen["target"].eq(target_name)]
+    eligible = all_candidates[all_candidates["fit_target"].eq(ELIGIBLE_FIT_TARGET)]
     for metric, direction in [("RMSE", "min"), ("MAE", "min"), ("R2", "max")]:
-        selected = subset.sort_values(metric, ascending=(direction == "min")).iloc[0]
-        winner_rows.append({"target": target_name, "metric": metric,
-                            "winning_model": selected["model"], "fit_target": selected["fit_target"],
-                            "quarter_terms": selected["quarter_terms"], "value": selected[metric]})
+        for subset, output in [(eligible, winner_rows), (all_candidates, all_candidate_winner_rows)]:
+            selected = subset.sort_values(metric, ascending=(direction == "min")).iloc[0]
+            output.append({"target": target_name, "metric": metric,
+                           "winning_model": selected["model"], "fit_target": selected["fit_target"],
+                           "quarter_terms": selected["quarter_terms"], "value": selected[metric]})
 best_by_metric = pd.DataFrame(winner_rows)
 best_by_metric.to_csv(RESULTS_DIR / "validation_metric_winners.csv", index=False)
+pd.DataFrame(all_candidate_winner_rows).to_csv(
+    RESULTS_DIR / "validation_metric_winners_all_candidates.csv", index=False
+)
+
+# Paired within-family comparison prevents a cross-family average from hiding
+# the ZHVI exception, where some direct-level fits win in validation.
+paired_rows = []
+for target_name in TARGETS:
+    for family in ["Mean baseline"] + PREDICTOR_MODELS:
+        growth_name = display_name(family, GROWTH_FIT)
+        level_name = display_name(family, LEVEL_FIT)
+        growth = validation_chosen[
+            validation_chosen["target"].eq(target_name)
+            & validation_chosen["model"].eq(growth_name)
+            & validation_chosen["fit_target"].eq(GROWTH_FIT)
+        ].iloc[0]
+        level = validation_chosen[
+            validation_chosen["target"].eq(target_name)
+            & validation_chosen["model"].eq(level_name)
+            & validation_chosen["fit_target"].eq(LEVEL_FIT)
+        ].iloc[0]
+        paired_rows.append({
+            "target": target_name, "family": family,
+            "growth_fit_validation_RMSE": growth["RMSE"],
+            "level_fit_validation_RMSE": level["RMSE"],
+            "lower_validation_RMSE": "Growth fit" if growth["RMSE"] < level["RMSE"] else "Level fit",
+        })
+pd.DataFrame(paired_rows).to_csv(RESULTS_DIR / "fit_target_paired_validation_comparison.csv", index=False)
 
 
 # -----------------------------------------------------------------------------
@@ -642,23 +681,61 @@ metric_specs = [
     ("R2", "Validation R² (higher is better)", "validation_r2_model_comparison.png"),
 ]
 for metric, ylabel, filename in metric_specs:
-    fig, axes = plt.subplots(1, 2, figsize=(21, 7), sharey=False)
+    # Stack targets vertically: their native units and scales differ greatly.
+    fig, axes = plt.subplots(2, 1, figsize=(19, 14), sharex=False, sharey=False)
     for ax, target_name in zip(axes, TARGETS):
         rows = validation_chosen[validation_chosen["target"].eq(target_name)].copy()
         rows["order"] = rows["model"].map({name: i for i, name in enumerate(MODEL_ORDER)})
         rows = rows.sort_values(["order", "fit_target"])
         labels = rows["chart_label"].tolist()
-        color_map = plt.cm.tab20(np.linspace(0, 1, max(1, len(rows))))
-        ax.bar(np.arange(len(rows)), rows[metric], color=color_map)
-        ax.set_xticks(np.arange(len(rows)), labels, rotation=65, ha="right", fontsize=8)
-        ax.set_title(target_name)
-        ax.set_ylabel(ylabel)
+        selected = best_by_metric[
+            best_by_metric["target"].eq(target_name)
+            & best_by_metric["metric"].eq(metric)
+        ].iloc[0]
+        is_winner = (
+            rows["model"].eq(selected["winning_model"])
+            & rows["fit_target"].eq(selected["fit_target"])
+        ).to_numpy()
+        colors = [
+            "#d97706" if winner else
+            "#5b8fb9" if fit == GROWTH_FIT else
+            "#a9b7c6" if model in ["ARIMA", "ARIMAX"] else "#d3dce5"
+            for winner, fit, model in zip(is_winner, rows["fit_target"], rows["model"])
+        ]
+        bars = ax.bar(np.arange(len(rows)), rows[metric], color=colors,
+                      edgecolor=["#78350f" if winner else "none" for winner in is_winner],
+                      linewidth=1.5)
+        values = [f"{value:,.3f}" if metric == "R2" else f"{value:,.0f}" if target_name == "ZHVI"
+                  else f"{value:,.1f}" for value in rows[metric]]
+        annotations = ax.bar_label(bars, labels=values, padding=3, rotation=90, fontsize=7)
+        for label, winner, bar, value_text in zip(annotations, is_winner, bars, values):
+            if bar.get_height() < 0:
+                # The top of a negative bar is the zero line. Put its value
+                # above that line, as with the positive bars.
+                label.set_text("")
+                ax.annotate(value_text,
+                            (bar.get_x() + bar.get_width() / 2, 0),
+                            xytext=(0, 4), textcoords="offset points",
+                            ha="center", va="bottom", rotation=90, fontsize=7)
+            if winner:
+                label.set_fontweight("bold")
+                ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() * 0.6,
+                        "*", ha="center", va="center", color="white",
+                        fontsize=20, fontweight="bold")
+        ax.set_xticks(np.arange(len(rows)), labels, rotation=55, ha="right", fontsize=8)
+        unit = "USD" if target_name == "ZHVI" else "USD/month"
+        ax.set_title(f"{target_name} ({unit})" if metric != "R2" else target_name)
+        ax.set_ylabel(ylabel + (f" [{unit}]" if metric != "R2" else ""))
         ax.grid(axis="y", alpha=0.25)
         if metric == "R2":
             ax.axhline(0, color="black", linewidth=0.8)
+        bottom, top = ax.get_ylim()
+        ax.set_ylim(bottom - (top - bottom) * 0.04, top + (top - bottom) * 0.16)
     fig.suptitle(f"Validation model comparison by {metric}", fontsize=15)
-    fig.text(0.5, 0.015, "All methods are scored on the original t+4 Zillow level; growth-fit models are converted to levels.", ha="center", fontsize=9)
-    fig.tight_layout(rect=(0, 0.06, 1, 0.94))
+    fig.text(0.5, 0.008,
+             "Bold * marks the selected growth-fit winner. Blue = growth fit; pale gray = direct level fit; slate = ARIMA family. All bars are scored on the original t+4 Zillow level.",
+             ha="center", fontsize=9)
+    fig.tight_layout(rect=(0, 0.04, 1, 0.96), h_pad=3.5)
     fig.savefig(RESULTS_DIR / filename, dpi=180, bbox_inches="tight")
     plt.close(fig)
 
@@ -863,15 +940,16 @@ for target_name in TARGETS:
 # -----------------------------------------------------------------------------
 # 9. Model-agnostic permutation importance for each target's best pooled model
 # -----------------------------------------------------------------------------
-# Model ranking is based on validation RMSE. ARIMA-family methods and mean
-# baselines have no shared numeric feature set, so we identify the best pooled
-# feature-based winner separately. Importance is descriptive: the same small
-# validation year is used for model selection, so rankings may be unstable.
+# Interpret the growth-target winners only. Permutations preserve the panel:
+# national predictors move as entire quarter blocks; county predictors are
+# shuffled among counties within each quarter. The 36 validation rows make
+# these exploratory sensitivity measures, not significance tests.
 importance_rows = []
 importance_model_rows = []
 for target_name in TARGETS:
     candidate = validation_chosen[
         validation_chosen["target"].eq(target_name)
+        & validation_chosen["fit_target"].eq(ELIGIBLE_FIT_TARGET)
         & validation_chosen["model"].isin(PREDICTOR_MODELS)
     ].sort_values(["RMSE", "MAE"]).iloc[0]
     label = candidate["model"]
@@ -898,14 +976,32 @@ for target_name in TARGETS:
         return raw
 
     unpermuted_rmse = score(actual_level, level_forecast(validation))["RMSE"]
-    for variable in numeric_features:
+    for variable_index, variable in enumerate(numeric_features):
         changes = []
+        quarter_shared = validation.groupby(["year", "quarter"])[variable].nunique(dropna=False).max() == 1
         for repeat in range(30):
-            # Shuffle only one numeric predictor. County/quarter indicators and
-            # all other predictors stay fixed. The seed makes plots reproducible.
+            # Shuffle one feature without inventing different national values
+            # for counties in the same quarter. County/quarter controls stay fixed.
             changed = validation.copy()
-            random = np.random.default_rng(2026 + repeat)
-            changed[variable] = random.permutation(changed[variable].to_numpy())
+            random = np.random.default_rng(2026 + 1000 * variable_index + repeat)
+            if quarter_shared:
+                quarter_values = validation.drop_duplicates(["year", "quarter"])[
+                    ["year", "quarter", variable]
+                ]
+                shuffled = random.permutation(quarter_values[variable].to_numpy())
+                value_by_quarter = {
+                    (int(y), int(q)): value
+                    for y, q, value in zip(quarter_values["year"], quarter_values["quarter"], shuffled)
+                }
+                changed[variable] = [
+                    value_by_quarter[(int(y), int(q))]
+                    for y, q in zip(changed["year"], changed["quarter"])
+                ]
+            else:
+                for _, quarter_rows in changed.groupby(["year", "quarter"], sort=False):
+                    changed.loc[quarter_rows.index, variable] = random.permutation(
+                        quarter_rows[variable].to_numpy()
+                    )
             shuffled_rmse = score(actual_level, level_forecast(changed))["RMSE"]
             changes.append(shuffled_rmse - unpermuted_rmse)
         importance_rows.append({
@@ -913,43 +1009,40 @@ for target_name in TARGETS:
             "variable": variable,
             "delta_rmse_mean": float(np.mean(changes)),
             "delta_rmse_sd": float(np.std(changes, ddof=1)),
+            "delta_rmse_pct_mean": float(100 * np.mean(changes) / unpermuted_rmse),
+            "delta_rmse_pct_sd": float(100 * np.std(changes, ddof=1) / unpermuted_rmse),
+            "permutation_rule": "whole quarter blocks" if quarter_shared else "across counties within quarter",
             "unpermuted_validation_rmse": unpermuted_rmse,
         })
     importance_model_rows.append({
         "target": target_name, "model": label, "fit_target": fit_target,
         "quarter_terms": candidate["quarter_terms"],
         "validation_RMSE_level": candidate["RMSE"],
-        "explanation": "Best predictor-based pooled model by validation RMSE; 30-repeat permutation importance on validation rows.",
+        "explanation": "Growth-fitted winner by validation level RMSE; 30 panel-preserving permutations per feature on 36 validation rows.",
     })
 
 importance = pd.DataFrame(importance_rows)
 importance.to_csv(RESULTS_DIR / "winning_model_feature_importance.csv", index=False)
 pd.DataFrame(importance_model_rows).to_csv(RESULTS_DIR / "winning_model_feature_importance_notes.csv", index=False)
 for target_name in TARGETS:
-    rows = importance[importance["target"].eq(target_name)].sort_values("delta_rmse_mean")
-    current_level = TARGETS[target_name]["level"]
-    if current_level in rows["variable"].values:
-        # The current price/rent level dominates a direct level fit. Give it a
-        # separate axis so smaller economic effects remain readable.
-        fig, axes = plt.subplots(1, 2, figsize=(16, 6), gridspec_kw={"width_ratios": [1, 2]})
-        groups = [rows[rows["variable"].eq(current_level)],
-                  rows[~rows["variable"].eq(current_level)]]
-        titles = ["Current level", "Other predictors (expanded scale)"]
-    else:
-        fig, axis = plt.subplots(figsize=(10, 6))
-        axes, groups, titles = [axis], [rows], ["Predictors"]
-    for ax, group, title in zip(axes, groups, titles):
-        colors = ["#3b82f6" if value >= 0 else "#ef4444" for value in group["delta_rmse_mean"]]
-        ax.barh(group["variable"], group["delta_rmse_mean"],
-                xerr=group["delta_rmse_sd"], color=colors, capsize=2)
-        ax.axvline(0, color="black", linewidth=0.8)
-        ax.set_xlabel("Increase in validation level RMSE")
-        ax.set_title(title)
-        ax.grid(axis="x", alpha=0.25)
+    rows = importance[importance["target"].eq(target_name)].sort_values("delta_rmse_pct_mean")
+    fig, ax = plt.subplots(figsize=(11, 6.5))
+    top_three = set(rows.nlargest(3, "delta_rmse_pct_mean")["variable"])
+    colors = ["#1d4ed8" if variable in top_three and value > 0 else
+              "#93c5fd" if value > 0 else "#9ca3af"
+              for variable, value in zip(rows["variable"], rows["delta_rmse_pct_mean"])]
+    ax.barh(rows["variable"], rows["delta_rmse_pct_mean"],
+            xerr=rows["delta_rmse_pct_sd"], color=colors, capsize=2)
+    ax.axvline(0, color="black", linewidth=0.9)
+    ax.set_xlabel("Change in validation level RMSE after permutation (%)")
+    ax.grid(axis="x", alpha=0.25)
     selected_note = next(item for item in importance_model_rows if item["target"] == target_name)
-    fig.suptitle(f"{target_name}: validation permutation importance\n{selected_note['model']} ({selected_note['fit_target']})")
-    fig.text(0.5, 0.01, "30 shuffles per feature. Positive values indicate worse predictions after shuffling. County/quarter controls excluded.", ha="center", fontsize=8)
-    fig.tight_layout(rect=(0, 0.04, 1, 1))
+    ax.set_title(f"{target_name}: {selected_note['model']} fitted to one-year growth\n"
+                 "Validation permutation sensitivity (36 county-quarters)")
+    fig.text(0.5, 0.01,
+             "Whiskers = SD across 30 shuffles, not confidence intervals. Negative values mean shuffling improved RMSE. County/quarter controls are excluded.",
+             ha="center", fontsize=8)
+    fig.tight_layout(rect=(0, 0.05, 1, 1))
     fig.savefig(RESULTS_DIR / f"{target_name.lower()}_winning_model_feature_importance.png", dpi=180, bbox_inches="tight")
     plt.close(fig)
 
