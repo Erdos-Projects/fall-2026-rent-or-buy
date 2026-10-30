@@ -1,121 +1,140 @@
 # Checkpoint 3 Model Comparison
 
-## What each model predicts
+## At a glance
 
-| # | Model | Model-fitting target | Forecast shown in the main comparison |
+| Research outcome | Tentative model | Validation level RMSE | Test level RMSE |
+|---|---|---:|---:|
+| One-year-ahead ZHVI growth | Ridge, fitted to growth | $5,988.60 | $6,166.55 |
+| One-year-ahead ZORI growth | Elastic Net, fitted to growth | $35.30/month | $28.89/month |
+
+These choices minimize **validation RMSE of the future original level** among the eligible models. They are tentative: the 2023–2024 test results had already been seen when the candidate-pool rule was formalized. The test check is therefore descriptive, not an untouched evaluation of that revised rule.
+
+## Research target and selection rule
+
+The primary outcome is one-year-ahead growth: `100 × [level(t+4) / level(t) − 1]`. The candidate pool contains pooled models fitted to growth **and** ARIMA/ARIMAX. The time-series models fit original levels and imply growth from their four-quarter-ahead forecasts. Pooled models fitted directly to future levels are **reference comparisons only**. This is a research-goal rule, not a finding that level fitting is always worse.
+
+All candidates are scored against the **same observed level at t+4**. We select the lowest validation level RMSE, use MAE to break ties, and report R² as supporting evidence. The calculator needs future dollar values, which motivates level-scale scoring without changing the research outcome.
+
+## What each model fits
+
+All eight families forecast a Zillow outcome four quarters after the prediction origin. The six pooled families each have a growth fit and a direct-level fit. The mean baseline names make that distinction explicit.
+
+| # | Model | Fitting target | Selection status |
 |---:|---|---|---|
-| 1 | Mean baseline | One-year-ahead ZHVI/ZORI growth | Predict growth, then convert it to the Zillow level at t+4 |
-| 2 | LASSO | One-year-ahead ZHVI/ZORI growth | Predict growth, then convert it to the Zillow level at t+4 |
-| 3 | Elastic Net | One-year-ahead ZHVI/ZORI growth | Predict growth, then convert it to the Zillow level at t+4 |
-| 4 | Ridge | One-year-ahead ZHVI/ZORI growth | Predict growth, then convert it to the Zillow level at t+4 |
-| 5 | XGBoost | One-year-ahead ZHVI/ZORI growth | Predict growth, then convert it to the Zillow level at t+4 |
-| 6 | Ordinary Linear Regression | One-year-ahead ZHVI/ZORI growth | Predict growth, then convert it to the Zillow level at t+4 |
-| 7 | ARIMAX | Original ZHVI/ZORI level at t+4 | Forecast the level directly |
-| 8 | ARIMA | Original ZHVI/ZORI level at t+4 | Forecast the level directly |
+| 1 | Mean growth baseline / Mean level baseline | Growth / level at t+4 | Growth eligible; level reference |
+| 2 | Ordinary Linear Regression | Growth and level at t+4 | Growth eligible; level reference |
+| 3 | LASSO | Growth and level at t+4 | Growth eligible; level reference |
+| 4 | Elastic Net | Growth and level at t+4 | Growth eligible; level reference |
+| 5 | Ridge | Growth and level at t+4 | Growth eligible; level reference |
+| 6 | XGBoost | Growth and level at t+4 | Growth eligible; level reference |
+| 7 | ARIMA | Original level time series | Eligible |
+| 8 | ARIMAX | Original level time series with exogenous predictors | Eligible |
 
-Figures 1–2 show one-year-ahead growth. Figures 3–4 show the common future-level scale. For models 1–6: `predicted level(t+4) = level(t) × (1 + predicted growth(t+4) / 100)`. ARIMA and ARIMAX forecast the level directly.
+For growth fits, `predicted level(t+4) = observed level(t) × [1 + predicted growth / 100]`. Direct-level and time-series fits already output levels. The observed level label is reconstructed from origin level and the supplied growth label, so the score has a common denominator. Ordinary Linear Regression is the pooled OLS model formerly labeled “Pooled AR(1) dynamic panel”; it uses lagged housing growth and county effects but is not a separate AR(1) time-series fit.
 
-## Goal and evaluation design
+## Comparison design
 
-We compared pooled regression and time-series approaches for one-year-ahead housing outcomes in the nine Ohio counties. For the pooled growth models, the target is the engineered one-year-ahead percentage growth (`zhvi_growth_ahead_1y_pct` or `zori_growth_ahead_1y_pct`). Predicted growth is converted to the Zillow value one year later using the observed origin-quarter value:
+The panel contains nine Ohio counties. The existing chronological split separates one-year target windows:
 
-`predicted level(t+4) = level(t) × (1 + predicted growth(t+4) / 100)`.
+| Partition | Prediction-origin quarters | County-quarter rows |
+|---|---|---:|
+| Train | 2015Q1–2019Q4 | 180 |
+| Validation | 2021Q1–2021Q4 | 36 |
+| Test | 2023Q1–2024Q4 | 72 |
 
-ARIMA and ARIMAX instead forecast the original Zillow level. This lets every model be evaluated on the same future ZHVI or ZORI level. Quarterly rows are Q1–Q4, and the common chronological split is train 2015Q1–2019Q4, validation 2021Q1–2021Q4, and test 2023Q1–2024Q4. The gap years 2020 and 2022 are excluded from scored origins to prevent target-window overlap/leakage and honor the selected split.
+The intervening years are excluded as scored origins. Hyperparameters and the choice of quarter indicators (Q2–Q4, with Q1 as reference) are selected on validation. After freezing specifications, pooled test fits use train plus validation rows. Imputers and scalers are fit on the fitting partition only.
 
-The comparison includes a mean baseline, LASSO, Elastic Net, Ridge, XGBoost, Ordinary Linear Regression, ARIMAX, and ARIMA. The five predictor-based pooled models (LASSO, Elastic Net, Ridge, XGBoost, and Ordinary Linear Regression) share this predeclared ten-variable set: `zhvi_growth_qoq_pct`, `zhvi_growth_prev_1y_pct`, `zori_growth_qoq_pct`, `zori_growth_prev_1y_pct`, `nat_mortgage_rate_30y_pct`, `mortgage_rate_change_prev_1y_pp`, `nat_inflation_yoy_pct`, `cty_unemployment_rate_pct`, `cty_unemployment_change_prev_1y_pp`, and `price_to_rent_ratio`. The mean baseline is predictor-free. Ordinary Linear Regression is the unregularized pooled OLS model using the same shared predictors, including lagged growth features. It replaces the earlier “Pooled AR(1) dynamic panel” label for the same model; no ninth model was added. All pooled models use county fixed effects, with Q1 as the reference when quarter indicators are included. ARIMA/ARIMAX use each county's own history (rather than concatenating counties into a false continuous series); ARIMAX order and a limited economic predictor bundle were selected on validation. Future ARIMAX macro predictors are held at their last observed values, so those forecasts are conditional on a persistence assumption.
+### Shared pooled predictors
 
-For each target/model, versions with and without Q2–Q4 indicators were compared on validation. The model/seasonality selection criterion was **validation RMSE on original Zillow levels**, with MAE as tie-breaker; test data were not used for selection. Reported 95% uncertainty bands are quarter-block bootstrap refit bands for pooled regression models and conditional forecast intervals for ARIMA/ARIMAX. These intervals are not directly equivalent: the time-series intervals condition on the fitted specification, and ARIMAX bands omit uncertainty in future exogenous variables.
+The ten origin-quarter features were selected by domain rationale before this expanded comparison, rather than by screening the test set:
 
-## Tentative model choices
+| Domain | Predeclared features |
+|---|---|
+| Housing momentum | `zhvi_growth_qoq_pct`, `zhvi_growth_prev_1y_pct`, `zori_growth_qoq_pct`, `zori_growth_prev_1y_pct` |
+| Mortgage and inflation | `nat_mortgage_rate_30y_pct`, `mortgage_rate_change_prev_1y_pp`, `nat_inflation_yoy_pct` |
+| Local labor market | `cty_unemployment_rate_pct`, `cty_unemployment_change_prev_1y_pp` |
+| Affordability | `price_to_rent_ratio` |
 
-| Target | Tentative model | Quarter terms | Validation level RMSE | Validation MAE | Validation R² | Why |
-|---|---|---:|---:|---:|---:|---|
-| ZHVI | Ridge (alpha=100) | Yes | $5,989 | $4,464 | 0.991 | Lowest validation level RMSE among evaluated models for ZHVI. |
-| ZORI | Elastic Net (alpha=0.1, l1_ratio=0.75) | No | $35.30/month | $29.99/month | 0.971 | Lowest validation level RMSE among evaluated models for ZORI. |
+All predictor-based pooled models use this same set and county fixed effects. Direct-level predictor fits also use the **current level of the target Zillow series**; growth fits use that known origin level when converting growth forecasts to future levels. Mean baselines omit numeric predictors but retain county effects.
 
-These are **tentative prediction choices**, not a claim that either model fully captures the market regime change after 2022. They were selected by the validation criterion above; the 2023–2024 test is retained as an out-of-period assessment and was not used to choose models.
+### Time-series specifications
 
-## Test performance on the original level scale
+ARIMA and ARIMAX fit each county's level history separately, avoiding artificial transitions between counties. Their orders, ARIMAX predictor bundle, and quarter terms are selected on validation. Future ARIMAX predictors are held at their origin values; that persistence assumption affects the forecasts. The script reuses the unchanged PR #15 time-series search and forecasts by default, verifies saved outcomes against the current split, and can refit them with `--recompute-time-series`.
 
-The table reports the locked test-set level metrics for all eight approaches. Lower MAE/RMSE is better; R² is relative to the test-set mean and should be interpreted cautiously because a strong common time trend can make R² look high even when a model misses quarter-to-quarter changes.
+For Elastic Net, `l1_ratio=0.75` assigns 75% of the penalty mixing weight to L1 (LASSO) and 25% to L2 (Ridge). These weights are not shares of predictor influence or realized shrinkage.
 
-| Target | Model | Quarter terms | Test MAE | Test RMSE | Test R² |
-|---|---|---:|---:|---:|---:|
-| ZHVI | ARIMA | Yes | $9,200.31 | $11,546.58 | 0.971 |
-| ZHVI | ARIMAX | No | $8,088.64 | $10,192.02 | 0.977 |
-| ZHVI | Elastic Net | Yes | $5,578.63 | $7,279.88 | 0.988 |
-| ZHVI | LASSO | Yes | $6,487.17 | $8,429.19 | 0.985 |
-| ZHVI | Mean baseline | No | $6,831.66 | $9,154.57 | 0.982 |
-| ZHVI | Ordinary Linear Regression | Yes | $8,013.93 | $10,660.80 | 0.975 |
-| ZHVI | Ridge | Yes | $4,736.47 | $6,166.55 | 0.992 |
-| ZHVI | XGBoost | Yes | $6,357.47 | $8,377.98 | 0.985 |
-| ZORI | ARIMA | No | $43.17/month | $45.89/month | 0.960 |
-| ZORI | ARIMAX | No | $12.83/month | $16.10/month | 0.995 |
-| ZORI | Elastic Net | No | $23.32/month | $28.89/month | 0.984 |
-| ZORI | LASSO | No | $23.87/month | $29.23/month | 0.984 |
-| ZORI | Mean baseline | No | $14.62/month | $18.67/month | 0.993 |
-| ZORI | Ordinary Linear Regression | No | $21.76/month | $26.93/month | 0.986 |
-| ZORI | Ridge | No | $25.21/month | $31.39/month | 0.981 |
-| ZORI | XGBoost | Yes | $14.29/month | $17.75/month | 0.994 |
+### Does fitting levels work worse than fitting growth?
 
-## Test performance on the one-year growth scale
+**No uniform advantage appears on validation.** Comparing each of the five predictor-based pooled families with itself, growth fitting lowers validation level RMSE in **2 of 5 ZHVI** comparisons and **all 5 ZORI** comparisons. ZHVI direct-level LASSO reaches $5,180, below growth-fitted Ridge's $5,989. Growth fits win all five paired **test** comparisons for both outcomes, but the observed test cannot justify a restriction adopted after those results were seen. Direct-level regressions remain references under the research-goal rule; ARIMA and ARIMAX remain eligible. [Paired validation results](../results/checkpoint3_model_compare/fit_target_paired_validation_comparison.csv).
 
-Because the primary prediction target is one-year-ahead growth, we also convert each predicted future level back into an implied growth rate and report growth metrics. These are **diagnostic test metrics**: model tuning and quarter-term selection above minimized validation level RMSE, not growth-rate RMSE. Negative growth-scale R² for several models shows that the chosen level forecasts can still miss the direction and size of growth changes, especially across a market regime shift.
+## Validation selection
 
-| Target | Model | Quarter terms | MAE (percentage points) | RMSE (percentage points) | R² |
-|---|---|---:|---:|---:|---:|
-| ZHVI | Ridge | Yes | 2.002 | 2.521 | -0.634 |
-| ZHVI | Elastic Net | Yes | 2.340 | 2.920 | -1.192 |
-| ZHVI | XGBoost | Yes | 2.453 | 2.969 | -1.267 |
-| ZHVI | LASSO | Yes | 2.659 | 3.242 | -1.703 |
-| ZHVI | Mean baseline | No | 2.611 | 3.253 | -1.722 |
-| ZHVI | ARIMAX | No | 3.149 | 3.706 | -2.532 |
-| ZHVI | Ordinary Linear Regression | Yes | 3.234 | 3.987 | -3.088 |
-| ZHVI | ARIMA | Yes | 3.591 | 4.241 | -3.625 |
-| ZORI | ARIMAX | No | 1.003 | 1.246 | -0.328 |
-| ZORI | XGBoost | Yes | 1.097 | 1.326 | -0.504 |
-| ZORI | Mean baseline | No | 1.127 | 1.401 | -0.680 |
-| ZORI | Ordinary Linear Regression | No | 1.748 | 2.211 | -3.182 |
-| ZORI | Elastic Net | No | 1.856 | 2.336 | -3.670 |
-| ZORI | LASSO | No | 1.904 | 2.368 | -3.799 |
-| ZORI | Ridge | No | 1.997 | 2.489 | -4.303 |
-| ZORI | ARIMA | No | 3.422 | 3.637 | -10.323 |
+| Target | Tentative model | Quarter terms | Validation level MAE | Validation RMSE | Validation R² | Why |
+|---|---|---|---:|---:|---:|---|
+| ZHVI | Ridge (growth fit; alpha=100) | Yes | $4,464.04 | $5,988.60 | 0.9910 | Lowest validation level RMSE among eligible growth-fit and ARIMA/ARIMAX candidates. |
+| ZORI | Elastic Net (growth fit; alpha=0.1, l1_ratio=0.75) | No | $29.99/month | $35.30/month | 0.9711 | Lowest validation level RMSE among eligible growth-fit and ARIMA/ARIMAX candidates. |
 
-## Figures
+The selected eligible model for each outcome also has the lowest validation MAE and highest R² among eligible candidates. If the research-goal restriction is removed, direct-level LASSO wins for ZHVI. Detailed tables: [all validation results](../results/checkpoint3_model_compare/validation_model_comparison.csv), [quarter-term comparison](../results/checkpoint3_model_compare/validation_seasonality_comparison.csv), [eligible metric winners](../results/checkpoint3_model_compare/validation_metric_winners.csv), and [unrestricted metric winners](../results/checkpoint3_model_compare/validation_metric_winners_all_candidates.csv).
 
-The figures below compare the nine-county average actual test series with model-average forecasts. In each panel, the black line is the observed series, the colored line is the forecast, and the shaded region is the model's 95% uncertainty band. The horizontal axis shows the prediction-origin quarter; the vertical axis shows either growth in percent or the predicted future Zillow level, as labeled. Narrower bands indicate less estimated uncertainty under that model's interval method, not guaranteed accuracy.
+![Validation RMSE by model](../results/checkpoint3_model_compare/validation_rmse_model_comparison.png)
 
-### ZHVI: one-year-ahead target growth
+**Figure 1 — Validation RMSE.** Top y-axis: ZHVI level error in USD. Bottom y-axis: ZORI level error in USD/month. Both score the **original level at t+4**; growth forecasts are converted to levels first. Values appear above bars. The orange bar and bold asterisk mark the eligible winner. Blue = growth fit; slate = ARIMA/ARIMAX; gray = reference-only direct-level fit. Direct-level ZHVI LASSO has a lower unrestricted RMSE than Ridge but is ineligible under the stated rule.
 
-![ZHVI one-year-ahead growth predictions on the test period](../results/checkpoint3_model_compare/zhvi_1y_ahead_growth_test_prediction_comparison.png)
+![Validation MAE by model](../results/checkpoint3_model_compare/validation_mae_model_comparison.png)
 
-*Figure 1. The y-axis is average one-year-ahead ZHVI growth across the nine counties, in percent: 100 × (ZHVI at t+4 quarters / ZHVI at t − 1). Black shows observed growth; color shows model predictions; shading shows 95% uncertainty intervals. Panel subtitles identify each selected specification, predictors where applicable, and quarter terms.*
+**Figure 2 — Validation MAE.** Top y-axis: ZHVI level error in USD. Bottom y-axis: ZORI level error in USD/month. Both refer to the **original level at t+4**; lower is better. Values appear above bars; orange and the bold asterisk identify the eligible winner. Labels show fitting target and quarter-term choice.
 
-### ZORI: one-year-ahead target growth
+![Validation R-squared by model](../results/checkpoint3_model_compare/validation_r2_model_comparison.png)
 
-![ZORI one-year-ahead growth predictions on the test period](../results/checkpoint3_model_compare/zori_1y_ahead_growth_test_prediction_comparison.png)
+**Figure 3 — Validation R².** Top y-axis: ZHVI level R². Bottom y-axis: ZORI level R². Both use the **original level at t+4**; higher is better, and zero is the observed-mean reference. Orange and the bold asterisk identify the eligible winner. Direct-level ZHVI LASSO has the highest unrestricted R² but is reference-only.
 
-*Figure 2. The y-axis is average one-year-ahead ZORI growth across the nine counties, in percent: 100 × (ZORI at t+4 quarters / ZORI at t − 1). Black shows observed growth; color shows model predictions; shading shows 95% uncertainty intervals. Panel subtitles identify each selected specification, predictors where applicable, and quarter terms.*
+## Interpreting the winning models
 
-### Model-specific level forecasts
+Figures 4–5 show **permutation sensitivity**, not SHAP values, causal effects, or significance tests. Each feature is shuffled 30 times while the model and other columns stay fixed. National features are shuffled by whole quarters so they remain identical across counties; county-level features are shuffled among counties within each quarter. County and quarter indicators stay fixed.
 
-![ZHVI test-period level forecasts](../results/checkpoint3_model_compare/zhvi_test_prediction_comparison.png)
+The bars measure the mean percentage change in validation **level-scale RMSE** versus the unshuffled fit. Whiskers are standard deviations across shuffles, **not confidence intervals**. Positive values mean forecasts worsen when a feature is disturbed; negative values mean they improve. Correlation and a 36-row validation sample make rankings uncertain.
 
-*Figure 3. The y-axis is average future ZHVI across the nine counties, in U.S. dollars. Models 1–6 predict one-year growth and convert it to the future level; ARIMAX and ARIMA forecast levels directly. Shading marks 95% uncertainty intervals. Panel subtitles give selected model orders/hyperparameters, predictor bundle where applicable, and quarter terms.*
+![ZHVI Ridge permutation sensitivity](../results/checkpoint3_model_compare/zhvi_winning_model_feature_importance.png)
 
-![ZORI test-period level forecasts](../results/checkpoint3_model_compare/zori_test_prediction_comparison.png)
+**Figure 4 — ZHVI Ridge sensitivity.** The x-axis is the percentage change in validation **original-level RMSE** after panel-preserving shuffling. Darker blue highlights the three largest positive values: county unemployment change (+7.4%), county unemployment rate (+5.7%), and mortgage-rate change (+4.0%). Current ZHVI level converts growth forecasts to levels but is not fitted as a predictor. Bars show predictive sensitivity in this sample, not effect direction.
 
-*Figure 4. The y-axis is average future ZORI across the nine counties, in U.S. dollars per month. Models 1–6 predict one-year growth and convert it to the future level; ARIMAX and ARIMA forecast levels directly. Shading marks 95% uncertainty intervals. Panel subtitles give selected model orders/hyperparameters, predictor bundle where applicable, and quarter terms.*
+![ZORI Elastic Net feature importance](../results/checkpoint3_model_compare/zori_winning_model_feature_importance.png)
 
-## Limitations and interpretation
+**Figure 5 — ZORI Elastic Net sensitivity.** The x-axis is the percentage change in validation **original-level RMSE**. Mortgage-rate change (+6.4%) and county unemployment rate (+2.4%) have the largest positive values. Shuffling inflation improves RMSE (−6.6%), suggesting that its fitted contribution may not generalize; this is not a causal finding. Near-zero bars can reflect small coefficients, correlated predictors, or limited validation variation.
 
-- There are only nine counties and a short pre-pandemic training window. The 2023–2024 test period follows a different rate and housing-market environment, so it is a meaningful but difficult distribution-shift test.
-- The one-year validation period is small. Treat model ordering and quarter-term selection as provisional, and report test results separately rather than selecting on them.
-- Ridge and Elastic Net are the tentative choices because they had the best validation RMSE on the level scale for their respective targets. Their growth-rate errors can still be poor; the conclusion should be framed as “selected under the stated validation criterion,” not “best at predicting the 2023–2024 slowdown.”
-- Growth and level objectives differ. If the project prioritizes predicting appreciation/deceleration rather than future dollar levels, the team should predeclare growth-rate RMSE as the primary criterion and rerun model selection using validation growth metrics before finalizing the model.
-- The bands use different uncertainty procedures across model families and are not directly comparable as calibrated coverage statements. The held-out test period is only eight quarters, so empirical coverage is imprecise.
+[Numerical sensitivity values and permutation rules](../results/checkpoint3_model_compare/winning_model_feature_importance.csv). Multiple forward validation periods would be needed to assess ranking stability.
 
-## Reproducibility and artifacts
+## Locked test check and R²
 
-Run [`notebooks/pooled_model_comparison_zhvi_1y.ipynb`](../notebooks/pooled_model_comparison_zhvi_1y.ipynb) from the project directory. Input data and predictor definitions are loaded from `processed/` and `metadata/`. The corresponding metric tables, prediction series, interval tables, and plots are stored in [`results/checkpoint3_model_compare/`](../results/checkpoint3_model_compare/). Person 3's original growth-target time-series results remain in [`results/checkpoint3_time_series/`](../results/checkpoint3_time_series/). The early Person 4 time-series experiment was removed from the results folder.
+| Target | **Validation-selected model** | Quarter terms | Test level MAE | Test level RMSE | Test level R² |
+|---|---|---|---:|---:|---:|
+| ZHVI | Ridge (growth fit) | Yes | $4,736.47 | $6,166.55 | 0.9917 |
+| ZORI | Elastic Net (growth fit) | No | $23.32/month | $28.89/month | 0.9841 |
+
+The 2023–2024 period tests a different housing and rate environment. Direct-level ZHVI LASSO, the unrestricted validation winner, has **$18,072.77** test RMSE versus Ridge's **$6,166.55**. Eligible ZORI ARIMAX beats Elastic Net on test (**$16.10** versus **$28.89/month**), but lost on validation (**$62.50** versus **$35.30/month**). Neither test observation changes a validation-selected choice. Because the candidate-pool rule was formalized after test outcomes were seen, these are descriptive scores. See [all test metrics](../results/checkpoint3_model_compare/metrics.csv) and [growth-scale diagnostics](../results/checkpoint3_model_compare/one_year_ahead_growth_test_metrics.csv).
+
+**Reading out-of-sample R².** `R² = 1 − SSE/SST`, where `SSE` sums squared forecast errors and `SST` sums squared deviations of observed outcomes from their **scored-split mean**. A level R² of `0.992` means SSE is about **99.2% below** that mean-reference SSE. A growth R² of `−0.634` means SSE is **1.634 times** the reference, or 63.4% higher. The scored-split mean defines the metric; it is not available to a forecasting model. Strong level R² can coexist with weak growth R² because persistent county price differences are easier to capture than shifts in growth.
+
+### Test time-series views
+
+![ZHVI growth comparison](../results/checkpoint3_model_compare/zhvi_1y_ahead_growth_test_prediction_comparison.png)
+
+**Figure 6 — ZHVI growth forecasts.** The y-axis is **mean one-year-ahead ZHVI growth (%) across nine counties**, `100 × [ZHVI(t+4)/ZHVI(t) − 1]`. The x-axis is the 2023–2024 **prediction-origin quarter**. Black = observed; colored curves = predictions converted to growth where needed. Shading shows approximate 95% bands: quarter-block bootstrap refit bands for pooled fits and conditional forecast intervals for ARIMA/ARIMAX.
+
+![ZORI growth comparison](../results/checkpoint3_model_compare/zori_1y_ahead_growth_test_prediction_comparison.png)
+
+**Figure 7 — ZORI growth forecasts.** The y-axis is **mean one-year-ahead ZORI growth (%) across nine counties**, `100 × [ZORI(t+4)/ZORI(t) − 1]`. The x-axis is the prediction-origin quarter, not the future outcome quarter. Black = observed; colored curves = predicted county averages. The band methods differ by model family, so band widths are not directly comparable.
+
+![ZHVI level comparison](../results/checkpoint3_model_compare/zhvi_test_prediction_comparison.png)
+
+**Figure 8 — ZHVI level forecasts.** The y-axis is **mean original ZHVI at t+4 (USD) across nine counties**. The x-axis is the prediction-origin quarter. Growth forecasts use observed origin ZHVI for conversion; direct-level and time-series fits output levels. Black = observed; colors = predictions; shading = model-specific approximate 95% bands.
+
+![ZORI level comparison](../results/checkpoint3_model_compare/zori_test_prediction_comparison.png)
+
+**Figure 9 — ZORI level forecasts.** The y-axis is **mean original ZORI at t+4 (USD/month) across nine counties**. The x-axis is the 2023–2024 prediction-origin quarter. Growth fits are converted to levels; direct-level and time-series fits already output levels. Separate panels distinguish each model's fitted target.
+
+## Limits and reproduction
+
+Validation covers only **four quarters and nine counties**. The post-2022 test has a different housing and interest-rate environment; direct-level LASSO's validation-to-test deterioration illustrates the instability. Because the team has inspected the test, an unbiased assessment of the revised selection policy needs new prospective data or a separately designed forward validation period. Pooled bootstrap bands measure refit variation. ARIMA/ARIMAX intervals condition on the chosen specification and, for ARIMAX, fixed future exogenous values. Neither guarantees empirical 95% coverage.
+
+Run the [comparison notebook](../notebooks/pooled_model_comparison_zhvi_1y.ipynb) or [analysis script](../src/model_comparison_analysis.py) from the repository root. The script reads the one-year chronological splits and feature panel and writes [tables and figures](../results/checkpoint3_model_compare/). To rerun the slower ARIMA/ARIMAX search instead of using the checked-in PR #15 results, use `python src/model_comparison_analysis.py --recompute-time-series`. [Person 3's separate time-series results](../results/checkpoint3_time_series/) remain in their own folder.

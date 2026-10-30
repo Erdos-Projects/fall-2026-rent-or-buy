@@ -1,0 +1,29 @@
+target,model,fit_target,quarter_terms,specification,MAE,RMSE,R2,eligible_for_tentative_selection
+ZORI,Elastic Net,1-year-ahead growth,No,"fit=1-year-ahead growth; alpha=0.1, l1_ratio=0.75",29.98591043596613,35.301126315931036,0.9710563661062014,True
+ZORI,LASSO,1-year-ahead growth,No,"fit=1-year-ahead growth; alpha=0.1, l1_ratio=1",30.770306301155156,35.97894089072894,0.9699342057149672,True
+ZORI,Ridge,1-year-ahead growth,No,fit=1-year-ahead growth; alpha=100,36.78417446729676,43.36585210657571,0.9563210992052109,True
+ZORI,ARIMA,Original level at t+4,No,"ARIMA(1, 0, 0); None",38.706885731204515,46.635735744146544,0.949485786283399,True
+ZORI,Ordinary Linear Regression,1-year-ahead growth,No,fit=1-year-ahead growth; unregularized OLS,45.22969495567776,49.24301960743766,0.9436796578786454,True
+ZORI,LASSO,Original level at t+4,No,"fit=Original level at t+4; alpha=1, l1_ratio=1",46.757367586930435,53.04708941794536,0.9346419551633096,False
+ZORI,XGBoost,1-year-ahead growth,Yes,"fit=1-year-ahead growth; trees=100, depth=1, learning_rate=0.05",58.08996275993733,61.8712857309853,0.9110892622339822,True
+ZORI,ARIMAX,Original level at t+4,No,"ARIMA(1, 1, 0); Mortgage + county unemployment",53.68639512281729,62.50286227326944,0.9092648119146054,True
+ZORI,Ordinary Linear Regression,Original level at t+4,No,fit=Original level at t+4; unregularized OLS,66.36586931328712,69.25324686340011,0.8886074332875813,False
+ZORI,Mean growth baseline,1-year-ahead growth,No,county mean growth,65.33759511838032,69.76695158369165,0.8869487350153266,True
+ZORI,Ridge,Original level at t+4,No,fit=Original level at t+4; alpha=0.01,66.88997885962512,69.77313527032685,0.8869286938766164,False
+ZORI,Elastic Net,Original level at t+4,No,"fit=Original level at t+4; alpha=0.01, l1_ratio=0.75",72.68351193646033,75.75811194149004,0.8666987515327583,False
+ZORI,XGBoost,Original level at t+4,Yes,"fit=Original level at t+4; trees=100, depth=1, learning_rate=0.05",144.92368328445298,178.8517842752825,0.25704504051972543,False
+ZORI,Mean level baseline,Original level at t+4,Yes,county mean level,276.1245013485323,279.5503881300462,-0.8150815027103289,False
+ZHVI,LASSO,Original level at t+4,Yes,"fit=Original level at t+4; alpha=1, l1_ratio=1",3908.33006899632,5179.99847244944,0.9932541995386389,False
+ZHVI,Ordinary Linear Regression,Original level at t+4,Yes,fit=Original level at t+4; unregularized OLS,4077.86826945311,5245.526796797829,0.9930824477631709,False
+ZHVI,Ridge,Original level at t+4,Yes,fit=Original level at t+4; alpha=0.01,4041.076661865497,5320.335743580616,0.9928837318146017,False
+ZHVI,Ridge,1-year-ahead growth,Yes,fit=1-year-ahead growth; alpha=100,4464.040425862422,5988.602943039053,0.9909837640963498,True
+ZHVI,ARIMA,Original level at t+4,Yes,"ARIMA(1, 0, 0); None",5491.345250816042,6616.921540759296,0.9889925632768084,True
+ZHVI,Elastic Net,1-year-ahead growth,Yes,"fit=1-year-ahead growth; alpha=0.1, l1_ratio=0.25",5026.398897315609,6739.8441085154445,0.9885797941969097,True
+ZHVI,LASSO,1-year-ahead growth,Yes,"fit=1-year-ahead growth; alpha=0.1, l1_ratio=1",5189.619332657833,6903.515949569027,0.9880183979103424,True
+ZHVI,ARIMAX,Original level at t+4,No,"ARIMA(1, 0, 0); Mortgage + inflation",5727.128410436206,6980.324949596479,0.987750298433356,True
+ZHVI,XGBoost,1-year-ahead growth,Yes,"fit=1-year-ahead growth; trees=100, depth=1, learning_rate=0.05",6062.037457205805,7554.956559012155,0.9856504536835867,True
+ZHVI,Ordinary Linear Regression,1-year-ahead growth,Yes,fit=1-year-ahead growth; unregularized OLS,5719.4659772206005,7964.315337604246,0.9840532890771178,True
+ZHVI,Elastic Net,Original level at t+4,Yes,"fit=Original level at t+4; alpha=0.01, l1_ratio=0.75",7095.0732772898855,9200.045024909517,0.9787208570075988,False
+ZHVI,Mean growth baseline,1-year-ahead growth,No,county mean growth,8118.187443533353,9496.26251905629,0.977328531516336,True
+ZHVI,XGBoost,Original level at t+4,Yes,"fit=Original level at t+4; trees=100, depth=1, learning_rate=0.05",31895.786195031294,46972.66947892614,0.4452916395943384,False
+ZHVI,Mean level baseline,Original level at t+4,Yes,county mean level,67984.61399347303,71463.32030158973,-0.2839278168039574,False

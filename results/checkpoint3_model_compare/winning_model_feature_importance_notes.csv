@@ -1,0 +1,3 @@
+target,model,fit_target,quarter_terms,validation_RMSE_level,explanation
+ZHVI,Ridge,1-year-ahead growth,Yes,5988.602943039053,Growth-fitted winner by validation level RMSE; 30 panel-preserving permutations per feature on 36 validation rows.
+ZORI,Elastic Net,1-year-ahead growth,No,35.301126315931036,Growth-fitted winner by validation level RMSE; 30 panel-preserving permutations per feature on 36 validation rows.

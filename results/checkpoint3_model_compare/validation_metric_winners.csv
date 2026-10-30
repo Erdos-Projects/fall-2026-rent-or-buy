@@ -1,0 +1,7 @@
+target,metric,winning_model,fit_target,quarter_terms,value
+ZHVI,RMSE,Ridge,1-year-ahead growth,Yes,5988.602943039053
+ZHVI,MAE,Ridge,1-year-ahead growth,Yes,4464.040425862422
+ZHVI,R2,Ridge,1-year-ahead growth,Yes,0.9909837640963498
+ZORI,RMSE,Elastic Net,1-year-ahead growth,No,35.301126315931036
+ZORI,MAE,Elastic Net,1-year-ahead growth,No,29.98591043596613
+ZORI,R2,Elastic Net,1-year-ahead growth,No,0.9710563661062014

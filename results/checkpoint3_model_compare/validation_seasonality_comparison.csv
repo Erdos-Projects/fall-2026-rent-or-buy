@@ -1,73 +1,57 @@
-target,model,quarter_dummies,specification,MAE,RMSE,R2
-ZHVI,Mean baseline,False,pooled county mean,8118.187443533353,9496.26251905629,0.977328531516336
-ZHVI,Mean baseline,True,pooled county mean,8106.968818164772,9628.994772718292,0.9766903297789158
-ZHVI,LASSO,False,"Lasso(alpha=0.1, max_iter=20000)",5189.898817155813,6903.814832659298,0.9880173604170401
-ZHVI,LASSO,True,"Lasso(alpha=0.1, max_iter=20000)",5189.619332657833,6903.515949569027,0.9880183979103424
-ZHVI,Elastic Net,False,"ElasticNet(alpha=0.1, l1_ratio=0.25, max_iter=20000)",5195.1174834662315,7059.111950488423,0.9874722128429242
-ZHVI,Elastic Net,True,"ElasticNet(alpha=0.1, l1_ratio=0.25, max_iter=20000)",5026.398897315609,6739.8441085154445,0.9885797941969097
-ZHVI,Ridge,False,Ridge(alpha=100.0),4477.697782094862,5998.953308331981,0.9909525708508673
-ZHVI,Ridge,True,Ridge(alpha=100.0),4464.040425862422,5988.602943039053,0.9909837640963498
-ZHVI,XGBoost,False,"XGBRegressor(base_score=None, booster=None, callbacks=None,
-             colsample_bylevel=None, colsample_bynode=None,
-             colsample_bytree=0.8, device=None, early_stopping_rounds=None,
-             enable_categorical=True, eval_metric=None, feature_types=None,
-             feature_weights=None, gamma=None, grow_policy=None,
-             importance_type=None, interaction_constraints=None,
-             learning_rate=0.05, max_bin=None, max_cat_threshold=None,
-             max_cat_to_onehot=None, max_delta_step=None, max_depth=1,
-             max_leaves=None, min_child_weight=10, missing=nan,
-             monotone_constraints=None, multi_strategy=None, n_estimators=100,
-             n_jobs=1, num_parallel_tree=None, ...)",6366.695736120784,7845.767100945504,0.9845244871009086
-ZHVI,XGBoost,True,"XGBRegressor(base_score=None, booster=None, callbacks=None,
-             colsample_bylevel=None, colsample_bynode=None,
-             colsample_bytree=0.8, device=None, early_stopping_rounds=None,
-             enable_categorical=True, eval_metric=None, feature_types=None,
-             feature_weights=None, gamma=None, grow_policy=None,
-             importance_type=None, interaction_constraints=None,
-             learning_rate=0.05, max_bin=None, max_cat_threshold=None,
-             max_cat_to_onehot=None, max_delta_step=None, max_depth=1,
-             max_leaves=None, min_child_weight=10, missing=nan,
-             monotone_constraints=None, multi_strategy=None, n_estimators=100,
-             n_jobs=1, num_parallel_tree=None, ...)",6062.037457205805,7554.956559012155,0.9856504536835867
-ZHVI,Ordinary Linear Regression,False,LinearRegression(),8594.079147124485,10915.77626520815,0.9700440236819882
-ZHVI,Ordinary Linear Regression,True,LinearRegression(),5719.4659772206005,7964.315337604246,0.9840532890771178
-ZHVI,ARIMAX,False,"order=(1, 0, 0); predictors=Mortgage + inflation",5727.128410436206,6980.324949596479,0.987750298433356
-ZHVI,ARIMAX,True,"order=(1, 0, 0); predictors=Mortgage rate",7808.587637523776,9007.123087435732,0.9796039333382501
-ZHVI,ARIMA,False,"order=(1, 0, 0); predictors=None",5827.246768329556,6695.378418225888,0.9887299852734198
-ZHVI,ARIMA,True,"order=(1, 0, 0); predictors=None",5491.345250816042,6616.921540759296,0.9889925632768083
-ZORI,Mean baseline,False,pooled county mean,65.33759511838032,69.76695158369165,0.8869487350153266
-ZORI,Mean baseline,True,pooled county mean,65.29040421725934,70.01490676836502,0.8861437274988034
-ZORI,LASSO,False,"Lasso(alpha=0.1, max_iter=20000)",30.770306301155156,35.97894089072894,0.9699342057149672
-ZORI,LASSO,True,"Lasso(alpha=0.1, max_iter=20000)",30.770306301155156,35.97894089072894,0.9699342057149672
-ZORI,Elastic Net,False,"ElasticNet(alpha=0.1, l1_ratio=0.75, max_iter=20000)",29.98591043596613,35.301126315931036,0.9710563661062014
-ZORI,Elastic Net,True,"ElasticNet(alpha=0.1, l1_ratio=0.75, max_iter=20000)",29.98591043596613,35.301126315931036,0.9710563661062014
-ZORI,Ridge,False,Ridge(alpha=100.0),36.78417446729676,43.36585210657571,0.9563210992052109
-ZORI,Ridge,True,Ridge(alpha=100.0),36.78627471962876,43.38256163139858,0.9562874324257756
-ZORI,XGBoost,False,"XGBRegressor(base_score=None, booster=None, callbacks=None,
-             colsample_bylevel=None, colsample_bynode=None,
-             colsample_bytree=0.8, device=None, early_stopping_rounds=None,
-             enable_categorical=True, eval_metric=None, feature_types=None,
-             feature_weights=None, gamma=None, grow_policy=None,
-             importance_type=None, interaction_constraints=None,
-             learning_rate=0.05, max_bin=None, max_cat_threshold=None,
-             max_cat_to_onehot=None, max_delta_step=None, max_depth=1,
-             max_leaves=None, min_child_weight=10, missing=nan,
-             monotone_constraints=None, multi_strategy=None, n_estimators=100,
-             n_jobs=1, num_parallel_tree=None, ...)",58.2338015883779,61.93317046318114,0.9109113131631834
-ZORI,XGBoost,True,"XGBRegressor(base_score=None, booster=None, callbacks=None,
-             colsample_bylevel=None, colsample_bynode=None,
-             colsample_bytree=0.8, device=None, early_stopping_rounds=None,
-             enable_categorical=True, eval_metric=None, feature_types=None,
-             feature_weights=None, gamma=None, grow_policy=None,
-             importance_type=None, interaction_constraints=None,
-             learning_rate=0.05, max_bin=None, max_cat_threshold=None,
-             max_cat_to_onehot=None, max_delta_step=None, max_depth=1,
-             max_leaves=None, min_child_weight=10, missing=nan,
-             monotone_constraints=None, multi_strategy=None, n_estimators=100,
-             n_jobs=1, num_parallel_tree=None, ...)",58.08996275993733,61.8712857309853,0.9110892622339822
-ZORI,Ordinary Linear Regression,False,LinearRegression(),45.22969495567776,49.24301960743766,0.9436796578786454
-ZORI,Ordinary Linear Regression,True,LinearRegression(),53.98680733413035,58.828914511431705,0.9196182231932515
-ZORI,ARIMAX,False,"order=(1, 1, 0); predictors=Mortgage + county unemployment",53.68639512281729,62.502862273269436,0.9092648119146054
-ZORI,ARIMAX,True,"order=(1, 1, 0); predictors=Mortgage + county unemployment",53.80746486513754,62.7356797110139,0.9085875924375033
-ZORI,ARIMA,False,"order=(1, 0, 0); predictors=None",38.706885731204515,46.635735744146544,0.949485786283399
-ZORI,ARIMA,True,"order=(1, 0, 0); predictors=None",39.46746574026855,47.50967139922228,0.9475748133848321
+target,model,fit_target,quarter_terms,specification,MAE,RMSE,R2
+ZHVI,Mean growth baseline,1-year-ahead growth,No,county mean growth,8118.187443533353,9496.26251905629,0.977328531516336
+ZHVI,Ordinary Linear Regression,1-year-ahead growth,No,fit=1-year-ahead growth; unregularized OLS,8594.079147124485,10915.77626520815,0.9700440236819882
+ZHVI,LASSO,1-year-ahead growth,No,"fit=1-year-ahead growth; alpha=0.1, l1_ratio=1",5189.898817155813,6903.814832659298,0.9880173604170401
+ZHVI,Elastic Net,1-year-ahead growth,No,"fit=1-year-ahead growth; alpha=0.1, l1_ratio=0.25",5195.1174834662315,7059.111950488423,0.9874722128429242
+ZHVI,Ridge,1-year-ahead growth,No,fit=1-year-ahead growth; alpha=100,4477.697782094862,5998.953308331981,0.9909525708508673
+ZHVI,XGBoost,1-year-ahead growth,No,"fit=1-year-ahead growth; trees=100, depth=1, learning_rate=0.05",6366.695736120784,7845.767100945504,0.9845244871009086
+ZHVI,Mean growth baseline,1-year-ahead growth,Yes,county mean growth,8106.968818164772,9628.994772718292,0.9766903297789158
+ZHVI,Ordinary Linear Regression,1-year-ahead growth,Yes,fit=1-year-ahead growth; unregularized OLS,5719.4659772206005,7964.315337604246,0.9840532890771178
+ZHVI,LASSO,1-year-ahead growth,Yes,"fit=1-year-ahead growth; alpha=0.1, l1_ratio=1",5189.619332657833,6903.515949569027,0.9880183979103424
+ZHVI,Elastic Net,1-year-ahead growth,Yes,"fit=1-year-ahead growth; alpha=0.1, l1_ratio=0.25",5026.398897315609,6739.8441085154445,0.9885797941969097
+ZHVI,Ridge,1-year-ahead growth,Yes,fit=1-year-ahead growth; alpha=100,4464.040425862422,5988.602943039053,0.9909837640963498
+ZHVI,XGBoost,1-year-ahead growth,Yes,"fit=1-year-ahead growth; trees=100, depth=1, learning_rate=0.05",6062.037457205805,7554.956559012155,0.9856504536835867
+ZHVI,Mean level baseline,Original level at t+4,No,county mean level,67984.61399347299,71539.6786113405,-0.2866730274784304
+ZHVI,Ordinary Linear Regression,Original level at t+4,No,fit=Original level at t+4; unregularized OLS,4954.81456307015,6598.4821471272335,0.9890538267051866
+ZHVI,LASSO,Original level at t+4,No,"fit=Original level at t+4; alpha=0.01, l1_ratio=1",4954.878824364034,6598.728796114148,0.9890530083615271
+ZHVI,Elastic Net,Original level at t+4,No,"fit=Original level at t+4; alpha=0.01, l1_ratio=0.75",9321.545932438908,11281.700352119291,0.9680019621116491
+ZHVI,Ridge,Original level at t+4,No,fit=Original level at t+4; alpha=0.01,5137.1506827358835,6799.721765011594,0.9883759756216459
+ZHVI,XGBoost,Original level at t+4,No,"fit=Original level at t+4; trees=100, depth=1, learning_rate=0.05",33417.47673322573,48426.1018637971,0.41043288703678316
+ZHVI,Mean level baseline,Original level at t+4,Yes,county mean level,67984.61399347303,71463.32030158973,-0.2839278168039574
+ZHVI,Ordinary Linear Regression,Original level at t+4,Yes,fit=Original level at t+4; unregularized OLS,4077.86826945311,5245.526796797829,0.9930824477631709
+ZHVI,LASSO,Original level at t+4,Yes,"fit=Original level at t+4; alpha=1, l1_ratio=1",3908.33006899632,5179.99847244944,0.9932541995386389
+ZHVI,Elastic Net,Original level at t+4,Yes,"fit=Original level at t+4; alpha=0.01, l1_ratio=0.75",7095.0732772898855,9200.045024909517,0.9787208570075988
+ZHVI,Ridge,Original level at t+4,Yes,fit=Original level at t+4; alpha=0.01,4041.076661865497,5320.335743580616,0.9928837318146017
+ZHVI,XGBoost,Original level at t+4,Yes,"fit=Original level at t+4; trees=100, depth=1, learning_rate=0.05",31895.786195031294,46972.66947892614,0.4452916395943384
+ZORI,Mean growth baseline,1-year-ahead growth,No,county mean growth,65.33759511838032,69.76695158369165,0.8869487350153266
+ZORI,Ordinary Linear Regression,1-year-ahead growth,No,fit=1-year-ahead growth; unregularized OLS,45.22969495567776,49.24301960743766,0.9436796578786454
+ZORI,LASSO,1-year-ahead growth,No,"fit=1-year-ahead growth; alpha=0.1, l1_ratio=1",30.770306301155156,35.97894089072894,0.9699342057149672
+ZORI,Elastic Net,1-year-ahead growth,No,"fit=1-year-ahead growth; alpha=0.1, l1_ratio=0.75",29.98591043596613,35.301126315931036,0.9710563661062014
+ZORI,Ridge,1-year-ahead growth,No,fit=1-year-ahead growth; alpha=100,36.78417446729676,43.36585210657571,0.9563210992052109
+ZORI,XGBoost,1-year-ahead growth,No,"fit=1-year-ahead growth; trees=100, depth=1, learning_rate=0.05",58.2338015883779,61.93317046318114,0.9109113131631834
+ZORI,Mean growth baseline,1-year-ahead growth,Yes,county mean growth,65.29040421725934,70.01490676836502,0.8861437274988034
+ZORI,Ordinary Linear Regression,1-year-ahead growth,Yes,fit=1-year-ahead growth; unregularized OLS,53.98680733413035,58.828914511431705,0.9196182231932515
+ZORI,LASSO,1-year-ahead growth,Yes,"fit=1-year-ahead growth; alpha=0.1, l1_ratio=1",30.770306301155156,35.97894089072894,0.9699342057149672
+ZORI,Elastic Net,1-year-ahead growth,Yes,"fit=1-year-ahead growth; alpha=0.1, l1_ratio=0.75",29.98591043596613,35.301126315931036,0.9710563661062014
+ZORI,Ridge,1-year-ahead growth,Yes,fit=1-year-ahead growth; alpha=100,36.78627471962876,43.38256163139858,0.9562874324257756
+ZORI,XGBoost,1-year-ahead growth,Yes,"fit=1-year-ahead growth; trees=100, depth=1, learning_rate=0.05",58.08996275993733,61.8712857309853,0.9110892622339822
+ZORI,Mean level baseline,Original level at t+4,No,county mean level,276.1245013485322,280.2390505662241,-0.8240352952384724
+ZORI,Ordinary Linear Regression,Original level at t+4,No,fit=Original level at t+4; unregularized OLS,66.36586931328712,69.25324686340011,0.8886074332875813
+ZORI,LASSO,Original level at t+4,No,"fit=Original level at t+4; alpha=1, l1_ratio=1",46.757367586930435,53.04708941794536,0.9346419551633096
+ZORI,Elastic Net,Original level at t+4,No,"fit=Original level at t+4; alpha=0.01, l1_ratio=0.75",72.68351193646033,75.75811194149004,0.8666987515327583
+ZORI,Ridge,Original level at t+4,No,fit=Original level at t+4; alpha=0.01,66.88997885962512,69.77313527032685,0.8869286938766164
+ZORI,XGBoost,Original level at t+4,No,"fit=Original level at t+4; trees=100, depth=1, learning_rate=0.05",153.84769960118476,187.73462449014238,0.18141329193476685
+ZORI,Mean level baseline,Original level at t+4,Yes,county mean level,276.1245013485323,279.5503881300462,-0.8150815027103289
+ZORI,Ordinary Linear Regression,Original level at t+4,Yes,fit=Original level at t+4; unregularized OLS,72.11056192976419,76.04340934183,0.8656928629702216
+ZORI,LASSO,Original level at t+4,Yes,"fit=Original level at t+4; alpha=1, l1_ratio=1",46.782958076226606,53.073025425648474,0.9345780292753023
+ZORI,Elastic Net,Original level at t+4,Yes,"fit=Original level at t+4; alpha=0.01, l1_ratio=0.75",82.11441450033861,86.58899370456092,0.8258588866110611
+ZORI,Ridge,Original level at t+4,Yes,fit=Original level at t+4; alpha=0.01,72.79518945004975,76.72014228165996,0.8632917477824361
+ZORI,XGBoost,Original level at t+4,Yes,"fit=Original level at t+4; trees=100, depth=1, learning_rate=0.05",144.92368328445298,178.8517842752825,0.25704504051972543
+ZHVI,ARIMA,Original level at t+4,No,"ARIMA(1, 0, 0); None",5827.246768329556,6695.378418225888,0.9887299852734198
+ZHVI,ARIMA,Original level at t+4,Yes,"ARIMA(1, 0, 0); None",5491.345250816042,6616.921540759296,0.9889925632768084
+ZHVI,ARIMAX,Original level at t+4,No,"ARIMA(1, 0, 0); Mortgage + inflation",5727.128410436206,6980.324949596479,0.987750298433356
+ZHVI,ARIMAX,Original level at t+4,Yes,"ARIMA(1, 0, 0); Mortgage rate",7808.587637523776,9007.123087435732,0.97960393333825
+ZORI,ARIMA,Original level at t+4,No,"ARIMA(1, 0, 0); None",38.706885731204515,46.635735744146544,0.949485786283399
+ZORI,ARIMA,Original level at t+4,Yes,"ARIMA(1, 0, 0); None",39.46746574026855,47.50967139922228,0.947574813384832
+ZORI,ARIMAX,Original level at t+4,No,"ARIMA(1, 1, 0); Mortgage + county unemployment",53.68639512281729,62.50286227326944,0.9092648119146054
+ZORI,ARIMAX,Original level at t+4,Yes,"ARIMA(1, 1, 0); Mortgage + county unemployment",53.80746486513754,62.7356797110139,0.9085875924375032
