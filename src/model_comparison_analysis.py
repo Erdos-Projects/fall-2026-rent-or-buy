@@ -3,7 +3,7 @@
 Run this file from the repository's ``notebooks`` directory (or run the
 companion notebook). Outputs are written to results/checkpoint3_model_compare.
 Model specifications are selected on the 2021 validation period. The explicit
-growth-only eligibility rule was documented after earlier test results were
+candidate-eligibility rule was documented after earlier test results were
 seen, so the existing test scores are descriptive for that revised rule.
 """
 
@@ -94,12 +94,13 @@ MODEL_ORDER = [
     "ARIMA", "ARIMAX",
 ]
 
-# The project's forecasting question is about one-year growth. Direct-level
-# fits remain diagnostic comparisons, but only growth-fitted pooled models
-# are eligible for the tentative model choice. Because this policy was
-# formalized after inspecting the prior comparison, treat test scores as
-# descriptive rather than a pristine evaluation of the revised selection rule.
-ELIGIBLE_FIT_TARGET = GROWTH_FIT
+# The research outcome is one-year growth. Pooled models must fit that growth
+# directly to be eligible. ARIMA and ARIMAX are an explicit family exception:
+# they forecast levels from each county's history, then imply one-year growth.
+# Direct-level pooled regressions are diagnostic only. This eligibility rule
+# was formalized after the team had inspected earlier test results, so the
+# existing test is descriptive for the revised candidate pool.
+ELIGIBLE_TIME_SERIES_MODELS = {"ARIMA", "ARIMAX"}
 
 REGRESSION_CANDIDATES = {
     "Ordinary Linear Regression": [LinearRegression()],
@@ -456,15 +457,19 @@ ts_candidate_df.to_csv(RESULTS_DIR / "arima_order_and_exogenous_selection.csv", 
 validation_chosen = validation_comparison.sort_values(["RMSE", "MAE"]).drop_duplicates(
     ["target", "model", "fit_target"]
 )
+validation_chosen["eligible_for_tentative_selection"] = (
+    validation_chosen["fit_target"].eq(GROWTH_FIT)
+    | validation_chosen["model"].isin(ELIGIBLE_TIME_SERIES_MODELS)
+)
 validation_chosen.to_csv(RESULTS_DIR / "validation_model_comparison.csv", index=False)
 
 # Keep unrestricted winners as a diagnostic. The published tentative choice is
-# selected among models fitted to the actual project target: one-year growth.
+# selected among growth-fitted pooled models plus ARIMA and ARIMAX.
 winner_rows = []
 all_candidate_winner_rows = []
 for target_name in TARGETS:
     all_candidates = validation_chosen[validation_chosen["target"].eq(target_name)]
-    eligible = all_candidates[all_candidates["fit_target"].eq(ELIGIBLE_FIT_TARGET)]
+    eligible = all_candidates[all_candidates["eligible_for_tentative_selection"]]
     for metric, direction in [("RMSE", "min"), ("MAE", "min"), ("R2", "max")]:
         for subset, output in [(eligible, winner_rows), (all_candidates, all_candidate_winner_rows)]:
             selected = subset.sort_values(metric, ascending=(direction == "min")).iloc[0]
@@ -733,7 +738,7 @@ for metric, ylabel, filename in metric_specs:
         ax.set_ylim(bottom - (top - bottom) * 0.04, top + (top - bottom) * 0.16)
     fig.suptitle(f"Validation model comparison by {metric}", fontsize=15)
     fig.text(0.5, 0.008,
-             "Bold * marks the selected growth-fit winner. Blue = growth fit; pale gray = direct level fit; slate = ARIMA family. All bars are scored on the original t+4 Zillow level.",
+             "Bold * marks the eligible winner. Blue = growth fit; slate = eligible ARIMA family; pale gray = ineligible direct-level regression. All bars score the original t+4 level.",
              ha="center", fontsize=9)
     fig.tight_layout(rect=(0, 0.04, 1, 0.96), h_pad=3.5)
     fig.savefig(RESULTS_DIR / filename, dpi=180, bbox_inches="tight")
@@ -949,7 +954,7 @@ importance_model_rows = []
 for target_name in TARGETS:
     candidate = validation_chosen[
         validation_chosen["target"].eq(target_name)
-        & validation_chosen["fit_target"].eq(ELIGIBLE_FIT_TARGET)
+        & validation_chosen["fit_target"].eq(GROWTH_FIT)
         & validation_chosen["model"].isin(PREDICTOR_MODELS)
     ].sort_values(["RMSE", "MAE"]).iloc[0]
     label = candidate["model"]
