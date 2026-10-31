@@ -1,4 +1,4 @@
-# Checkpoint 3 Model Comparison
+# Checkpoint 4 Model Comparison
 
 ## At a glance
 
