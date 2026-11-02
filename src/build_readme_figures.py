@@ -95,9 +95,9 @@ for i, (number, title, detail) in enumerate(steps):
     ax.add_patch(FancyBboxPatch((x, 0.30), 2.95, 1.40,
                                boxstyle="round,pad=0.02,rounding_size=0.10",
                                facecolor="#e7efeb", edgecolor="#c7d8d0"))
-    ax.text(x + 0.17, 1.30, number, fontsize=13, color=TEAL, weight="bold")
-    ax.text(x + 0.64, 1.30, title, fontsize=15, weight="bold")
-    ax.text(x + 0.17, 0.78, detail, fontsize=10.5)
+    ax.text(x + 0.17, 1.30, number, fontsize=17, color=TEAL, weight="bold")
+    ax.text(x + 0.77, 1.30, title, fontsize=19, weight="bold")
+    ax.text(x + 0.17, 0.78, detail, fontsize=13.5)
     if i < 3:
         ax.annotate("", (x + 3.23, 1.0), (x + 3.00, 1.0),
                     arrowprops={"arrowstyle": "->", "color": TEAL, "lw": 1.5})
