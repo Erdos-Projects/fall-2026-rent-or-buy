@@ -1,13 +1,14 @@
-# Project Documentation
+# Project documentation
 
-This folder contains durable project documentation that should be reviewed alongside code and data changes.
+New to the project? Start with the [main README](../README.md), then follow the checkpoints below. Source notes explain where the data came from; the [data dictionaries](../data/metadata/) define the final variables.
 
-## Documents
-- `acs-demographics-data.md` - information regarding the measures derived from the American Community Survey and how they were processed for the project
-- `econ-labor-data.md` - information regarding the national- and state-level economic and labor measures derived from FRED and BLS and how they were processed for the project
-- `checkpoint1_data_integration.md` - documentation of how all collected data sources and measures were cleaned, integrated, and merged to create the master county-quarter dataset
-- `checkpoint2_feature_engineering.md` - documentaiton of how the master dataset was transformed into a model-ready dataset through feature engineering, the creation of historical measures and one-year-ahead prediction targets, and data quality checks
-- `checkpoint3_chronological_splitting.md` - documentation of how model-ready dataset was divided into chronological training, validation and test sets with controls to prevent data leakage and allow for an unbiased evaluation
-- `checkpoint3_evaluation_plan.md` - documentation of the model evaluation framework and comparison of model predictive performance
-- `checkpoint3_time_series.md` - documentation of exploratory time-series modeling (ARIMA and ARIMAX) to see whether time-series appraoches improve ZHVI growht predictions compared with linear and ridge regression baselines
-- `checkpoint4_model_compare.md` - documentation of comparison of 8 modeling approaches, including validation-based model selection and performance evaluation
+| Topic | Document | What it explains |
+|---|---|---|
+| Data sources | [ACS demographics](acs-demographics-data.md) | Census variables, coverage, and processing |
+| Data sources | [Economy and labor](econ_labor_data.md) | FRED and BLS measures, units, and coverage |
+| Checkpoint 1 | [Data integration](checkpoint1_data_integration.md) | Cleaning, county keys, and the merged county-quarter panel |
+| Checkpoint 2 | [Feature engineering](checkpoint2_feature_engineering.md) | Historical predictors, one-year targets, and quality checks |
+| Checkpoint 3 | [Chronological splitting](checkpoint3_chronological_splitting.md) | Train/validation/test origins and leakage controls |
+| Checkpoint 3 | [Evaluation plan](evaluation_plan.md) | Metrics, baselines, and evaluation rules |
+| Checkpoint 3 | [Time-series exploration](checkpoint3_time_series.md) | ARIMA and ARIMAX experiments |
+| Checkpoint 4 | [Model comparison](checkpoint4_model_compare.md) | Validation selection, test caveats, and feature sensitivity |
