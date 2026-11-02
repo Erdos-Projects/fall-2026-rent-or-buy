@@ -12,3 +12,4 @@ New to the project? Start with the [main README](../README.md), then follow the 
 | Checkpoint 3 | [Evaluation plan](evaluation_plan.md) | Metrics, baselines, and evaluation rules |
 | Checkpoint 3 | [Time-series exploration](checkpoint3_time_series.md) | ARIMA and ARIMAX experiments |
 | Checkpoint 4 | [Model comparison](checkpoint4_model_compare.md) | Validation selection, test caveats, and feature sensitivity |
+| Final application | [Financial calculator](financial_calculator.md) | Forecast versus historical mode, 2025 forecasts, and reproducibility |

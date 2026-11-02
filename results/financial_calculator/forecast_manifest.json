@@ -1,0 +1,63 @@
+{
+  "forecast_origins": "2025Q1-2025Q4",
+  "target_periods": "2026Q1-2026Q4",
+  "fitting_origins": "2015Q1-2019Q4 and 2021Q1-2021Q4",
+  "fitting_rows": 216,
+  "forecast_county_quarters": 36,
+  "models": {
+    "ZHVI": {
+      "model": "Ridge",
+      "alpha": 100.0,
+      "quarter_terms": true,
+      "level": "zhvi_usd",
+      "growth": "zhvi_growth_ahead_1y_pct"
+    },
+    "ZORI": {
+      "model": "Elastic Net",
+      "alpha": 0.1,
+      "l1_ratio": 0.75,
+      "quarter_terms": false,
+      "level": "zori_usd_month",
+      "growth": "zori_growth_ahead_1y_pct"
+    }
+  },
+  "numeric_predictors": [
+    "zhvi_growth_qoq_pct",
+    "zhvi_growth_prev_1y_pct",
+    "zori_growth_qoq_pct",
+    "zori_growth_prev_1y_pct",
+    "nat_mortgage_rate_30y_pct",
+    "mortgage_rate_change_prev_1y_pp",
+    "nat_inflation_yoy_pct",
+    "cty_unemployment_rate_pct",
+    "cty_unemployment_change_prev_1y_pp",
+    "price_to_rent_ratio"
+  ],
+  "test_reproduction": {
+    "ZHVI": {
+      "test_rows": 72,
+      "max_absolute_growth_difference_pp": 1.4210854715202004e-14
+    },
+    "ZORI": {
+      "test_rows": 72,
+      "max_absolute_growth_difference_pp": 1.1546319456101628e-14
+    }
+  },
+  "2025_predictor_missing_cells": 0,
+  "partial_quarter": "2025Q4 county labor and inflation use November-December inputs.",
+  "data_vintage_note": "Retrospective project snapshots; not a real-time, as-of-release backtest.",
+  "outcomes": "2026 outcomes unavailable in the project; not imputed or scored.",
+  "versions": {
+    "numpy": "2.2.5",
+    "pandas": "2.2.3",
+    "scikit_learn": "1.9.0"
+  },
+  "input_sha256": {
+    "data/processed/1-year-ahead split/train.csv": "4e22b3948b5cae1710f26fdbb97949071b8481a00171c93bb42ab5376e3c4a6a",
+    "data/processed/1-year-ahead split/validation.csv": "28bf4acd0107fd49cfc079caadd4d9793c4af0e2dc73a3b8f0f605aa21867898",
+    "data/processed/1-year-ahead split/test.csv": "cdb534ac30d1ecf3214a5ee0a4a74458f971c302803763657d382ca13bb314b8",
+    "data/processed/feature engineered data/master_county_quarter_features.csv": "41c8a46c6168a02e9cd78ab247574c07ac3a403db2c9c074559e50cd070b2fcc",
+    "results/checkpoint3_model_compare/validation_model_comparison.csv": "b590c68ac59f1052e38cc0709f3c15781ee73ef7ba5aefd38bb94ba46e6066d9",
+    "results/checkpoint3_model_compare/one_year_ahead_growth_test_predictions.csv": "e9230e6b539e33c42c321c9bbc7e22d8992b94b7aa67b68f3687e374e9453e5f"
+  }
+}
