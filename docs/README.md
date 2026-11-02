@@ -2,16 +2,12 @@
 
 This folder contains durable project documentation that should be reviewed alongside code and data changes.
 
-## Suggested documents
-
-- `checkpoint1.md` — problem definition, scope, data assessment, learnability assessment, and KPI definitions.
-- `data_dictionary.md` — variable names, descriptions, units, sources, geography, and annualization rules.
-- `data_sources.md` — download URLs, source versions, coverage, licenses, and known limitations.
-- `decisions.md` — important project decisions and the reasons for them.
-- `changes.md` — a dated record of major data, code, and documentation changes.
-
-## Documentation rules
-
-Document decisions that affect the analysis, especially geography definitions, boundary vintages, missing-data handling, annualization methods, and source revisions. Link each change to the related GitHub Issue or Pull Request when possible.
-
-Use clear dates in `YYYY-MM-DD` format. Do not store API keys, credentials, or unmodified third-party data in this folder.
+## Documents
+- `acs-demographics-data.md` - information regarding the measures derived from the American Community Survey and how they were processed for the project
+- `econ-labor-data.md` - information regarding the national- and state-level economic and labor measures derived from FRED and BLS and how they were processed for the project
+- `checkpoint1_data_integration.md` - documentation of how all collected data sources and measures were cleaned, integrated, and merged to create the master county-quarter dataset
+- `checkpoint2_feature_engineering.md` - documentaiton of how the master dataset was transformed into a model-ready dataset through feature engineering, the creation of historical measures and one-year-ahead prediction targets, and data quality checks
+- `checkpoint3_chronological_splitting.md` - documentation of how model-ready dataset was divided into chronological training, validation and test sets with controls to prevent data leakage and allow for an unbiased evaluation
+- `checkpoint3_evaluation_plan.md` - documentation of the model evaluation framework and comparison of model predictive performance
+- `checkpoint3_time_series.md` - documentation of exploratory time-series modeling (ARIMA and ARIMAX) to see whether time-series appraoches improve ZHVI growht predictions compared with linear and ridge regression baselines
+- `checkpoint4_model_compare.md` - documentation of comparison of 8 modeling approaches, including validation-based model selection and performance evaluation
