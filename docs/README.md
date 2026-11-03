@@ -1,17 +1,15 @@
-# Project Documentation
+# Project documentation
 
-This folder contains durable project documentation that should be reviewed alongside code and data changes.
+New to the project? Start with the [main README](../README.md), then follow the checkpoints below. Source notes explain where the data came from; the [data dictionaries](../data/metadata/) define the final variables.
 
-## Suggested documents
-
-- `checkpoint1.md` — problem definition, scope, data assessment, learnability assessment, and KPI definitions.
-- `data_dictionary.md` — variable names, descriptions, units, sources, geography, and annualization rules.
-- `data_sources.md` — download URLs, source versions, coverage, licenses, and known limitations.
-- `decisions.md` — important project decisions and the reasons for them.
-- `changes.md` — a dated record of major data, code, and documentation changes.
-
-## Documentation rules
-
-Document decisions that affect the analysis, especially geography definitions, boundary vintages, missing-data handling, annualization methods, and source revisions. Link each change to the related GitHub Issue or Pull Request when possible.
-
-Use clear dates in `YYYY-MM-DD` format. Do not store API keys, credentials, or unmodified third-party data in this folder.
+| Topic | Document | What it explains |
+|---|---|---|
+| Data sources | [ACS demographics](acs-demographics-data.md) | Census variables, coverage, and processing |
+| Data sources | [Economy and labor](econ_labor_data.md) | FRED and BLS measures, units, and coverage |
+| Checkpoint 1 | [Data integration](checkpoint1_data_integration.md) | Cleaning, county keys, and the merged county-quarter panel |
+| Checkpoint 2 | [Feature engineering](checkpoint2_feature_engineering.md) | Historical predictors, one-year targets, and quality checks |
+| Checkpoint 3 | [Chronological splitting](checkpoint3_chronological_splitting.md) | Train/validation/test origins and leakage controls |
+| Checkpoint 3 | [Evaluation plan](evaluation_plan.md) | Metrics, baselines, and evaluation rules |
+| Checkpoint 3 | [Time-series exploration](checkpoint3_time_series.md) | ARIMA and ARIMAX experiments |
+| Checkpoint 4 | [Model comparison](checkpoint4_model_compare.md) | Validation selection, test caveats, and feature sensitivity |
+| Final application | [Financial calculator](financial_calculator.md) | Forecast versus historical mode, 2025 forecasts, and reproducibility |
