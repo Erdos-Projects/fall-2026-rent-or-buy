@@ -65,7 +65,7 @@ We followed these rules to prevent the models from using future information:
 
 ## 7. Results
 
-Validation results selected Ridge Regression for ZHVI and Elastic Net for ZORI. We made these choices before examining the final testing results.
+Validation results selected Ridge Regression for ZHVI and Elastic Net for ZORI. These choices are tentative: the candidate-pool rule was formalized after the test results had been viewed, so the test scores are descriptive (see the [model comparison](checkpoint4_model_compare.md)).
 
 | Target | Selected model | Level MAE | Level RMSE | Level R² | Growth MAE | Growth RMSE | Growth R² |
 |---|---|---:|---:|---:|---:|---:|---:|
